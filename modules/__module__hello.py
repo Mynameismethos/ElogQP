@@ -1,13 +1,20 @@
 Settings = "hello"
 log = ""
+name = "Hello Bot"
+oneDes = "this programm says Hello"
+desc = "this programm calls print. And gives it the Parameter 'Hello' "
+
+
+def getName():
+    return name
 
 
 def getOneDesc():
-    return "this programm says Hello"
+    return oneDes
 
 
 def getDesc():
-    return "this programm calls print. And gives it the Parameter 'Hello' "
+    return desc
 
 
 def getSettings():

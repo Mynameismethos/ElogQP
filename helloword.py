@@ -27,8 +27,14 @@ def import_xes_Log():
 
 
 def importModule():
-    mod = loadmodules.loadmodules()
-    for module in mod:
+    module_list = loadmodules.loadmodules()
+    for module in module_list:
+        print(
+            "This Module is called: '"
+            + module.getName()
+            + "' it´s descibed as: "
+            + module.getOneDesc()
+        )
         module.exec("null")
 
 
