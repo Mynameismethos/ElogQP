@@ -1,3 +1,5 @@
-from pm4py.objects.log.importer.xes import factory as xes_import_factory
+import pm4py
 
-log = xes_import_factory.apply("/LOGEDV.xes")
+log = pm4py.read_xes("LOGEDV.xes")
+
+print(log [0][0])
