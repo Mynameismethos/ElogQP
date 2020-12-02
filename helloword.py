@@ -1,9 +1,9 @@
-# pylant
-import tkinter
+# import tkinter
 from tkinter.constants import INSERT
 import pm4py
-import importlib
+
 from tkinter import Button, Entry, Label, Tk
+import loadmodules
 
 frame = Tk()
 
@@ -27,9 +27,9 @@ def import_xes_Log():
 
 
 def importModule():
-    mod = importlib.import_module(entry.get())
-    test = mod.myhello()
-    print(test)
+    mod = loadmodules.loadmodules()
+    for module in mod:
+        module.exec("null")
 
 
 hello_button = Button(frame, text="hello Button", command=display_hello)
@@ -39,5 +39,5 @@ forget_button.pack()
 load_Log_button = Button(frame, text="Load XES", command=import_xes_Log)
 load_Log_button = Button(frame, text="Load Module", command=importModule)
 load_Log_button.pack()
-print("Hello world")
+
 frame.mainloop()

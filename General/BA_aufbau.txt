@@ -4,10 +4,13 @@ Abstract
     Eventlogs
     Processmining
 3 LogQuality
-    1-5 Quality
+    1-5 Quality 
+        Procces Mining Manifesto (.M.P. van der Aalst et al. Process mining manifesto, in: Florian Daniel et al. (ed.),BPM 2011 Workshops (1), volume 99 of LNBIP, Springer-Verlag, 2011, pp. 169–194)
     Patterns
+        Event log imperfection patterns for process mining: Towards a systematicapproach to cleaning event logs
 4 Developed Tool
     Development
+        ?? used Tools
     Testing
         Eventlog creation
     Framework
