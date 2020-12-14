@@ -1,49 +1,44 @@
-# import tkinter
-from tkinter.constants import INSERT
 import pm4py
+import tkinter as tk
 
-from tkinter import Button, Entry, Label, Tk
+import frames as fr
 import loadmodules
 
-frame = Tk()
+class Display(tk.Tk):
+    def __init__(self, *args, **kwargs):
 
-frame.geometry("300x300+100+100")
-myText = Label(frame, text="Hello World")
-entry = Entry(frame)
-entry.pack()
-entry.insert(INSERT, "Path to XES")
+        tk.Tk.__init__(self, *args, **kwargs)
+        print("hello")
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        display = fr.frame_start(container, self)
+        display.grid(row=0, column=0, sticky="nsew")
+        display.tkraise()
+
+class Controller:
+     def display_hello():
+        self.myText.pack()
+
+    def remove_hello():
+        self.myText.pack_forget()
+
+    def import_xes_Log():
+        log = pm4py.read_xes()
+
+    def importModule():
+        module_list = loadmodules.loadmodules()
+        for module in module_list:
+            print(
+                "This Module is called: '"
+                + module.getName()
+                + "' it´s descibed as: "
+                + module.getOneDesc()
+            )
+            module.exec("null")
 
 
-def display_hello():
-    myText.pack()
-
-
-def remove_hello():
-    myText.pack_forget()
-
-
-def import_xes_Log():
-    log = pm4py.read_xes(entry.get())
-
-
-def importModule():
-    module_list = loadmodules.loadmodules()
-    for module in module_list:
-        print(
-            "This Module is called: '"
-            + module.getName()
-            + "' it´s descibed as: "
-            + module.getOneDesc()
-        )
-        module.exec("null")
-
-
-hello_button = Button(frame, text="hello Button", command=display_hello)
-hello_button.pack()
-forget_button = Button(frame, text="Remove Button", command=remove_hello)
-forget_button.pack()
-load_Log_button = Button(frame, text="Load XES", command=import_xes_Log)
-load_Log_button = Button(frame, text="Load Module", command=importModule)
-load_Log_button.pack()
-
-frame.mainloop()
+app = Display()
+app.mainloop()
