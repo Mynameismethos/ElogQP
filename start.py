@@ -1,8 +1,12 @@
-import pm4py
 import tkinter as tk
 
-import frames as fr
+import Frames.frame_start as fr_start
 import loadmodules
+import loadLog 
+
+module_List = []
+log = object
+
 
 class Display(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -14,23 +18,17 @@ class Display(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        display = fr.frame_start(container, self)
+        display = fr_start.frame_start(container, Controller)
         display.grid(row=0, column=0, sticky="nsew")
         display.tkraise()
 
 class Controller:
-     def display_hello():
-        self.myText.pack()
-
-    def remove_hello():
-        self.myText.pack_forget()
-
-    def import_xes_Log():
-        log = pm4py.read_xes()
+    def import_xes_Log(name):
+        log = loadLog.loadLogByName(name)
 
     def importModule():
-        module_list = loadmodules.loadmodules()
-        for module in module_list:
+        module_List = loadmodules.loadmodules()
+        for module in module_List:
             print(
                 "This Module is called: '"
                 + module.getName()

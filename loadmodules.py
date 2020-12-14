@@ -3,12 +3,13 @@ import importlib
 
 
 def loadmodules():
-    dir = os.listdir(os.path.abspath(os.curdir) + "\\modules")
+    dir = os.listdir(os.path.abspath(os.curdir) + "\\Usables\\Modules\\")
     list = []
     for file in dir:
         if file.startswith("__module__"):
             filename, file_extention = os.path.splitext(file)
-            mod = importlib.import_module("modules." + filename)
+            print(filename)
+            mod = importlib.import_module("Usables.Modules." + filename)
             list.append(mod)
 
     return list
