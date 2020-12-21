@@ -1,8 +1,8 @@
 Settings = "hello"
 log = ""
-name = "Hello Bot"
-oneDes = "this programm says Hello"
-desc = "this programm calls print. And gives it the Parameter 'Hello' "
+name = "Goodbye Bot"
+oneDes = "this programm says Goodbye"
+desc = "this programm calls print. And gives it the Parameter 'Goodbye' "
 
 
 def getName():
@@ -31,5 +31,5 @@ def giveLog(log):
 
 
 def exec(callback):
-    print("Hello")
+    print("Goodbye")
 
