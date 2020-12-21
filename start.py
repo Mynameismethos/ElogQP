@@ -1,9 +1,13 @@
+from Usables.Frames.frame__mod_V1 import frame_mod_V1
 import tkinter as tk
+from typing import Container
 import Frames.frame_start
 import Frames.frame_modules
+import inspect
 import loadmodules
 import loadLog 
 import Data as data
+import sys
 
 
 
@@ -12,29 +16,38 @@ class Display(tk.Tk):
     def __init__(self, *args, **kwargs):
 
         tk.Tk.__init__(self, *args, **kwargs)
-        print("hello")
-        container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        self.container = tk.Frame(self)
+        self.container.pack(side="top", fill="both", expand=True)
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
         
         
         for F in  (Frames.frame_start.frame_start, Frames.frame_modules.frame_modules):
-            display = F(container, Controller)
-            frame_name= F.__name__
-            data.frames[frame_name] = display
-            display.grid(row=0, column=0, sticky="nsew")
-            
-        Display.showFrame("frame_start")
+            self.createFrame(F, F.__name__)
+        data.modFrames=loadmodules.loadFrames()
+        self.showFrame("frame_start")
 
-    def showFrame(cont, prevPage= None):
+    def showFrame(self,cont, prevPage= None):
         display = data.frames[cont]
         display.tkraise()
         if prevPage: display.set_prev_Frame(prevPage)
+    
+    def createFrame(self, module, name):
+        if name not in  data.frames:
+            display = module(self.container,self)
+            display.grid(row=0, column=0, sticky="nsew")
+            data.frames[name] = display
 
 
-class Controller:
-    def import_xes_Log(moduleName, button, name):
+    def createModFrame(self, number, modName):
+        frame=data.modFrames[number]
+        for name, obj in inspect.getmembers(sys.modules[frame]):
+            if inspect.isclass(obj) and obj.__name__.startswith("frame"):
+                self.createFrame(obj, modName)
+       
+    
+
+    def import_xes_Log(self,moduleName, button, name):
         data.log = loadLog.loadLogByName(name)
         successfull = not (not data.log)
         print(successfull)
@@ -43,7 +56,7 @@ class Controller:
         else:
             data.frames[moduleName].button_feedback(button,False)
 
-    def importModule(moduleName, button):
+    def importModule(self, moduleName, button):
         data.module_List = loadmodules.loadmodules()
         for module in data.module_List:
             print(
@@ -52,24 +65,24 @@ class Controller:
                 + "' it´s descibed as: "
                 + module.getOneDesc()
             )
-            module.exec("null")
-            
-        successfull = len(data.module_List)>0    
+                    
+        successfull = len(data.module_List)>0  
         if successfull :
             data.frames[moduleName].button_feedback(button,True)
         else:
             data.frames[moduleName].button_feedback(button,False)
-            
-            
+              
+    
+   
+    
 
-    def showFrame(page,prevPage=None):
-        Display.showFrame(page,prevPage)
-
-    def getModules():
+    def getModules(self):
         return data.module_List
 
-    def getLog():
+    def getLog(self):
         return data.log
+        
+        
 
 
 # Start of Programm

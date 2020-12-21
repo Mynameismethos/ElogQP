@@ -5,7 +5,7 @@ from tkinter.constants import BOTTOM, INSERT, X
 
 class frame_start(tk.Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        super().__init__(parent)
         Label(self, text="Tool zum Finden und Beheben von Fehlern in Eventlog", bg ="light blue").pack(fill="x")
         Label(self, text="Bitte geben Sie den Namen der Logdatei an und Laden sie den Log", bg ="light blue").pack(fill="x")
         entry = Entry(self)

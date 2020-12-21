@@ -29,7 +29,9 @@ def setSettings(Json):
 def giveLog(log):
     log = log
 
+def createFrame():
+    pass
 
-def exec(callback):
+def exec(controller):
     print("Goodbye")
 

@@ -13,3 +13,16 @@ def loadmodules():
             list.append(mod)
 
     return list
+
+def loadFrames():
+    dir = os.listdir(os.path.abspath(os.curdir) + "\\Usables\\Frames\\")
+    list = []
+    for file in dir:
+        if file.startswith("frame__"):
+            filename, file_extention = os.path.splitext(file)
+            print(filename)
+            importlib.import_module("Usables.Frames." + filename)
+            mod= "Usables.Frames." + filename
+            list.append(mod)
+
+    return list
