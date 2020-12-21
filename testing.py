@@ -1,5 +1,5 @@
-import pm4py
+test= None
+if test :
+    print("HEllo")
+else: print("NO")
 
-log = pm4py.read_xes("LOGEDV.xes")
-
-print(log[0][0])

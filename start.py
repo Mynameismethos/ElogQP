@@ -1,4 +1,3 @@
-from Usables.Frames.frame__mod_V1 import frame_mod_V1
 import tkinter as tk
 from typing import Container
 import Frames.frame_start
@@ -16,6 +15,7 @@ class Display(tk.Tk):
     def __init__(self, *args, **kwargs):
 
         tk.Tk.__init__(self, *args, **kwargs)
+        self.winfo_toplevel().title("Lennart Brandt")
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)
@@ -44,8 +44,11 @@ class Display(tk.Tk):
         for name, obj in inspect.getmembers(sys.modules[frame]):
             if inspect.isclass(obj) and obj.__name__.startswith("frame"):
                 self.createFrame(obj, modName)
+                return modName
+        
        
-    
+    def getFrameByName(self, frameName):
+        return data.frames[frameName]
 
     def import_xes_Log(self,moduleName, button, name):
         data.log = loadLog.loadLogByName(name)

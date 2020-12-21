@@ -30,14 +30,19 @@ def setSettings(Json):
 def giveLog(log):
     log = log
 
-def createFrame(controller, example=0, name=__name__):
-    controller.createModFrame(example, name)
-    print(name)
+def createFrames(controller):
+    frameName=controller.createModFrame(0, __name__+"_1")
+    controller.getFrameByName(frameName).update_Data(__name__+"_2",None,title=getName(), intro=getOneDesc(), desc=getDesc())
+    
+    frameName=controller.createModFrame(0, __name__+"_2")
+    controller.getFrameByName(frameName).update_Data(__name__+"_3",__name__+"_1",title="Hello Module", intro=oneDes, desc=desc)
+    
+    frameName=controller.createModFrame(0, __name__+"_3")
+    controller.getFrameByName(frameName).update_Data(__name__+"_1",__name__+"_2",title="Hello Module", intro=oneDes, desc=desc)
   
 
 def exec(controller):
-    mod_name="hello_1"
-    createFrame(controller,example=0, name=mod_name)
-    controller.showFrame(mod_name)
+    createFrames(controller)
+    controller.showFrame(__name__+"_1")
     print("Hello")
 
