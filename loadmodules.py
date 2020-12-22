@@ -1,16 +1,23 @@
 import os
 import importlib
+import inspect
+import sys
 
 
-def loadmodules():
+def loadmodules(controller):
     dir = os.listdir(os.path.abspath(os.curdir) + "\\Usables\\Modules\\")
     list = []
     for file in dir:
         if file.startswith("__module__"):
             filename, file_extention = os.path.splitext(file)
             print(filename)
-            mod = importlib.import_module("Usables.Modules." + filename)
-            list.append(mod)
+            name="Usables.Modules." + filename
+            importlib.import_module(name)
+            for name, obj in inspect.getmembers(sys.modules[name]):
+                if inspect.isclass(obj) and obj.__name__.startswith("module"):
+                    t = obj(controller)
+                    list.append(t)
+            
 
     return list
 
@@ -23,6 +30,7 @@ def loadFrames():
             print(filename)
             importlib.import_module("Usables.Frames." + filename)
             mod= "Usables.Frames." + filename
+            
             list.append(mod)
 
     return list

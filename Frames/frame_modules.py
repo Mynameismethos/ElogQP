@@ -35,4 +35,4 @@ class frame_modules(tk.Frame):
         chosen= self.listbox.curselection()
         print(chosen)
         for x in chosen:
-            self.controller.getModules()[x].exec(self.controller)
+            self.controller.getModules()[x].exec()

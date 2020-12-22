@@ -1,7 +1,7 @@
 
 
 
-class module_hello():
+class module_class():
     def __init__(self, controller):
         self.controller= controller
         self.Settings = "hello"

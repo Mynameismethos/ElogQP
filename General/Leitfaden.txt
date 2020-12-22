@@ -1,0 +1,3 @@
+*WAS IST PROCESS MINING*
+Um Process Mining effektiv betreiben zu können muss die Qualität der Zugrundeliegenden Eventlogs hoch sein. Da Fehler in der Eventlog ein falsches Modell erstellen. So können zu komplexe Modelle erstellt werden, wenn einzelne Schritte in vielen Schritten im Eventlog gespeichert werden, einzelne Schritte mit unterschiedlichen Namen gespeichert werden oder die Reihenfolge der Schritte teilweise Falsch ist. *WARUM*.
+Ein Framework, welches in der Lage ist in hohem Maß diese Fehler zu finden und „entsprechend zu verarbeiten“*UMFORMULIEREN*, ist das Ziel dieser Bachelorarbeit. 

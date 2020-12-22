@@ -10,6 +10,7 @@ import sys
 
 
 
+
 #init the Display and load the singular fames
 class Display(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -60,7 +61,7 @@ class Display(tk.Tk):
             data.frames[moduleName].button_feedback(button,False)
 
     def importModule(self, moduleName, button):
-        data.module_List = loadmodules.loadmodules()
+        data.module_List = loadmodules.loadmodules(self)
         for module in data.module_List:
             print(
                 "This Module is called: '"
