@@ -13,7 +13,7 @@ class frame_mod_List(tk.Frame):
         self.title_text = StringVar()
         Label(self, textvariable=self.title_text).pack(fill="x",side="top")
         self.listBox = tk.Listbox(self)
-        self.listBox.pack(fill="both")
+        self.listBox.pack(fill="both", expand="yes")
 
         #Example
        # self.title_text = StringVar()
@@ -30,15 +30,15 @@ class frame_mod_List(tk.Frame):
         
 
         #TODO fill in, find Data that needs to be added by the module
-    def update_Data(self,next,previous,title="", list ={}):
-        self.set_Next_Frame(next)
-        self.set_Prev_Frame(previous)
-        
+    def update_Data(self,next=None,previous=None,title="", list ={}):
+        if next:     self.set_Next_Frame(next)
+        if previous: self.set_Prev_Frame(previous)
         if title: self.title_text.set(title)
-
-        for x in list:
-            print(x)
-            self.listBox.insert("end", x)
+        if list: 
+            self.listBox.delete(0,"end")
+            for x in list:
+                print(x)
+                self.listBox.insert("end", x)
         
         print(self.title_text)
         

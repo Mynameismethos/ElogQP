@@ -22,9 +22,9 @@ class frame_mod_desc(tk.Frame):
 
             
 
-    def update_Data(self,next,previous,title="",intro="", desc=""):
-        self.set_Next_Frame(next)
-        self.set_Prev_Frame(previous)
+    def update_Data(self,next=None,previous=None,title="",intro="", desc=""):
+        if next: self.set_Next_Frame(next)
+        if previous: self.set_Prev_Frame(previous)
         
         if title: self.title_text.set(title)
         if intro: self.intro_text.set(intro)

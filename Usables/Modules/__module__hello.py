@@ -32,13 +32,13 @@ def giveLog(log):
 
 def createFrames(controller):
     frameName=controller.createModFrame(0, __name__+"_1")
-    controller.getFrameByName(frameName).update_Data(__name__+"_2",None,title=getName(), intro=getOneDesc(), desc=getDesc())
+    controller.getFrameByName(frameName).update_Data(next=__name__+"_2",previous= None,title=getName(), intro=getOneDesc(), desc=getDesc())
     
     frameName=controller.createModFrame(0, __name__+"_2")
-    controller.getFrameByName(frameName).update_Data(__name__+"_3",__name__+"_1",title="Hello Module", intro=oneDes, desc=desc)
+    controller.getFrameByName(frameName).update_Data(next=__name__+"_3",previous= __name__+"_1",title="Hello Module", intro=oneDes, desc=desc)
     
     frameName=controller.createModFrame(0, __name__+"_3")
-    controller.getFrameByName(frameName).update_Data(__name__+"_1",__name__+"_2",title="Hello Module", intro=oneDes, desc=desc)
+    controller.getFrameByName(frameName).update_Data(next=__name__+"_1", previous=__name__+"_2",title="Hello Module", intro=oneDes, desc=desc)
   
 
 def exec(controller):
