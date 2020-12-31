@@ -76,7 +76,9 @@ class frame_mod_List(tk.Frame):
     def leaveModule(self):
         #TODO SHOW WARNING
         #TODO implement delete Frames
-         self.controller.showFrame("frame_modules")
+         self.modController.leaveMod()
+
+
 
     def set_Controller(self, modController):
         self.modController= modController

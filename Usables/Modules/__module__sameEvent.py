@@ -43,7 +43,8 @@ class module_sameEvent():
             2:lambda: self.reset(),
             3:lambda: self.displayPrev(),
             4:lambda: self.displayNext(),
-            5:lambda: self.changeLog()
+            5:lambda: self.changeLog(),
+            99:lambda: self.leaveMod()
         }
         switcher.get(actionNumer.get(), lambda: print("Wrong Action"))()
             
@@ -142,6 +143,12 @@ class module_sameEvent():
 
     def leaveMod(self):
         self.controller.showFrame("frame_modules")
+        for x in range(1,6):
+            if self.controller.getFrameByName(__name__+"_"+str(x)):
+                self.controller.delFrameByName(__name__+"_"+str(x))
+
+            
+
         #deleteFrames
 
  

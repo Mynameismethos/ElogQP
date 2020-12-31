@@ -35,6 +35,11 @@ class module_Example():
         print("Hello")
 
    
+    def leaveMod(self):
+        self.controller.showFrame("frame_modules")
+        for x in range(1,6):
+            if self.controller.getFrameByName(__name__+"_"+str(x)):
+                self.controller.delFrameByName(__name__+"_"+str(x))
 
 
 

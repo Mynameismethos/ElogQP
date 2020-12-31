@@ -43,6 +43,11 @@ class module_hello():
         frameName=self.controller.createModFrame(0, __name__+"_3")
         self.controller.getFrameByName(frameName).update_Data(next=__name__+"_1", previous=__name__+"_2",title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
     
+    def leaveMod(self):
+        self.controller.showFrame("frame_modules")
+        for x in range(1,6):
+            if self.controller.getFrameByName(__name__+"_"+str(x)):
+                self.controller.delFrameByName(__name__+"_"+str(x))
 
     def exec(self):
         self.createFrames()

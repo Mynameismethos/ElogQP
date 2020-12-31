@@ -36,3 +36,5 @@ class frame_modules(tk.Frame):
         print(chosen)
         for x in chosen:
             self.controller.getModules()[x].exec()
+
+

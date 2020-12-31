@@ -51,6 +51,10 @@ class Display(tk.Tk):
     def getFrameByName(self, frameName):
         return data.frames[frameName]
 
+    def delFrameByName(self, frameName):
+        data.frames[frameName].destroy()
+        del data.frames[frameName]
+
     def import_xes_Log(self,moduleName, button, name):
         data.log = loadLog.loadLogByName(name)
         successfull = not (not data.log)
