@@ -1,4 +1,3 @@
-#import pm4py.algo.filtering.log.attributes as attFilter
 from pm4py.algo.filtering.log.attributes import attributes_filter
 
 
@@ -41,7 +40,7 @@ class module_eventFinder():
         self.controller.getFrameByName(frameName).update_Data(next=__name__+"_2",previous = None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
         
         frameName=self.controller.createModFrame(1, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(next=__name__+"_3",previous=__name__+"_1",title=self.getName(),list={"hello","blue","I","enough,Wollen ","Sie ","in ","Excel ","eine ","Datei ","als ",".csv ","speichern, ","so ","gibt ","es ","keine ","Option ","zur ","Auswahl ","zwischen ","Komma ","oder ","ein ","Semikolon ","als ","Trennzeichen"})
+        self.controller.getFrameByName(frameName).update_Data(next=__name__+"_3",previous=__name__+"_1",title=self.getName(),list={})
         
         frameName=self.controller.createModFrame(0, __name__+"_3")
         self.controller.getFrameByName(frameName).update_Data(next=__name__+"_1",previous=__name__+"_2",title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
@@ -55,7 +54,6 @@ class module_eventFinder():
 
     def findEvents(self):
         activities = attributes_filter.get_attribute_values(self.log, "concept:name")
-    # activities = attFilter.get_attribute_values(log, "concept:name")
         self.controller.getFrameByName(__name__+"_2").update_Data(list=activities)
 
         

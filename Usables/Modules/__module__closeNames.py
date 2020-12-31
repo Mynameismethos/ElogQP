@@ -1,16 +1,17 @@
+from typing import List
+from pm4py.algo.filtering.log.attributes import attributes_filter
+from fuzzywuzzy import process
+from fuzzywuzzy import fuzz
 
-
-
-
-class module_Example():
+class module_closeNames():
     def __init__(self, controller):
         self.controller= controller
         self.Settings = "hello"
         self.log = ""
-        self.name = "Example Name"
-        self.oneDes = "Example"
+        self.name = "Close Event Names"
+        self.oneDes = "this programm checks The Event Names for similar but unequal Names "
         #TODO change 
-        self.desc = "Example"
+        self.desc = "this programm calls print. And gives it the Parameter 'Hello' "
 
     def createFrames(self):
         frameName=self.controller.createModFrame(0, __name__+"_1")
@@ -24,19 +25,40 @@ class module_Example():
     
     def callBack(self, actionNumer):
         switcher={
-            
+            0:self.findSimilarNames()
         }
-        switcher.get(actionNumer.get(), "Wrong Action")
+        switcher.get(int(actionNumer.get()), "Wrong Action")
             
 
     def exec(self):
         self.createFrames()
+        self.log=self.controller.getLog()
         self.controller.showFrame(__name__+"_1")
-        print("Hello")
-
-   
 
 
+    def findSimilarNames(self):
+       activities = attributes_filter.get_attribute_values(self.log, "concept:name")
+       activitieList=self.toList(activities)
+       for x in range(len(activitieList)):
+            for y in range(x+1,len(activitieList)):
+                one=activitieList[x]
+                two=activitieList[y]
+                lowercase_equal= str.lower(one) == str.lower(two)
+                ratio = fuzz.ratio(str.lower(one),str.lower(two))
+                if(lowercase_equal or ratio>70):
+                    print("comparing: "+one+" and " +two)
+                    print("Lowercase Equal: "+ str(lowercase_equal))
+                    print("Similarity: "+str(ratio))
+                
+
+
+    def toList(self, dict):
+        list =[]
+        for key in dict:
+            list.append(key)
+
+
+        return list
 
 
     def getName(self):

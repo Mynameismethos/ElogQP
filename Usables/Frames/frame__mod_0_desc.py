@@ -6,6 +6,7 @@ class frame_mod_desc(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller= controller
+        self.modController=None
         #Title
         self.title_text = StringVar()
         self.intro_text = StringVar()
@@ -22,7 +23,8 @@ class frame_mod_desc(tk.Frame):
 
             
 
-    def update_Data(self,next=None,previous=None,title="",intro="", desc=""):
+    def update_Data(self,modController=None, next=None,previous=None,title="",intro="", desc=""):
+        if modController: self.set_Controller(modController)
         if next: self.set_Next_Frame(next)
         if previous: self.set_Prev_Frame(previous)
         
@@ -42,6 +44,9 @@ class frame_mod_desc(tk.Frame):
         next_Button = Button(
         self.box_nav, text="Next Page", command=lambda: [self.controller.showFrame(nextFrame)])
         next_Button.pack(side="right",fill="both")
+
+    def set_Controller(self, modController):
+        self.modController= modController
 
     def leaveModule(self):
         #TODO SHOW WARNING

@@ -85,6 +85,9 @@ class Display(tk.Tk):
 
     def getLog(self):
         return data.log
+
+    def setLog(self, log):
+        data.log=log
         
         
 
