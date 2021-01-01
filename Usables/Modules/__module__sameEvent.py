@@ -19,7 +19,7 @@ class module_sameEvent():
     def createFrames(self):
         #startSeite
         frameName=self.controller.createModFrame(0, __name__+"_1")
-        self.controller.getFrameByName(frameName).update_Data(next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
         #Starten des Modules 
         frameName=self.controller.createModFrame(2, __name__+"_2")
         self.controller.getFrameByName(frameName).update_Data(modController=self, previous= __name__+"_1",title="Hello Module", button_text="Start", button_command =0)

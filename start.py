@@ -42,10 +42,8 @@ class Display(tk.Tk):
 
     def createModFrame(self, number, modName):
         frame=data.modFrames[number]
-        for name, obj in inspect.getmembers(sys.modules[frame]):
-            if inspect.isclass(obj) and obj.__name__.startswith("frame"):
-                self.createFrame(obj, modName)
-                return modName
+        self.createFrame(frame, modName)
+        return modName
         
        
     def getFrameByName(self, frameName):

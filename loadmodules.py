@@ -27,10 +27,14 @@ def loadFrames():
     for file in dir:
         if file.startswith("frame__"):
             filename, file_extention = os.path.splitext(file)
-            print(filename)
-            importlib.import_module("Usables.Frames." + filename)
-            mod= "Usables.Frames." + filename
+            name = "Usables.Frames." + filename
+            print(name)
+            importlib.import_module(name)
+            for name, obj in inspect.getmembers(sys.modules[name]):
+                if inspect.isclass(obj) and obj.__name__.startswith("frame"):
+                    list.append(obj)
+                    break
             
-            list.append(mod)
+            
 
     return list

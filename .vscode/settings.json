@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\lenna\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
+    "python.pythonPath": "C:\\Users\\lenna\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
+    "cmake.configureOnOpen": true
 }

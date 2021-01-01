@@ -35,13 +35,13 @@ class module_hello():
 
     def createFrames(self):
         frameName=self.controller.createModFrame(0, __name__+"_1")
-        self.controller.getFrameByName(frameName).update_Data(next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
         
         frameName=self.controller.createModFrame(0, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(next=__name__+"_3",previous= __name__+"_1",title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3",previous= __name__+"_1",title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
         
         frameName=self.controller.createModFrame(0, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(next=__name__+"_1", previous=__name__+"_2",title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_1", previous=__name__+"_2",title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
     
     def leaveMod(self):
         self.controller.showFrame("frame_modules")
