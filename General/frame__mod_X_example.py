@@ -23,13 +23,16 @@ class frame_mod_example(tk.Frame):
 
 
         
-
-        #TODO fill in, find Data that needs to be added by the module
-    def update_Data(self,next,previous):
-        self.set_Next_Frame(next)
-        self.set_Prev_Frame(previous)
-        #example
-        #if title: self.title_text.set(title)
+    #TODO fill in, find Data that needs to be added by the module
+    def update_Data(self,modController=None, next=None,previous=None,title="",intro="", desc=""):
+        if modController: self.set_Controller(modController)
+        if next: self.set_Next_Frame(next)
+        if previous: self.set_Prev_Frame(previous)
+        
+        if title: self.title_text.set(title)
+        if intro: self.intro_text.set(intro)
+        if desc:  self.desc_text.set(desc)
+        print(self.title_text)
         
 
 
@@ -47,7 +50,9 @@ class frame_mod_example(tk.Frame):
         self.box_nav, text="Next Page", command=lambda: [self.controller.showFrame(nextFrame)])
         next_Button.pack(side="right",fill="both")
 
+    def set_Controller(self, modController):
+        self.modController= modController
+        
     def leaveModule(self):
         #TODO SHOW WARNING
-        #TODO implement delete Frames
-         self.controller.showFrame("frame_modules")
+        self.modController.leaveMod()

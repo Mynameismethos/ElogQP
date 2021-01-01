@@ -4,6 +4,7 @@ import os
 import pm4py
 
 
+
 class test():
     def __init__(self, *args,):
         self.log= loadLogByName("LOGEDV.xes")

@@ -38,7 +38,7 @@ class frame_mod_List(tk.Frame):
         
 
         #TODO fill in, find Data that needs to be added by the module
-    def update_Data(self,modController=None, next=None,previous=None,title="", list ={}, button1_text="", button2_text="", button1_command=None,button2_command=None):
+    def update_Data(self,modController=None, next=None,previous=None,title="", list =[], button1_text="", button2_text="", button1_command=None,button2_command=None):
         if modController: self.set_Controller(modController)
         if next:     self.set_Next_Frame(next)
         if previous: self.set_Prev_Frame(previous)

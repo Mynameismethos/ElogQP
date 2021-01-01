@@ -130,12 +130,11 @@ class module_sameEvent():
 
 
     def getSettings(self):
-        json = self.Settings
-        return json
+        return self.Settings
 
 
-    def setSettings(self, Json):
-        self.Settings = Json
+    def setSettings(self, settings):
+        self.Settings
 
 
     def getLog(self,log):
