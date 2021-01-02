@@ -1,12 +1,19 @@
 from fuzzywuzzy import fuzz
 
 class Group():
-    def __init__(self):
-         self.mainName=""
-         self.listNames=[]
+    def __init__(self, list):
+        self.typ=None
+        self.mainName=None
+        self.listNames=list
 
     def getName(self):
          return self.mainName
+
+    def getTyp(self):
+        return self.typ
+
+    def setTyp(self,typ):
+        self.typ=typ
 
     def addToList(self, name):
         if(name not in self.listNames):
@@ -20,6 +27,7 @@ class Group():
 
     def setList(self, list):
         self.listNames=list
+
 
 class customTupel():
     def __init__(self,elOne,elTwo,elRatio):
@@ -55,9 +63,9 @@ def tokenRatio(list, lowerBound):
     closeList.sort()
     return closeList
                 
-def createGroups(tupelList=[customTupel]):
+def createGroups(tupelList,typ):
     groupeID={}
-    groupeList=[Group]
+    groupeList=[]
 
     for tupel in tupelList:
         if (groupeID.get(tupel.one) and groupeID.get(tupel.two)):
@@ -67,8 +75,8 @@ def createGroups(tupelList=[customTupel]):
         elif (groupeID.get(tupel.two)):
             groupeList[groupeID.get(tupel.two)].addToList(tupel.one)
         else: 
-            g=Group()
-            g.setList([tupel.one, tupel.two])
+            g=Group([tupel.one, tupel.two])
+            g.setTyp(typ)
             groupeID[tupel.one]=len(groupeList)
             groupeID[tupel.two]=len(groupeList)
             groupeList.append(g)
