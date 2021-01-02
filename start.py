@@ -3,9 +3,10 @@ from typing import Container
 import Frames.frame_start
 import Frames.frame_modules
 import inspect
-import loadmodules
-import loadLog 
-import Data as data
+import internalModules.loadmodules as loadmodules
+
+import internalModules.loadLog as loadLog
+import internalModules.Data as data
 import sys
 
 

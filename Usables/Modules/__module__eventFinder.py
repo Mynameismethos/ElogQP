@@ -1,4 +1,4 @@
-import logwork
+import internalModules.logwork as logwork
 
 class module_eventFinder():
     def __init__(self, controller):

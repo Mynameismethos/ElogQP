@@ -1,5 +1,5 @@
-import logwork
-from fuzzywuzzy import process
+import internalModules.logwork as logwork
+import internalModules.compare as compare
 from fuzzywuzzy import fuzz
 
 class module_distoredLabel():
@@ -42,19 +42,16 @@ class module_distoredLabel():
         self.log=self.controller.getLog()
         self.controller.showFrame(__name__+"_1")
 
-
     def findSimilarNames(self):
-       activitieList=logwork.getAllActivityAsList(self.log)
-       for x in range(len(activitieList)):
-            for y in range(x+1,len(activitieList)):
-                one=activitieList[x]
-                two=activitieList[y]
-                lowercase_equal= str.lower(one) == str.lower(two)
-                ratio = fuzz.ratio(str.lower(one),str.lower(two))
-                if(lowercase_equal or ratio>70):
-                    print("comparing: "+one+" and " +two)
-                    print("Lowercase Equal: "+ str(lowercase_equal))
-                    print("Similarity: "+str(ratio))
+        tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.getSettings().get("LevLower")))
+        groupeListAc= compare.createGroups(tupelList=tupelListAc)
+
+        tupelListRe=compare.levinRatio(logwork.getAllResources(self.log),int(self.getSettings().get("LevLower")))
+        groupeListRe= compare.createGroups(tupelList=tupelListRe)
+        
+        print("break")
+
+
 
     def getSettings(self):
         return self.settings

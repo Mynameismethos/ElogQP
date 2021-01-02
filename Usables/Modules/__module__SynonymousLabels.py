@@ -1,11 +1,12 @@
-import logwork
+import internalModules.logwork as logwork
+import internalModules.compare as compare
 
-class module_sameEvent():
+class module_synonymousLabels():
     def __init__(self, controller):
         self.controller= controller
         self.settings  = "hello"
         self.log = ""
-        self.name = "SameEvent"
+        self.name = "Synonymous Labels"
         self.oneDes = "Example"
         self.listGroupes=[]
         self.currentGroupe= int(0)
@@ -58,7 +59,7 @@ class module_sameEvent():
         namelist=[]
         for x in selected:
             namelist.append(self.events[x])
-        groupe=EventGroup()
+        groupe=compare.Group()
         groupe.setList(namelist)
         self.listGroupes.append(groupe)
         self.displayGroupe()
@@ -133,27 +134,3 @@ class module_sameEvent():
             if self.controller.getFrameByName(__name__+"_"+str(x)):
                 self.controller.delFrameByName(__name__+"_"+str(x))
 
-            
-
-        #deleteFrames
-
- 
-
-class EventGroup():
-    def __init__(self):
-         self.mainName=""
-         self.listNames=[]
-
-    def getName(self):
-         return self.mainName
-
-    def getList(self):
-         return self.listNames
-
-    def setName(self, name):
-         self.mainName=name
-
-    def setList(self, list):
-        self.listNames=list
-
-    
