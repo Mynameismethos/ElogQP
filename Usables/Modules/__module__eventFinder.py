@@ -1,11 +1,9 @@
-from pm4py.algo.filtering.log.attributes import attributes_filter
-
-
+import logwork
 
 class module_eventFinder():
     def __init__(self, controller):
         self.controller= controller
-        self.Settings = "hello"
+        self.settings  = "hello"
         self.log = ""
         self.name = "Event Names"
         self.oneDes = "this programm finds and Lists all Event Names"
@@ -23,12 +21,12 @@ class module_eventFinder():
         return self.desc
 
 
-    def getSettings(self):
-        return self.Settings
+    def getSettings (self):
+        return self.settings 
 
 
     def setSettings(self, settings):
-        self.Settings
+        self.settings =settings
 
 
     def getLog(self,log):
@@ -58,7 +56,7 @@ class module_eventFinder():
         self.findEvents()
 
     def findEvents(self):
-        activities = attributes_filter.get_attribute_values(self.log, "concept:name")
+        activities = logwork.getAllActivityAsList(self.log)
         self.controller.getFrameByName(__name__+"_2").update_Data(list=activities)
 
         

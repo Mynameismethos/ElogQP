@@ -1,12 +1,9 @@
-from pm4py.algo.filtering.log.attributes import attributes_filter
-
-
-
+import logwork
 
 class module_sameEvent():
     def __init__(self, controller):
         self.controller= controller
-        self.Settings = "hello"
+        self.settings  = "hello"
         self.log = ""
         self.name = "SameEvent"
         self.oneDes = "Example"
@@ -67,7 +64,7 @@ class module_sameEvent():
         self.displayGroupe()
 
     def listEvents(self):
-        self.toList(attributes_filter.get_attribute_values(self.log, "concept:name"))
+        self.events=logwork.getAllActivityAsList(self.log)
         self.controller.getFrameByName(__name__+"_3").update_Data(list=self.events)
         self.controller.showFrame(__name__+"_3")
 
@@ -107,16 +104,6 @@ class module_sameEvent():
         self.leaveMod()
 
 
-
-    def toList(self, dict):
-        self.events=[]
-        for key in dict:
-           self.events.append(key)
-
-
-
-
-
     def getName(self):
         return self.name
 
@@ -130,11 +117,11 @@ class module_sameEvent():
 
 
     def getSettings(self):
-        return self.Settings
+        return self.settings
 
 
     def setSettings(self, settings):
-        self.Settings
+        self.settings=settings
 
 
     def getLog(self,log):

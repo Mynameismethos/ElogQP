@@ -1,9 +1,8 @@
-from typing import List
-from pm4py.algo.filtering.log.attributes import attributes_filter
+import logwork
 from fuzzywuzzy import process
 from fuzzywuzzy import fuzz
 
-class module_closeNames():
+class module_distoredLabel():
     def __init__(self, controller):
         self.controller= controller
         self.settings = {"LevLower": 90}
@@ -45,8 +44,7 @@ class module_closeNames():
 
 
     def findSimilarNames(self):
-       activities = attributes_filter.get_attribute_values(self.log, "concept:name")
-       activitieList=self.toList(activities)
+       activitieList=logwork.getAllActivityAsList(self.log)
        for x in range(len(activitieList)):
             for y in range(x+1,len(activitieList)):
                 one=activitieList[x]
@@ -59,11 +57,11 @@ class module_closeNames():
                     print("Similarity: "+str(ratio))
 
     def getSettings(self):
-        return self.Settings
+        return self.settings
 
 
     def setSettings(self, settings):
-        self.Settings
+        self.settings=settings
 
     def getSettingsFromFrame(self):
         self.settings=self.controller.getFrameByName(__name__+"_2").getSettings()
@@ -73,15 +71,6 @@ class module_closeNames():
        for x in range(1,6):
            if self.controller.getFrameByName(__name__+"_"+str(x)):
                 self.controller.delFrameByName(__name__+"_"+str(x))
-
-
-    def toList(self, dict):
-        list =[]
-        for key in dict:
-            list.append(key)
-
-
-        return list
 
 
     def getName(self):

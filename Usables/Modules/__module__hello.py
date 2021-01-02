@@ -4,7 +4,7 @@
 class module_hello():
     def __init__(self, controller):
         self.controller= controller
-        self.Settings = "hello"
+        self.settings  = "hello"
         self.log = ""
         self.name = "Hello Bot"
         self.oneDes = "this programm says Hello"
@@ -22,11 +22,11 @@ class module_hello():
 
 
     def getSettings(self):
-        return self.Settings
+        return self.settings
 
 
     def setSettings(self, settings):
-        self.Settings
+        self.settings=settings
 
 
     def getLog(self,log):

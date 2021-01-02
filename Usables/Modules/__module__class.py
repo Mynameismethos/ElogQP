@@ -5,7 +5,7 @@
 class module_Example():
     def __init__(self, controller):
         self.controller= controller
-        self.Settings = "hello"
+        self.settings = "hello"
         self.log = ""
         self.name = "Example Name"
         self.oneDes = "Example"
@@ -26,7 +26,7 @@ class module_Example():
         switcher={
             
         }
-        switcher.get(actionNumer.get(), "Wrong Action")
+        switcher.get(actionNumer.get(), lambda: print("Wrong Action"))()
             
 
     def exec(self):
@@ -57,11 +57,11 @@ class module_Example():
 
 
     def getSettings(self):
-        return self.Settings
+        return self.settings 
 
 
     def setSettings(self, settings):
-        self.Settings
+        self.settings =settings
 
 
     def getLog(self,log):
