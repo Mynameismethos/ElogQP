@@ -22,6 +22,9 @@ class Group():
     def getList(self):
          return self.listNames
 
+    def isValid(self):
+        return not (not self.listNames)
+
     def setName(self, name):
          self.mainName=name
 

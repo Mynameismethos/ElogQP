@@ -20,18 +20,18 @@ class module_synonymousLabels():
         self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
         #Starten des Modules 
         frameName=self.controller.createModFrame(2, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, previous= __name__+"_1",title="Hello Module", button_text="Start", button_command =0)
+        self.controller.getFrameByName(frameName).update_Data(modController=self, previous= __name__+"_1",title=self.getName(), button_text="Start", button_command =0)
         #anzeigen aller Events
         frameName=self.controller.createModFrame(1, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_4", previous=__name__+"_2",title="Hello Module",button1_text="Reset", button1_command=2, button2_text="Add as Group", button2_command=1)
+        self.controller.getFrameByName(frameName).update_Data(modController=self,  previous=__name__+"_2",next=__name__+"_4",title=self.getName(),button1_text="Reset", button1_command=2, button2_text="Add as Group", button2_command=1)
         self.controller.getFrameByName(frameName).setMultiselect(True)
         #Anzeigen der gruppen
         frameName=self.controller.createModFrame(1, __name__+"_4")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3",title="List Groups",button1_text="Previous Group", button1_command=3, button2_text="Next Group", button2_command=4)
+        self.controller.getFrameByName(frameName).update_Data(modController=self,  previous=__name__+"_3",next=__name__+"_5",title="List Groups",button1_text="Previous Group", button1_command=3, button2_text="Next Group", button2_command=4)
         self.controller.getFrameByName(frameName).setMultiselect(False)
         #Beenden 
         frameName=self.controller.createModFrame(2, __name__+"_5")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, previous= __name__+"_1",title="Ende", button_text="Ausführen", button_command =99)
+        self.controller.getFrameByName(frameName).update_Data(modController=self, previous= __name__+"_4",title="Ende", button_text="Ausführen", button_command =99)
        
 
     def callBack(self, actionNumer):
@@ -60,8 +60,9 @@ class module_synonymousLabels():
             namelist.append(self.events[x])
         group=compare.Group(namelist)
         group.setTyp("concept:name")
-        self.listGroups.append(group)
-        self.displayGroup()
+        if(group.isValid()):
+            self.listGroups.append(group)
+            self.displayGroup()
 
     def listEvents(self):
         self.events=logwork.getAllActivityAsList(self.log)
