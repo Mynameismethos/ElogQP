@@ -32,6 +32,7 @@ class module_distoredLabel():
         frameName=self.controller.createModFrame(2, __name__+"_5")
         self.controller.getFrameByName(frameName).update_Data(modController=self, previous=__name__+"_4",title=self.getName(),button_text="Apply changes to Log", button_command =99)
     
+    #Callback der Mod_Frames
     def callBack(self, actionNumer):
         switcher={
             0: lambda: self.findSimilarNames(),
@@ -42,7 +43,7 @@ class module_distoredLabel():
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
             
-
+    #Einstiegspunkt des Modules
     def exec(self):
         self.createFrames()
         self.log=self.controller.getLog()
@@ -58,9 +59,6 @@ class module_distoredLabel():
         self.displayGroup()
         self.controller.showFrame(__name__+"_4")
 
-
-
-
     def displayPrev(self):
         frame=__name__+"_4"
         selected= self.controller.getFrameByName(frame).getSelected()
@@ -73,6 +71,7 @@ class module_distoredLabel():
         else:#removebutton
             self.controller.getFrameByName(frame).set_Button_Visible(button1="no")
         self.displayGroup()
+        
     def displayNext(self):
         frame=__name__+"_4"
         selected= self.controller.getFrameByName(frame).getSelected()

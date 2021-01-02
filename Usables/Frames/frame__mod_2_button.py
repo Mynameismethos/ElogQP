@@ -10,12 +10,15 @@ class frame_mod_button(tk.Frame):
         self.box_nav = tk.Frame(master = self)
         self.box_nav.pack(side="bottom", fill="x")
         Button(self.box_nav, text="Leave Module", command= lambda:[self.leaveModule()]).pack(side="left", fill="both")
+        self.prev_button = Button(self.box_nav, text="Previous Page")
+        self.next_Button = Button(self.box_nav, text="Next Page")
         #### Add The Layout of the Frame here ###############
         self.title_text = StringVar()
         self.button_text = StringVar()
         self.button_command = IntVar()
         Label(self, textvariable=self.title_text).pack(fill="x",side="top")
-        Button(self, textvariable=self.button_text, command=lambda:[self.modController.callBack(self.button_command)]).pack()
+        self.button1=Button(self, textvariable=self.button_text, command=lambda:[self.modController.callBack(self.button_command)])
+        self.button1.pack()
        
 
         #Example
@@ -42,6 +45,17 @@ class frame_mod_button(tk.Frame):
         if button_command: self.button_command.set(button_command)
         print("Hello")
         
+
+    def set_Widgets_Visible(self, button1=None, buttonNext=None, buttonPrev=None):
+        if(button1=="yes"):self.button1.pack()
+        elif(button1=="no"):self.button1.pack_forget()
+
+
+        if(buttonPrev=="yes"):self.prev_button.pack()
+        elif(buttonPrev=="no"):self.prev_button.pack_forget()
+
+        if(buttonNext=="yes"):self.next_Button.pack()
+        elif(buttonNext=="no"):self.next_Button.pack_forget()
 
         # No Need to Change
     def set_Prev_Frame(self, prevFrame):

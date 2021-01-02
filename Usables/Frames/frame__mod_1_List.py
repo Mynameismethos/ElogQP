@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import Button, IntVar, Label, Listbox, Message, Scrollbar, StringVar
-from tkinter.constants import NONE
 
 #TODO change Class Name MUST start with frame
 class frame_mod_List(tk.Frame):
@@ -71,7 +70,7 @@ class frame_mod_List(tk.Frame):
 
         # No Need to Change
 
-    def set_Button_Visible(self, button1=NONE, button2=NONE, buttonNext=None, buttonPrev=None):
+    def set_Widgets_Visible(self, button1=None, button2=None, buttonNext=None, buttonPrev=None):
         if(button1=="yes"):self.button1.grid()
         elif(button1=="no"):self.button1.grid_remove()
 

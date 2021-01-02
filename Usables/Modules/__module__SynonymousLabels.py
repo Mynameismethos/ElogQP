@@ -81,9 +81,9 @@ class module_synonymousLabels():
             self.listGroups[self.currentGroup].setName(name)
         if(self.currentGroup>0):
             self.currentGroup-=1
-            self.controller.getFrameByName(frame).set_Button_Visible(button2="yes")
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button2="yes")
         else:#removebutton
-            self.controller.getFrameByName(frame).set_Button_Visible(button1="no")
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button1="no")
         self.displayGroup()
     def displayNext(self):
         frame=__name__+"_4"
@@ -93,9 +93,9 @@ class module_synonymousLabels():
             self.listGroups[self.currentGroup].setName(name)
         if(self.currentGroup<len(self.listGroups)-1):
             self.currentGroup+=1
-            self.controller.getFrameByName(frame).set_Button_Visible(button1="yes")
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button1="yes")
         else:  #removebutton
-            self.controller.getFrameByName(frame).set_Button_Visible(button2="no")
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button2="no")
         self.displayGroup()
         
 

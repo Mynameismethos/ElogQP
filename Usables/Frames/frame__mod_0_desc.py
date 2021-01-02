@@ -13,13 +13,17 @@ class frame_mod_desc(tk.Frame):
         self.desc_text = StringVar()
         self.title_text.set("This is Mod1")
         Label(self, textvariable=self.title_text).pack(fill="x",side="top")
-        #TODO better Width
-        Message(self, textvariable=self.intro_text,width=400).pack(fill="x",side="top")
-        Message(self, textvariable=self.desc_text,width=400).pack(fill="x",side="top")
-
         self.box_nav = tk.Frame(master = self)
         self.box_nav.pack(side="bottom", fill="x")
         Button(self.box_nav, text="Leave Module", command= lambda:[self.leaveModule()]).pack(side="left", fill="both")
+        self.prev_button = Button(self.box_nav, text="Previous Page")
+        self.next_Button = Button(self.box_nav, text="Next Page")
+        
+        self.message1=Message(self, textvariable=self.intro_text,width=400)
+        self.message1.pack(fill="x",side="top")
+        self.message2=Message(self, textvariable=self.desc_text,width=400)
+        self.message2.pack(fill="x",side="top")
+
 
             
 
@@ -31,19 +35,27 @@ class frame_mod_desc(tk.Frame):
         if title: self.title_text.set(title)
         if intro: self.intro_text.set(intro)
         if desc:  self.desc_text.set(desc)
-        print(self.title_text)
+       
+
+
+    def set_Widgets_Visible(self,buttonNext=None, buttonPrev=None):
+
+        if(buttonPrev=="yes"):self.prev_button.pack()
+        elif(buttonPrev=="no"):self.prev_button.pack_forget()
+
+        if(buttonNext=="yes"):self.next_Button.pack()
+        elif(buttonNext=="no"):self.next_Button.pack_forget()
+
         
 
     def set_Prev_Frame(self, prevFrame):
         if prevFrame:
-            prev_button = Button(
-            self.box_nav, text="Previous Page", command=lambda: [self.controller.showFrame(prevFrame)])
-            prev_button.pack(side="right",fill="both")
+            self.prev_button.configure(command=lambda: [self.controller.showFrame(prevFrame)])
+            self.prev_button.pack(side="right",fill="both")
 
     def set_Next_Frame(self, nextFrame):
-        next_Button = Button(
-        self.box_nav, text="Next Page", command=lambda: [self.controller.showFrame(nextFrame)])
-        next_Button.pack(side="right",fill="both")
+        self.next_Button.configure(command=lambda: [self.controller.showFrame(nextFrame)])
+        self.next_Button.pack(side="right",fill="both")
 
     def set_Controller(self, modController):
         self.modController= modController

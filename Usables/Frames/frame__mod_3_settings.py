@@ -10,26 +10,28 @@ class frame_mod_example(tk.Frame):
         self.controller= controller
         self.button1_text=StringVar()
         self.button1_command=IntVar()
+        self.title_text = StringVar()
         self.box_nav = tk.Frame(master = self)
         self.box_nav.pack(side="bottom", fill="x")
         Button(self.box_nav, text="Leave Module", command= lambda:[self.leaveModule()]).pack(side="left", fill="both")
         #### Add The Layout of the Frame here ###############
         #Example
-        self.title_text = StringVar()
+        self.prev_button = Button(self.box_nav, text="Previous Page")
+        self.next_Button = Button(self.box_nav, text="Next Page")
        # self.intro_text = StringVar()
        # self.desc_text = StringVar()
        # self.title_text.set("This is Mod1")
-        Label(self, textvariable=self.title_text).pack(fill="x",side="top")
        # #TODO better Width
        # Message(self, textvariable=self.intro_text,width=400).pack(fill="x",side="top")
        # Message(self, textvariable=self.desc_text,width=400).pack(fill="x",side="top")
         self.settingsCanvas= tk.Frame(self)
         self.settingsCanvas.pack(fill="both", expand="yes")
+
+        Label(self, textvariable=self.title_text).pack(fill="x",side="top")
         self.box_bellowList = tk.Frame(master = self)
         self.box_bellowList.pack(fill="x", expand="no")
-        Button(self.box_bellowList, textvariable=self.button1_text, command=lambda:[self.modController.callBack(self.button1_command)]).pack(fill="x",expand="yes", anchor="center")
-
-
+        self.button1=Button(self.box_bellowList, textvariable=self.button1_text, command=lambda:[self.modController.callBack(self.button1_command)])
+        self.button1.pack(fill="x",expand="yes", anchor="center")
 
         
     #TODO fill in, find Data that needs to be added by the module
@@ -55,7 +57,18 @@ class frame_mod_example(tk.Frame):
                 e.insert(INSERT, value)
                 e.grid(row=0,column=1)
                 
-        print(self.title_text)
+     
+
+
+    def set_Widgets_Visible(self, button1=None, buttonNext=None, buttonPrev=None):
+        if(button1=="yes"):self.button1.pack()
+        elif(button1=="no"):self.button1.pack_forget()
+
+        if(buttonPrev=="yes"):self.prev_button.pack()
+        elif(buttonPrev=="no"):self.prev_button.pack_forget()
+
+        if(buttonNext=="yes"):self.next_Button.pack()
+        elif(buttonNext=="no"):self.next_Button.pack_forget()
 
     def getSettings(self):
         returndict ={}
