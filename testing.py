@@ -7,8 +7,11 @@ import pm4py
 
 class test():
     def __init__(self, *args,):
-        pass:
-
+        self.log= loadLogByName("LOGEDV.xes")
+        print(self.log[100][2]["concept:name"])
+        print (len(self.log))
+        print (len(self.log[0][2].index("kategorieseren")))
+        
         
 
 

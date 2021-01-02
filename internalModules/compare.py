@@ -32,7 +32,7 @@ class Group():
         self.listNames=list
 
 
-class customTupel():
+class tupel():
     def __init__(self,elOne,elTwo,elRatio):
         self.value=elRatio
         self.one=elOne
@@ -50,19 +50,19 @@ def levinRatio(list, lowerBound):
             ratio = fuzz.ratio(str.lower(list[x]),str.lower(list[y]))
             if(ratio>lowerBound):
                 print("comparing: "+list[x]+" and " +list[y])
-                closeList.append(customTupel(list[x],list[y],ratio))
+                closeList.append(tupel(list[x],list[y],ratio))
     closeList.sort()
     return closeList
 
 
 def tokenRatio(list, lowerBound):
-    closeList=[customTupel]
+    closeList=[]
     for x in range(len(list)):
         for y in range(x+1,len(list)):
             ratio = fuzz.token_set_ratio(str.lower(list[x]),str.lower(list[y]))
             if(ratio>lowerBound):
                 print("comparing: "+list[x]+" and " +list[y])
-                closeList.append(customTupel(list[x],list[y],ratio))
+                closeList.append(tupel(list[x],list[y],ratio))
     closeList.sort()
     return closeList
                 
