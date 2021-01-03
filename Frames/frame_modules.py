@@ -14,7 +14,7 @@ class frame_modules(tk.Frame):
         Button(self, text="List all Modules", command= lambda: [self.update_Modules()]).pack()
         self.listbox = tk.Listbox(self)
         self.listbox["selectmode"] = "extended"
-        self.listbox.pack()
+        self.listbox.pack(fill="both", expand="yes")
         Button(self.box_nav, text="Continue",command=lambda:[self.goToNext()]).pack(side="right", fill="both")
 
         
