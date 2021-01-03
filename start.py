@@ -2,7 +2,6 @@ import tkinter as tk
 from typing import Container
 import Frames.frame_start
 import Frames.frame_modules
-import inspect
 import internalModules.loadmodules as loadmodules
 
 import internalModules.loadLog as loadLog
@@ -49,10 +48,17 @@ class Display(tk.Tk):
        
     def getFrameByName(self, frameName):
         return data.frames[frameName]
+        
 
     def delFrameByName(self, frameName):
         data.frames[frameName].destroy()
         del data.frames[frameName]
+
+
+    def get_xes_file_list(self):
+        list= loadLog.getAllLogs()
+        self.getFrameByName("frame_start").updateData(list)
+
 
     def import_xes_Log(self,moduleName, button, name):
         data.log = loadLog.loadLogByName(name)
