@@ -30,9 +30,8 @@ class module_timeTravel():
         frameName=self.controller.createModFrame(2, __name__+"_3")
         self.controller.getFrameByName(frameName).update_Data(modController=self,previous= __name__+"_2",title=self.getName(), button_text="Search for Time Travelers", button_command =0)
         #Display Found 
-        frameName=self.controller.createModFrame(1, __name__+"_4")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3",title="List Found Groups",button1_text="Previous Group", button1_command=80, button2_text="Next Group", button2_command=81)
-        self.controller.getFrameByName(frameName).setMultiselect(False)
+        frameName=self.controller.createModFrame(3, __name__+"_4")
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3",title="List Found Groups",button1_text="Previous Trace", button1_command=80, button2_text="Next Trace", button2_command=81, button3_text="save and reorder", button3_command=1)
         #Show Changes and Run Programm
         frameName=self.controller.createModFrame(2, __name__+"_5")
         self.controller.getFrameByName(frameName).update_Data(modController=self, previous=__name__+"_4",title=self.getName(),button_text="Apply changes to Log", button_command =99)
@@ -41,8 +40,9 @@ class module_timeTravel():
     def callBack(self, actionNumer):
         switcher={
             0: lambda: self.findTimeTravel(),
-            80: lambda: self.displayPrev(__name__+"_4"),
-            81: lambda: self.displayNext(__name__+"_4"),
+            1: lambda: self.saveAndReorder(__name__+"_4"),
+            80:lambda: self.displayPrev(__name__+"_4"),
+            81:lambda: self.displayNext(__name__+"_4"),
             99:lambda: self.changeLog(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
@@ -62,9 +62,18 @@ class module_timeTravel():
                 elOne= self.log[x][y][eventtyp]
                 elTwo= self.log[x][y+1][eventtyp]
                 self.occurence[elOne+self.getSettings()["String Seperator"]+elTwo]+=1
-        self.createTupels()
-
-
+        tupellist=self.createTupels()
+        
+        for t in tupellist:
+            self.listGroups.extend(self.findTraceOfTupel(t))
+        
+        if(self.listGroups):
+            self.displayGroup(__name__+"_4")
+            self.controller.showFrame(__name__+"_4")
+        else:
+            #TODO update Nothing Found
+            self.controller.showFrame(__name__+"_1")
+        
 
     def createTupels(self):
         allAct= logwork.getAllActivityAsList(self.log)
@@ -77,9 +86,7 @@ class module_timeTravel():
                     ratio=self.occurence[elOne+self.getSettings()["String Seperator"]+elTwo]/self.occurence[elTwo+self.getSettings()["String Seperator"]+elOne]
                     if(ratio<1):
                         tupellist.append(compare.tupel(elOne, elTwo, ratio))
-        for t in tupellist:
-            self.findTraceOfTupel(t)
-        print("hey")
+        return tupellist
 
 
     def findTraceOfTupel(self,tupel):
@@ -99,52 +106,59 @@ class module_timeTravel():
                     # 
                     g=compare.Group([tupel.one, tupel.two])
                     g.setName(x)
+                    g.setTrace(self.log[x]._list)
                     list.append(g)
                     break
         return list
 
 
-
+    def saveAndReorder(self, frame):
+        canList= self.controller.getFrameByName(frame).getCanvasAsList()
+        trace=self.listGroups[self.currentGroup].getTrace()
+        for x in range(len(canList)):
+            trace[x]["time:timestamp"]=canList[x]
+        trace.sort(key= lambda x: x["time:timestamp"])
+        self.listGroups[self.currentGroup].setTrace(trace)
+        self.displayGroup(frame)
 
 
     def displayPrev(self,frame):
-
-        selected= self.controller.getFrameByName(frame).getSelected()
-        if(selected):
-            name=self.listGroups[self.currentGroup].getList()[selected[0]]
-            self.listGroups[self.currentGroup].setName(name)
         if(self.currentGroup>0):
             self.currentGroup-=1
-            self.controller.getFrameByName(frame).set_Button_Visible(button2="yes")
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button2="yes")
+            self.displayGroup(frame)
         else:#removebutton
-            self.controller.getFrameByName(frame).set_Button_Visible(button1="no")
-        self.displayGroup()
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button1="no")
+ 
 
     def displayNext(self,frame):
-        selected= self.controller.getFrameByName(frame).getSelected()
-        if(selected):
-            name=self.listGroups[self.currentGroup].getList()[selected[0]]
-            self.listGroups[self.currentGroup].setName(name)
         if(self.currentGroup<len(self.listGroups)-1):
             self.currentGroup+=1
-            self.controller.getFrameByName(frame).set_Button_Visible(button1="yes")
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button1="yes")
+            self.displayGroup(frame)
         else:  #removebutton
-            self.controller.getFrameByName(frame).set_Button_Visible(button2="no")
-        self.displayGroup()
+            self.controller.getFrameByName(frame).set_Widgets_Visible(button2="no")
         
-    def displayGroup(self):
-        item=self.listGroups[self.currentGroup]
-        indexOfName=None
-        if(item.getName() in item.getList()):
-            indexOfName= item.getList().index(item.getName())
-        self.controller.getFrameByName(__name__+"_4").update_Data(list=item.getList(), selected=indexOfName)
+        
+    def displayGroup(self,frame):
+        trace=self.listGroups[self.currentGroup].getTrace()
+        highlightList=self.listGroups[self.currentGroup].getList()
+        self.controller.getFrameByName(frame).update_Data(canList=trace, highlight=highlightList)
    
     #TODO IMPLEMENT
     def changeLog(self):
-      
-        self.controller.setLog(self.log)
+        updatedLog= self.log
+        for case in self.listGroups:
+            updatedLog[case.getName()]._list=case.getTrace()
+        self.controller.setLog(updatedLog)
+        self.clean()
         self.leaveMod()
 
+    def clean(self):
+        self.occurence=DefaultDict(int)
+        self.currentGroup=0
+        self.listGroups=[]
+        self.log=None
 
     def getSettings(self):
         return self.settings

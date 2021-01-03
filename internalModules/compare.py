@@ -5,6 +5,7 @@ class Group():
         self.typ=None
         self.mainName=None
         self.listNames=list
+        self.trace=None
 
     def getName(self):
          return self.mainName
@@ -14,6 +15,12 @@ class Group():
 
     def setTyp(self,typ):
         self.typ=typ
+
+    def getTrace(self):
+        return self.trace
+
+    def setTrace(self,trace):
+        self.trace=trace
 
     def addToList(self, name):
         if(name not in self.listNames):
