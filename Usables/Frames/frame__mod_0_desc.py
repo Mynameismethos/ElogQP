@@ -61,6 +61,5 @@ class frame_mod_desc(tk.Frame):
         self.modController= modController
 
     def leaveModule(self):
-        #TODO SHOW WARNING
         self.modController.leaveMod()
 

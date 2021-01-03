@@ -73,8 +73,6 @@ class frame_mod_button(tk.Frame):
         self.modController= modController
 
     def leaveModule(self):
-        #TODO SHOW WARNING
-        #TODO implement delete Frames
          self.modController.leaveMod()
 
 

@@ -25,7 +25,7 @@ class module_timeTravel():
         self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
         #Settings
         frameName=self.controller.createModFrame(3, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3",previous= __name__+"_1",title=self.getName(), settings=self.getSettings(), button1_text="Save", button1_command=1)
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3",previous= __name__+"_1",title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=1)
         #Start Programm
         frameName=self.controller.createModFrame(2, __name__+"_3")
         self.controller.getFrameByName(frameName).update_Data(modController=self,previous= __name__+"_2",title=self.getName(), button_text="Search for Time Travelers", button_command =0)
@@ -154,7 +154,7 @@ class module_timeTravel():
         self.settings=settings
 
     def getSettingsFromFrame(self):
-        self.settings=self.controller.getFrameByName(__name__+"_2").getSettings()
+        self.settings=self.controller.getFrameByName(__name__+"_2").getCanvasAsDict()
 
     def leaveMod(self):
        self.controller.showFrame("frame_modules")

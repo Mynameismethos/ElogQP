@@ -24,6 +24,8 @@ class frame_mod_List(tk.Frame):
         self.button2_command=IntVar()
         self.box_bellowList = tk.Frame(master = self)
         self.box_bellowList.pack(fill="x", expand="no")
+        self.box_bellowList.columnconfigure(0,weight =1)
+        self.box_bellowList.columnconfigure(1,weight =1)
         self.button1=Button(self.box_bellowList, textvariable=self.button1_text, command=lambda:[self.modController.callBack(self.button1_command)])
         self.button2=Button(self.box_bellowList, textvariable=self.button2_text, command=lambda:[self.modController.callBack(self.button2_command)])
         self.button1.grid(row=0, column=0, sticky="nsew")
@@ -95,8 +97,6 @@ class frame_mod_List(tk.Frame):
         self.next_Button.pack(side="right",fill="both")
 
     def leaveModule(self):
-        #TODO SHOW WARNING
-        #TODO implement delete Frames
          self.modController.leaveMod()
 
 
