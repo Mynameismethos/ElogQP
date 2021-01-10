@@ -1,7 +1,7 @@
 from typing import DefaultDict
 import internalModules.logwork as logwork
-import internalModules.compare as compare
-
+#import internalModules.compare as compare
+import internalModules.objects as objects
 
 class module_timeTravel():
     def __init__(self, controller):
@@ -85,7 +85,7 @@ class module_timeTravel():
                 if(self.occurence[elOne+self.getSettings()["String Seperator"]+elTwo]!=0 and self.occurence[elTwo+self.getSettings()["String Seperator"]+elOne]!=0):
                     ratio=self.occurence[elOne+self.getSettings()["String Seperator"]+elTwo]/self.occurence[elTwo+self.getSettings()["String Seperator"]+elOne]
                     if(ratio<1):
-                        tupellist.append(compare.tupel(elOne, elTwo, ratio))
+                        tupellist.append(objects.tupel(elOne, elTwo, ratio))
         return tupellist
 
 
@@ -104,7 +104,7 @@ class module_timeTravel():
                     # see if we can change anything
                     # prepare to display
                     # 
-                    g=compare.Group([tupel.one, tupel.two])
+                    g=objects.Group([tupel.one, tupel.two])
                     g.setName(x)
                     g.setTrace(self.log[x]._list)
                     list.append(g)

@@ -1,6 +1,5 @@
 import internalModules.logwork as logwork
 import internalModules.compare as compare
-from fuzzywuzzy import fuzz
 
 class module_distoredLabel():
     def __init__(self, controller):

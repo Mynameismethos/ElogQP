@@ -1,5 +1,6 @@
 import internalModules.logwork as logwork
-import internalModules.compare as compare
+#import internalModules.compare as compare
+import internalModules.objects as objects
 
 class module_synonymousLabels():
     def __init__(self, controller):
@@ -58,7 +59,7 @@ class module_synonymousLabels():
         namelist=[]
         for x in selected:
             namelist.append(self.events[x])
-        group=compare.Group(namelist)
+        group=objects.Group(namelist)
         group.setTyp("concept:name")
         if(group.isValid()):
             self.listGroups.append(group)
