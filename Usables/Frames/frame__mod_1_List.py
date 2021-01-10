@@ -45,6 +45,9 @@ class frame_mod_List(tk.Frame):
        # Message(self, textvariable=self.intro_text,width=400).pack(fill="x",side="top")
        # Message(self, textvariable=self.desc_text,width=400).pack(fill="x",side="top")
 
+    def showMe(self):
+        pass
+
         #TODO fill in, find Data that needs to be added by the module
     def update_Data(self, modController=None, next=None, previous=None, title="", list=[], button1_text="", button2_text="", button1_command=None, button2_command=None, selected=[]):
         if modController:
@@ -52,7 +55,7 @@ class frame_mod_List(tk.Frame):
         if next:
             self.set_Next_Frame(next)
         if previous:
-            self.set_Prev_Frame(previous)
+            self.set_Prev_Frame()
         if title:
             self.title_text.set(title)
         if button1_text:
@@ -103,11 +106,11 @@ class frame_mod_List(tk.Frame):
             self.next_Button.pack_forget()
 
      # No Need to Change
-    def set_Prev_Frame(self, prevFrame):
-        if prevFrame:
-            self.prev_button.configure(
-                command=lambda: [self.controller.showFrame(prevFrame)])
-            self.prev_button.pack(side="right", fill="both")
+    def set_Prev_Frame(self):
+        if self.controller.hasPrevFrame():
+            prev_button = Button(
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])
+            prev_button.pack(side="left", fill="both")
 
         # No Need to Change
     def set_Next_Frame(self, nextFrame):

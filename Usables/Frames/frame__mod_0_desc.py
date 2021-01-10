@@ -25,13 +25,16 @@ class frame_mod_desc(tk.Frame):
         self.message2 = Message(self, textvariable=self.desc_text, width=400)
         self.message2.pack(fill="x", side="top")
 
+    def showMe(self):
+        pass
+
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc=""):
         if modController:
             self.set_Controller(modController)
         if next:
             self.set_Next_Frame(next)
         if previous:
-            self.set_Prev_Frame(previous)
+            self.set_Prev_Frame()
 
         if title:
             self.title_text.set(title)
@@ -52,11 +55,11 @@ class frame_mod_desc(tk.Frame):
         elif(buttonNext == "no"):
             self.next_Button.pack_forget()
 
-    def set_Prev_Frame(self, prevFrame):
-        if prevFrame:
-            self.prev_button.configure(
-                command=lambda: [self.controller.showFrame(prevFrame)])
-            self.prev_button.pack(side="right", fill="both")
+    def set_Prev_Frame(self):
+        if self.controller.hasPrevFrame():
+            prev_button = Button(
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])
+            prev_button.pack(side="left", fill="both")
 
     def set_Next_Frame(self, nextFrame):
         self.next_Button.configure(

@@ -23,7 +23,11 @@ class frame_mod_example(tk.Frame):
        # Message(self, textvariable=self.intro_text,width=400).pack(fill="x",side="top")
        # Message(self, textvariable=self.desc_text,width=400).pack(fill="x",side="top")
 
+    def showMe():
+        pass
+
     #TODO fill in, find Data that needs to be added by the module
+
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc=""):
         if modController:
             self.set_Controller(modController)

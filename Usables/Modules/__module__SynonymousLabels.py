@@ -161,7 +161,5 @@ class module_synonymousLabels():
         self.log = log
 
     def leaveMod(self):
+        self.controller.deleteModFrame()
         self.controller.getFrameByName("frame_modules").showNextMod()
-        for x in range(1, 6):
-            if self.controller.getFrameByName(__name__+"_"+str(x)):
-                self.controller.delFrameByName(__name__+"_"+str(x))

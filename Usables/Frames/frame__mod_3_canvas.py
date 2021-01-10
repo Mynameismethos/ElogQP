@@ -4,7 +4,7 @@ from tkinter.constants import ANCHOR, INSERT, NO, NONE
 
 
 #TODO change Class Name MUST start with frame
-class frame_mod_example(tk.Frame):
+class frame_mod_canvas(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -43,7 +43,11 @@ class frame_mod_example(tk.Frame):
         self.button3.grid(row=1, column=0, columnspan=2, sticky="nsew")
         self.set_Widgets_Visible(button1="no", button2="no", button3="no")
 
+    def showMe(self):
+        pass
+
     #TODO fill in, find Data that needs to be added by the module
+
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc="", canDict={}, canList=[], highlight=[],
                     button1_text="", button1_command=None, button2_text="", button2_command=None, button3_text="", button3_command=None):
         if modController:
@@ -51,8 +55,7 @@ class frame_mod_example(tk.Frame):
         if next:
             self.set_Next_Frame(next)
         if previous:
-            self.set_Prev_Frame(previous)
-
+            self.set_Prev_Frame()
         if title:
             self.title_text.set(title)
         if intro:
@@ -158,11 +161,11 @@ class frame_mod_example(tk.Frame):
 
         # No Need to Change
 
-    def set_Prev_Frame(self, prevFrame):
-        if prevFrame:
+    def set_Prev_Frame(self):
+        if self.controller.hasPrevFrame():
             prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showFrame(prevFrame)])
-            prev_button.pack(side="right", fill="both")
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])
+            prev_button.pack(side="left", fill="both")
         # No Need to Change
 
     def set_Next_Frame(self, nextFrame):

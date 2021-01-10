@@ -21,6 +21,11 @@ class frame_modules(tk.Frame):
                self.goToNext()]).pack(side="right", fill="both")
         Button(self.box_nav, text="Show Error", command=lambda: [
                self.showError()]).pack(side="right", fill="both")
+        Button(self.box_nav, text="Previous Page", command=lambda: [
+               self.controller.showPrevFrame()]).pack(side="left", fill="both")
+
+    def showMe(self):
+        self.update_Modules()
 
     def showNextMod(self):
         if(self.modStack):
@@ -34,13 +39,6 @@ class frame_modules(tk.Frame):
         for modules in module_List:
            self.listbox.insert("end", modules.getName())
 
-    def set_prev_Frame(self, prevFrame):
-        prev_frame = prevFrame
-        if prev_frame:
-            prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showFrame(prevFrame), prev_button.destroy()])
-            prev_button.pack(side="left", fill="both")
-
     def goToNext(self):
         chosen = self.listbox.curselection()
         for x in chosen:
@@ -48,5 +46,4 @@ class frame_modules(tk.Frame):
         self.showNextMod()
 
     def showError(self):
-        self.controller.getFrameByName("frame_showError").updateList()
         self.controller.showFrame("frame_showError")

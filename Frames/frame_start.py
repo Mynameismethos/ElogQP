@@ -6,6 +6,7 @@ from tkinter.constants import BOTTOM, INSERT, X
 class frame_start(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
         Label(self, text="Tool zum Finden und Beheben von Fehlern in Eventlog",
               bg="light blue").pack(fill="x")
         Label(self, text="Bitte geben Sie den Namen der Logdatei an und Laden sie den Log",
@@ -36,6 +37,9 @@ class frame_start(tk.Frame):
         )
         next_button.pack(side="right", fill="both")
 
+    def showMe(self):
+        self.controller.get_xes_file_list()
+
     def button_feedback(Frame, button, successfull):
         if successfull:
             button.configure(bg="green")
@@ -54,9 +58,8 @@ class frame_start(tk.Frame):
             controller.showFrame("frame_modules", __class__.__name__)
         #else set Buttoncolor to red
 
-    def set_prev_Frame(self, prevFrame):
-        prev_frame = prevFrame
-        if prev_frame:
+    def set_Prev_Frame(self):
+        if self.controller.hasPrevFrame():
             prev_button = Button(
-                super.box_nav, text="Previous Page", command=lambda: [self.controller.showFrame(prevFrame), prev_button.destroy()])
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])
             prev_button.pack(side="left", fill="both")

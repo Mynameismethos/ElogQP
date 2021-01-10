@@ -1,5 +1,4 @@
 import tkinter as tk
-from typing import Container
 import Frames.frame_start
 import Frames.frame_modules
 import Frames.frame_showError
@@ -7,7 +6,6 @@ import internalModules.loadmodules as loadmodules
 
 import internalModules.loadLog as loadLog
 import internalModules.Data as data
-import sys
 
 
 #init the Display and load the singular fames
@@ -20,6 +18,7 @@ class Display(tk.Tk):
         self.container.pack(side="top", fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
+        self.activeFrames = []
 
         for F in (Frames.frame_start.frame_start, Frames.frame_modules.frame_modules, Frames.frame_showError.frame_showError):
             self.createFrame(F, F.__name__)
@@ -28,9 +27,28 @@ class Display(tk.Tk):
 
     def showFrame(self, cont, prevPage=None):
         display = data.frames[cont]
+        self.activeFrames.append(display)
         display.tkraise()
-        if prevPage:
-            display.set_prev_Frame(prevPage)
+        display.showMe()
+
+    def showPrevFrame(self):
+        if(self.hasPrevFrame()):
+            self.activeFrames.pop()
+            self.activeFrames[-1].tkraise()
+        else:
+            self.showFrame("frame_start")
+
+    def hasPrevFrame(self):
+        self.deleteDouble()
+        return (len(self.activeFrames) > 1)
+
+    def deleteDouble(self):
+        prev=None
+        for x in reversed(self.activeFrames):
+            if(prev):
+                if(isinstance(x ,prev.__class__)):
+                    del self.activeFrames[self.activeFrames.index(prev)]
+            prev=x
 
     def createFrame(self, module, name):
         if name not in data.frames:
@@ -54,6 +72,19 @@ class Display(tk.Tk):
     def delFrameByName(self, frameName):
         data.frames[frameName].destroy()
         del data.frames[frameName]
+    
+    def deleteModFrame(self):
+        for key in list(data.frames):
+            if ("Usables" in key):
+                del data.frames[key]
+       
+        for x in reversed(self.activeFrames):
+           if ("frame_mod_" in x._name):
+                self.activeFrames.remove(x)
+    
+        
+            
+
 
     def get_xes_file_list(self):
         list = loadLog.getAllLogs()

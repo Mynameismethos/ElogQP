@@ -81,7 +81,7 @@ class module_timeTravel():
        #     self.displayGroup(__name__+"_4")
        ##     self.controller.showFrame(__name__+"_4")
        # else:
-            #TODO update Nothing Found
+        #TODO update Nothing Found
        #     self.controller.showFrame(__name__+"_1")
 
     def createTupels(self):
@@ -131,8 +131,8 @@ class module_timeTravel():
         modErrorList = []
         for element in list:
             error = objects.error()
-            error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=
-                      element.getValue(), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
+            error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
+            ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error)
         self.controller.addToErrorList(modErrorList)
 
@@ -163,12 +163,10 @@ class module_timeTravel():
             __name__+"_2").getCanvasAsDict()
 
     def leaveMod(self):
+       self.controller.deleteModFrame()
        self.controller.getFrameByName("frame_modules").showNextMod()
-       
+
        self.currentGroup = 0
-       for x in range(1, 6):
-           if self.controller.getFrameByName(__name__+"_"+str(x)):
-               self.controller.delFrameByName(__name__+"_"+str(x))
 
     def saveAndReorder(self, frame):
         canList = self.controller.getFrameByName(frame).getCanvasAsList()

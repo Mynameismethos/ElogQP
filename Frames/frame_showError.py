@@ -46,13 +46,17 @@ class frame_showError(tk.Frame):
         buttonEdit = Button(box_nav, text="Edit Selected",
                             command=lambda: self.editSelected())
         leave = Button(box_nav, text="Go Back",
-                       command=lambda: self.leaveView())
+                       command=lambda: self.controller.showPrevFrame())
 
         leave.grid(row=0, column=0, columnspan=2, sticky="nsew")
         buttonEdit.grid(row=0, column=5, sticky="nsew")
         buttonAutoSolve.grid(row=0, column=6, sticky="nsew")
 
+    def showMe(self):
+        self.updateList()
+
     def updateTable(self, list):
+        self.cleanTree()
         counter = 0
         for x in list:
             val = (counter, x.desc, x.trace, x.event,
@@ -80,5 +84,5 @@ class frame_showError(tk.Frame):
     def autoSolve(self):
         pass
 
-    def leaveView(self):
-        pass
+    def cleanTree(self):
+        self.errorTree.delete(*self.errorTree.get_children())
