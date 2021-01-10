@@ -46,13 +46,12 @@ class frame_start(tk.Frame):
         else:
             button.configure(bg="red")
 
-    def updateData(self, list=[],highlight=None):
+    def updateData(self, list=[], highlight=None):
         if list:
             self.listbox.delete(0, "end")
             for x in list:
                 self.listbox.insert("end", x)
             self.listbox.select_set(0)
-
 
     def goToNext(self, controller):
         if(len(controller.getModules()) > 0 and not (not controller.getLog())):
@@ -64,4 +63,3 @@ class frame_start(tk.Frame):
             prev_button = Button(
                 self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])
             prev_button.pack(side="left", fill="both")
-    
