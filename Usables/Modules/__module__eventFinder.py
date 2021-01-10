@@ -42,8 +42,8 @@ class module_eventFinder():
                                                               previous=__name__+"_2", title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
 
     def leaveMod(self):
-        self.controller.showFrame("frame_modules")
-        for x in range(1, 6):
+        self.controller.getFrameByName("frame_modules").showNextMod()
+        for x in range(1, 4):
             if self.controller.getFrameByName(__name__+"_"+str(x)):
                 self.controller.delFrameByName(__name__+"_"+str(x))
 

@@ -135,7 +135,7 @@ class module_distoredLabel():
         self.settings=self.controller.getFrameByName(__name__+"_2").getCanvasAsDict()
 
     def leaveMod(self):
-       self.controller.showFrame("frame_modules")
+       self.controller.getFrameByName("frame_modules").showNextMod()
        self.currentGroup=0
        for x in range(1,6):
            if self.controller.getFrameByName(__name__+"_"+str(x)):
