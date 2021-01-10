@@ -35,22 +35,22 @@ class module_timeTravel():
         self.controller.getFrameByName(frameName).update_Data(
             modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Time Travelers", button_command=0)
         #Display Found
-        frameName = self.controller.createModFrame(3, __name__+"_4")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3", title="List Found Groups",
-                                                              button1_text="Previous Trace", button1_command=80, button2_text="Next Trace", button2_command=81, button3_text="save and reorder", button3_command=1)
+  #      frameName = self.controller.createModFrame(3, __name__+"_4")
+  #      self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3", title="List Found Groups",
+  #                                                            button1_text="Previous Trace", button1_command=80, button2_text="Next Trace", button2_command=81, button3_text="save and reorder", button3_command=1)
         #Show Changes and Run Programm
-        frameName = self.controller.createModFrame(2, __name__+"_5")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, previous=__name__+"_4", title=self.getName(), button_text="Apply changes to Log", button_command=99)
+     #   frameName = self.controller.createModFrame(2, __name__+"_5")
+      #  self.controller.getFrameByName(frameName).update_Data(
+      #      modController=self, previous=__name__+"_4", title=self.getName(), button_text="Apply changes to Log", button_command=99)
 
     #TODO IMPLEMENT
     def callBack(self, actionNumer):
         switcher = {
             0: lambda: self.findTimeTravel(),
             1: lambda: self.saveAndReorder(__name__+"_4"),
-            80: lambda: self.displayPrev(__name__+"_4"),
-            81: lambda: self.displayNext(__name__+"_4"),
-            99: lambda: self.changeLog(),
+            # 80: lambda: self.displayPrev(__name__+"_4"),
+            #  81: lambda: self.displayNext(__name__+"_4"),
+            # 99: lambda: self.changeLog(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
 
@@ -75,14 +75,6 @@ class module_timeTravel():
 
         self.addToErrorList(self.listGroups)
         self.leaveMod()
-
-        ##not exec
-        #if(self.listGroups):
-       #     self.displayGroup(__name__+"_4")
-       ##     self.controller.showFrame(__name__+"_4")
-       # else:
-        #TODO update Nothing Found
-       #     self.controller.showFrame(__name__+"_1")
 
     def createTupels(self):
         allAct = logwork.getAllActivityAsList(self.log)
@@ -136,16 +128,6 @@ class module_timeTravel():
             modErrorList.append(error)
         self.controller.addToErrorList(modErrorList)
 
-    #TODO IMPLEMENT
-
-    def changeLog(self):
-        updatedLog = self.log
-        for case in self.listGroups:
-            updatedLog[case.getName()]._list = case.getTrace()
-        self.controller.setLog(updatedLog)
-        self.clean()
-        self.leaveMod()
-
     def clean(self):
         self.occurence = DefaultDict(int)
         self.currentGroup = 0
@@ -168,41 +150,6 @@ class module_timeTravel():
 
        self.currentGroup = 0
 
-    def saveAndReorder(self, frame):
-        canList = self.controller.getFrameByName(frame).getCanvasAsList()
-        trace = self.listGroups[self.currentGroup].getTrace()
-        for x in range(len(canList)):
-            trace[x]["time:timestamp"] = canList[x]
-        trace.sort(key=lambda x: x["time:timestamp"])
-        self.listGroups[self.currentGroup].setTrace(trace)
-        self.displayGroup(frame)
-
-    def displayPrev(self, frame):
-        if(self.currentGroup > 0):
-            self.currentGroup -= 1
-            self.controller.getFrameByName(
-                frame).set_Widgets_Visible(button2="yes")
-            self.displayGroup(frame)
-        else:  # removebutton
-            self.controller.getFrameByName(
-                frame).set_Widgets_Visible(button1="no")
-
-    def displayNext(self, frame):
-        if(self.currentGroup < len(self.listGroups)-1):
-            self.currentGroup += 1
-            self.controller.getFrameByName(
-                frame).set_Widgets_Visible(button1="yes")
-            self.displayGroup(frame)
-        else:  # removebutton
-            self.controller.getFrameByName(
-                frame).set_Widgets_Visible(button2="no")
-
-    def displayGroup(self, frame):
-        trace = self.listGroups[self.currentGroup].getTrace()
-        highlightList = self.listGroups[self.currentGroup].getList()
-        self.controller.getFrameByName(frame).update_Data(
-            canList=trace, highlight=highlightList)
-
     def getName(self):
         return self.name
 
@@ -214,3 +161,46 @@ class module_timeTravel():
 
     def getLog(self, log):
         self.log = log
+
+    # def changeLog(self):
+    #     updatedLog = self.log
+    #     for case in self.listGroups:
+    #         updatedLog[case.getName()]._list = case.getTrace()
+    #     self.controller.setLog(updatedLog)
+    #     self.clean()
+    #     self.leaveMod()
+
+    # def saveAndReorder(self, frame):
+    #     canList = self.controller.getFrameByName(frame).getCanvasAsList()
+    #     trace = self.listGroups[self.currentGroup].getTrace()
+    #     for x in range(len(canList)):
+    #         trace[x]["time:timestamp"] = canList[x]
+    #     trace.sort(key=lambda x: x["time:timestamp"])
+    #     self.listGroups[self.currentGroup].setTrace(trace)
+    #     self.displayGroup(frame)
+
+    # def displayPrev(self, frame):
+    #     if(self.currentGroup > 0):
+    #         self.currentGroup -= 1
+    #         self.controller.getFrameByName(
+    #             frame).set_Widgets_Visible(button2="yes")
+    #         self.displayGroup(frame)
+    #     else:  # removebutton
+    #         self.controller.getFrameByName(
+    #             frame).set_Widgets_Visible(button1="no")
+
+    # def displayNext(self, frame):
+    #     if(self.currentGroup < len(self.listGroups)-1):
+    #         self.currentGroup += 1
+    #         self.controller.getFrameByName(
+    #             frame).set_Widgets_Visible(button1="yes")
+    #         self.displayGroup(frame)
+    #     else:  # removebutton
+    #         self.controller.getFrameByName(
+    #             frame).set_Widgets_Visible(button2="no")
+
+    # def displayGroup(self, frame):
+    #     trace = self.listGroups[self.currentGroup].getTrace()
+    #     highlightList = self.listGroups[self.currentGroup].getList()
+    #     self.controller.getFrameByName(frame).update_Data(
+    #         canList=trace, highlight=highlightList)
