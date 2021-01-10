@@ -1,5 +1,6 @@
 import internalModules.logwork as logwork
 import internalModules.compare as compare
+import internalModules.objects as objects
 
 class module_distoredLabel():
     def __init__(self, controller):
@@ -55,9 +56,21 @@ class module_distoredLabel():
         tupelListRe=compare.levinRatio(logwork.getAllResources(self.log),int(self.getSettings().get("LevLower")))
         groupListRe= compare.createGroups(tupelListRe,"org:resource")
         self.listGroups=groupListAc+groupListRe
-        self.displayGroup()
-        self.controller.showFrame(__name__+"_4")
+        self.addToErrorList(self.listGroups)
+        self.leaveMod()
+        #TODO update
+        #self.displayGroup()
+        #self.controller.showFrame(__name__+"_4")
 
+    def addToErrorList(self, list):
+        modErrorList= []
+        for group in list:
+            error = objects.error()
+            error.set(trace="Global",dictVal=[group.getList()],dictkey=group.getTyp(), classInfo=0,errorModul=self)
+            modErrorList.append(error)
+        self.controller.addToErrorList(modErrorList)
+
+        # not Main
     def displayPrev(self):
         frame=__name__+"_4"
         selected= self.controller.getFrameByName(frame).getSelected()
@@ -71,6 +84,7 @@ class module_distoredLabel():
             self.controller.getFrameByName(frame).set_Button_Visible(button1="no")
         self.displayGroup()
         
+        # not Main
     def displayNext(self):
         frame=__name__+"_4"
         selected= self.controller.getFrameByName(frame).getSelected()
@@ -84,7 +98,7 @@ class module_distoredLabel():
             self.controller.getFrameByName(frame).set_Button_Visible(button2="no")
         self.displayGroup()
         
-
+        # not Main
     def displayGroup(self):
         item=self.listGroups[self.currentGroup]
         indexOfName=None
@@ -93,7 +107,7 @@ class module_distoredLabel():
         self.controller.getFrameByName(__name__+"_4").update_Data(list=item.getList(), selected=indexOfName)
 
 
-
+        # not Main
     def changeLog(self):
         for group in self.listGroups:
             name= group.getName()

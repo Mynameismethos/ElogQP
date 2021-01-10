@@ -9,8 +9,6 @@ import internalModules.Data as data
 import sys
 
 
-
-
 #init the Display and load the singular fames
 class Display(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -21,53 +19,52 @@ class Display(tk.Tk):
         self.container.pack(side="top", fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
-        
-        
-        for F in  (Frames.frame_start.frame_start, Frames.frame_modules.frame_modules):
+
+        for F in (Frames.frame_start.frame_start, Frames.frame_modules.frame_modules):
             self.createFrame(F, F.__name__)
-        data.modFrames=loadmodules.loadFrames()
+        data.modFrames = loadmodules.loadFrames()
         self.showFrame("frame_start")
 
-    def showFrame(self,cont, prevPage= None):
+    def showFrame(self, cont, prevPage=None):
         display = data.frames[cont]
         display.tkraise()
-        if prevPage: display.set_prev_Frame(prevPage)
-    
+        if prevPage:
+            display.set_prev_Frame(prevPage)
+
     def createFrame(self, module, name):
-        if name not in  data.frames:
-            display = module(self.container,self)
+        if name not in data.frames:
+            display = module(self.container, self)
             display.grid(row=0, column=0, sticky="nsew")
             data.frames[name] = display
 
+    def addToErrorList(self, modErrorList):
+        #Check if Entrys already Exist
+        data.error_List.append(modErrorList)
 
     def createModFrame(self, number, modName):
-        frame=data.modFrames[number]
+        frame = data.modFrames[number]
         self.createFrame(frame, modName)
         return modName
-        
-       
+
     def getFrameByName(self, frameName):
         return data.frames[frameName]
-        
 
     def delFrameByName(self, frameName):
         data.frames[frameName].destroy()
         del data.frames[frameName]
 
-
     def get_xes_file_list(self):
-        list= loadLog.getAllLogs()
+        list = loadLog.getAllLogs()
         self.getFrameByName("frame_start").updateData(list)
 
-
-    def import_xes_Log(self,moduleName, button, name):
+    def import_xes_Log(self, moduleName, button, name):
         data.log = loadLog.loadLogByName(name)
         successfull = not (not data.log)
         print(successfull)
-        if successfull :
-            data.frames[moduleName].button_feedback(button,True)
+        if successfull:
+            data.frames[moduleName].button_feedback(button, True)
         else:
-            data.frames[moduleName].button_feedback(button,False)
+            data.frames[moduleName].button_feedback(button, False)
 
     def importModule(self, moduleName, button):
         data.module_List = loadmodules.loadmodules(self)
@@ -78,16 +75,12 @@ class Display(tk.Tk):
                 + "' it´s descibed as: "
                 + module.getOneDesc()
             )
-                    
-        successfull = len(data.module_List)>0  
-        if successfull :
-            data.frames[moduleName].button_feedback(button,True)
+
+        successfull = len(data.module_List) > 0
+        if successfull:
+            data.frames[moduleName].button_feedback(button, True)
         else:
-            data.frames[moduleName].button_feedback(button,False)
-              
-    
-   
-    
+            data.frames[moduleName].button_feedback(button, False)
 
     def getModules(self):
         return data.module_List
@@ -96,9 +89,7 @@ class Display(tk.Tk):
         return data.log
 
     def setLog(self, log):
-        data.log=log
-        
-        
+        data.log = log
 
 
 # Start of Programm

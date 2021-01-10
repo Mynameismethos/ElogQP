@@ -4,15 +4,12 @@ import os
 import pm4py
 
 
-
 class test():
     def __init__(self, *args,):
-        self.log= loadLogByName("LOGEDV.xes")
+        self.log = loadLogByName("LOGEDV.xes")
         print(self.log[100][2]["concept:name"])
-        print (len(self.log))
-        print (len(self.log[0][2].index("kategorieseren")))
-        
-        
+        print(len(self.log))
+        print(len(self.log[0][2].index("kategorieseren")))
 
 
 def loadLogByName(name):
@@ -23,13 +20,8 @@ def loadLogByName(name):
         log = [0][0]
     return log
 
-
     def runthis(self):
         print(self.test)
-
-
-
-
 
 
 app = test()

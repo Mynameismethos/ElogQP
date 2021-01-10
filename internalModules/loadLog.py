@@ -16,6 +16,6 @@ def getAllLogs():
     list = []
     for file in dir:
         filename, file_extention = os.path.splitext(file)
-        if(file_extention==".xes"):
+        if(file_extention == ".xes"):
             list.append(file)
     return list
