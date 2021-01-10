@@ -90,16 +90,11 @@ class Display(tk.Tk):
         list = loadLog.getAllLogs()
         self.getFrameByName("frame_start").updateData(list)
 
-    def import_xes_Log(self, moduleName, button, name):
-        data.log = loadLog.loadLogByName(name)
-        successfull = not (not data.log)
-        print(successfull)
-        if successfull:
-            data.frames[moduleName].button_feedback(button, True)
-        else:
-            data.frames[moduleName].button_feedback(button, False)
+    def import_xes_Log(self, button, name):
+        data.log = loadLog.loadLogByName(self,name,button)
 
-    def importModule(self, moduleName, button):
+
+    def importModule(self, button):
         data.module_List = loadmodules.loadmodules(self)
         for module in data.module_List:
             print(
@@ -108,7 +103,7 @@ class Display(tk.Tk):
                 + "' it´s descibed as: "
                 + module.getOneDesc()
             )
-
+        moduleName="frame_start"
         successfull = len(data.module_List) > 0
         if successfull:
             data.frames[moduleName].button_feedback(button, True)
@@ -124,7 +119,10 @@ class Display(tk.Tk):
     def getLog(self):
         return data.log
 
-    def setLog(self, log):
+    def setLog(self, log, button=None,name=None):
+        if(button):
+            data.frames["frame_start"].button_feedback(button, True)
+            data.frames["frame_start"].updateData(highlight=name)
         data.log = log
 
 
