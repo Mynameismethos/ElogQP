@@ -2,6 +2,7 @@ import tkinter as tk
 from typing import Container
 import Frames.frame_start
 import Frames.frame_modules
+import Frames.frame_showError
 import internalModules.loadmodules as loadmodules
 
 import internalModules.loadLog as loadLog
@@ -20,7 +21,7 @@ class Display(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
-        for F in (Frames.frame_start.frame_start, Frames.frame_modules.frame_modules):
+        for F in (Frames.frame_start.frame_start, Frames.frame_modules.frame_modules, Frames.frame_showError.frame_showError):
             self.createFrame(F, F.__name__)
         data.modFrames = loadmodules.loadFrames()
         self.showFrame("frame_start")
@@ -39,7 +40,8 @@ class Display(tk.Tk):
 
     def addToErrorList(self, modErrorList):
         #Check if Entrys already Exist
-        data.error_List.append(modErrorList)
+        for x in modErrorList:
+            data.error_List.append(x)
 
     def createModFrame(self, number, modName):
         frame = data.modFrames[number]
@@ -84,6 +86,9 @@ class Display(tk.Tk):
 
     def getModules(self):
         return data.module_List
+
+    def getErrorList(self):
+        return data.error_List
 
     def getLog(self):
         return data.log

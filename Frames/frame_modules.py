@@ -16,14 +16,18 @@ class frame_modules(tk.Frame):
         self.listbox = tk.Listbox(self)
         self.listbox["selectmode"] = "extended"
         self.listbox.pack(fill="both", expand="yes")
-        self.modStack=[]
+        self.modStack = []
         Button(self.box_nav, text="Continue", command=lambda: [
                self.goToNext()]).pack(side="right", fill="both")
+        Button(self.box_nav, text="Show Error", command=lambda: [
+               self.showError()]).pack(side="right", fill="both")
 
     def showNextMod(self):
         if(self.modStack):
             self.modStack.pop().exec()
-        else: self.controller.showFrame("frame_modules")
+        else:
+            self.controller.showFrame("frame_modules")
+
     def update_Modules(self):
         module_List = self.controller.getModules()
         self.listbox.delete(0, "end")
@@ -40,6 +44,9 @@ class frame_modules(tk.Frame):
     def goToNext(self):
         chosen = self.listbox.curselection()
         for x in chosen:
-            self.modStack.insert(0,self.controller.getModules()[x])
+            self.modStack.insert(0, self.controller.getModules()[x])
         self.showNextMod()
-            
+
+    def showError(self):
+        self.controller.getFrameByName("frame_showError").updateList()
+        self.controller.showFrame("frame_showError")
