@@ -1,5 +1,5 @@
 from fuzzywuzzy import fuzz
-import internalModules.objects
+import internalModules.objects as objects
 
 def levinRatio(list, lowerBound):
     closeList=[]
@@ -8,7 +8,7 @@ def levinRatio(list, lowerBound):
             ratio = fuzz.ratio(str.lower(list[x]),str.lower(list[y]))
             if(ratio>lowerBound):
                 print("comparing: "+list[x]+" and " +list[y])
-                closeList.append(tupel(list[x],list[y],ratio))
+                closeList.append(objects.tupel(list[x],list[y],ratio))
     closeList.sort()
     return closeList
 
@@ -20,7 +20,7 @@ def tokenRatio(list, lowerBound):
             ratio = fuzz.token_set_ratio(str.lower(list[x]),str.lower(list[y]))
             if(ratio>lowerBound):
                 print("comparing: "+list[x]+" and " +list[y])
-                closeList.append(tupel(list[x],list[y],ratio))
+                closeList.append(objects.tupel(list[x],list[y],ratio))
     closeList.sort()
     return closeList
                 
@@ -36,7 +36,7 @@ def createGroups(tupelList,typ):
         elif (groupeID.get(tupel.two)):
             groupeList[groupeID.get(tupel.two)].addToList(tupel.one)
         else: 
-            g=Group([tupel.one, tupel.two])
+            g=objects.Group([tupel.one, tupel.two])
             g.setTyp(typ)
             groupeID[tupel.one]=len(groupeList)
             groupeID[tupel.two]=len(groupeList)
