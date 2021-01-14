@@ -58,11 +58,16 @@ class frame_showError(tk.Frame):
     def updateTable(self, list):
         self.cleanTree()
         counter = 0
+        parentDict = {}
         for x in list:
             val = (counter, x.desc, x.trace, x.event,
                    x.dictVal, x.errorModul, x.autoRepair)
-            self.errorTree.insert(parent="", index="end",
+            parent=""
+            if(x.parent in parentDict):parent=parentDict[x.parent]
+            id=self.errorTree.insert(parent=parent, index="end",
                                   iid=counter, text="", values=val)
+            parentDict[x]=id
+            
             #TODO add Repairchild
             if(x.autoRepair):
                 val = (counter, x.desc, x.trace, x.event,

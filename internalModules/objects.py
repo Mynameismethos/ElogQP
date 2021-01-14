@@ -81,16 +81,18 @@ class error():
     def __init__(self):
         self.trace = None
         self.event = None
+        self.parent= ""
         self.desc = None
         self.dictkey = None
         self.dictVal = None
         self.errorModul = None
         self.classInfo = None
-        self.autoRepair = None
+        self.autoRepair = False
         self.fixedVal = None
 
     def set(self, trace=None,
             event=None,
+            parent=None,
             desc=None,
             dictkey=None,
             dictVal=None,
@@ -104,6 +106,8 @@ class error():
             self.event = event
         if(desc != None):
             self.desc = desc
+        if(parent != None):
+            self.parent = parent
         if(dictkey != None):
             self.dictkey = dictkey
         if(dictVal != None):

@@ -73,7 +73,7 @@ class module_timeTravel():
         for t in tupellist:
             self.listGroups.extend(self.findTraceOfTupel(t))
 
-        self.addToErrorList(self.listGroups)
+        self.createErrorList(self.listGroups)
         self.leaveMod()
 
     def createTupels(self):
@@ -119,7 +119,7 @@ class module_timeTravel():
                     list.append(gTwo)
         return list
 
-    def addToErrorList(self, list):
+    def createErrorList(self, list):
         modErrorList = []
         for element in list:
             error = objects.error()
