@@ -53,7 +53,7 @@ class module_distoredLabel():
         tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.getSettings().get("LevLower")))
         groupListAc= compare.createGroups(tupelListAc,"concept:name")
 
-        tupelListRe=compare.levinRatio(logwork.getAllResources(self.log),int(self.getSettings().get("LevLower")))
+        tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsList(self.log),int(self.getSettings().get("LevLower")))
         groupListRe= compare.createGroups(tupelListRe,"org:resource")
         self.listGroups=groupListAc+groupListRe
         self.addToErrorList(self.listGroups)

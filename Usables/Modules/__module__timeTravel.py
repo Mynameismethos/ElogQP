@@ -9,7 +9,7 @@ class module_timeTravel():
     def __init__(self, controller):
         self.controller = controller
         #TODO change
-        self.settings = {"String Seperator": "//://", "Check Ratio": 0.05}
+        self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name"}
         self.name = "Inadvertent Time Travel"
         self.oneDes = "this programm checks for the Inadvertent Time Travel Issue"
         self.desc = "The String Sperator musn´t be part of any Event Name"
@@ -34,14 +34,6 @@ class module_timeTravel():
         frameName = self.controller.createModFrame(2, __name__+"_3")
         self.controller.getFrameByName(frameName).update_Data(
             modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Time Travelers", button_command=0)
-        #Display Found
-  #      frameName = self.controller.createModFrame(3, __name__+"_4")
-  #      self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3", title="List Found Groups",
-  #                                                            button1_text="Previous Trace", button1_command=80, button2_text="Next Trace", button2_command=81, button3_text="save and reorder", button3_command=1)
-        #Show Changes and Run Programm
-     #   frameName = self.controller.createModFrame(2, __name__+"_5")
-      #  self.controller.getFrameByName(frameName).update_Data(
-      #      modController=self, previous=__name__+"_4", title=self.getName(), button_text="Apply changes to Log", button_command=99)
 
     #TODO IMPLEMENT
     def callBack(self, actionNumer):
@@ -60,7 +52,7 @@ class module_timeTravel():
         self.controller.showFrame(__name__+"_1")
 
     def findTimeTravel(self):
-        eventtyp = "concept:name"
+        eventtyp = self.settings["eventTyp"]
         self.occurence = DefaultDict(int)
         for x in range(len(self.log)):
             for y in range(0, len(self.log[x])-1):
@@ -68,27 +60,33 @@ class module_timeTravel():
                 elTwo = self.log[x][y+1][eventtyp]
                 self.occurence[elOne+self.getSettings()
                                ["String Seperator"]+elTwo] += 1
+        #Tupellist with pair with very rare Ordering
         tupellist = self.createTupels()
-
+        
         for t in tupellist:
+            #find Occurence of this Tupel
             self.listGroups.extend(self.findTraceOfTupel(t))
-
+        #Create ErrorGroups 
         self.createErrorList(self.listGroups)
         self.leaveMod()
 
     def createTupels(self):
-        allAct = logwork.getAllActivityAsList(self.log)
+
         tupellist = []
-        for x in range(len(allAct)):
-            for y in range(len(allAct)-1):
-                elOne = allAct[x]
-                elTwo = allAct[y]
-                if(self.occurence[elOne+self.getSettings()["String Seperator"]+elTwo] != 0 and self.occurence[elTwo+self.getSettings()["String Seperator"]+elOne] != 0):
-                    ratio = self.occurence[elOne+self.getSettings()["String Seperator"]+elTwo] / \
-                        self.occurence[elTwo+self.getSettings()
-                                       ["String Seperator"]+elOne]
-                    if(ratio < 1):
-                        tupellist.append(objects.tupel(elOne, elTwo, ratio))
+        ratio= self.settings["checkRatio"]
+        while self.occurence :
+            key=list(self.occurence)[0]
+            elOne,elTwo=key.split(self.settings["String Seperator"])
+            key_opposite=elTwo+self.settings["String Seperator"]+elOne
+            if key_opposite in self.occurence:
+                if(self.occurence[key]/ self.occurence[key_opposite] < ratio):
+                    tupellist.append(objects.tupel(elOne, elTwo, self.occurence[key]/ self.occurence[key_opposite]))
+                elif(self.occurence[key_opposite]/ self.occurence[key] < ratio):
+                    tupellist.append(objects.tupel(elTwo, elOne, self.occurence[key_opposite]/ self.occurence[key]))
+            
+            self.occurence.pop(key,None)
+            self.occurence.pop(key_opposite,None)
+
         return tupellist
 
     def findTraceOfTupel(self, tupel):
@@ -98,17 +96,16 @@ class module_timeTravel():
         for x in range(len(self.log)):
             first = None
             second = None
-            for y in range(0, len(self.log[x])-1):
-                if(self.log[x][y][eventtyp] == tupel.one):
+            for y in range(0, len(self.log[x])):
+                #not first only for Performance
+                if(not first and self.log[x][y][eventtyp] == tupel.one):
                     first = y
-                if(self.log[x][y][eventtyp] == tupel.two):
+                elif(first and self.log[x][y][eventtyp] == tupel.two):
                     second = y
-                if(first and second and first < second):
-                    # see if we can change anything
-                    # prepare to display
-                    #["time:timestamp"]
                     id = uuid.uuid4()
                     gOne = objects.Group(tupel.one)
+                    #TODO One Error
+                    #TODO make Tupel The Error Parent
                     gOne.set(event=first, trace=x, value=self.log[x][first][eventTime],
                              typ=eventTime, name=id)
 

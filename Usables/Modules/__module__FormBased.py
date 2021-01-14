@@ -60,7 +60,7 @@ class module_FormBased():
 
                 if(elOne[eventTime]==elTwo[eventTime]):
                     #test if already in a group:
-                    if(elOneName and elTwoName in groupDict):  #elOne in groupDict and elTwo in groupDict
+                    if(elOneName in groupDict and elTwoName in groupDict):  #elOne in groupDict and elTwo in groupDict
                         #test if the same:
                         gOne=groupDict[elOneName]
                         gTwo=groupDict[elTwoName]
@@ -72,7 +72,7 @@ class module_FormBased():
                             for x in groupList[gTwo].getList():
                                 groupDict[x]=gOne
                                 groupList[gOne].addToList(x)
-                            groupList.remove(gTwo)
+                            groupList[gTwo]=None
                     elif(elOneName in groupDict):
                         #Add elTwo to Group One
                         groupList[groupDict[elOneName]].addToList(elTwoName)
@@ -87,7 +87,8 @@ class module_FormBased():
                         groupDict[elOneName]=index
                         groupDict[elTwoName]=index
         #GroupList is now a comprehensiv List of simultaneous Events
-
+        #Clean GroupList
+        groupList= list(filter(None,groupList))
 
 
                 

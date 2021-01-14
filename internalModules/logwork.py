@@ -15,3 +15,9 @@ def getAllActivityAsList(log):
 def getAllResources(log):
     resources = attributes_filter.get_attribute_values(log, "org:resource")
     return resources
+
+def getAllResourcesAsList(log):
+    resources =[]
+    for key in getAllResources(log):
+        resources.append(key)
+    return resources
