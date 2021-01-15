@@ -22,34 +22,30 @@ class module_timeTravel():
         #TODO IMPLEMENT
         # EXAMPLE
     def createFrames(self):
-        #Greetings Page
-        frameName = self.controller.createModFrame(0, __name__+"_1")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, next=__name__+"_2", previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
-        #Settings
-        frameName = self.controller.createModFrame(3, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3", previous=__name__ +
-                                                              "_1", title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=1)
         #Start Programm
-        frameName = self.controller.createModFrame(2, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Time Travelers", button_command=0)
+        self.controller.createModFrame(2)
+        self.controller.getNextModFrame().update_Data(
+            modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Time Travelers", button_command=99)
+        #Settings
+        self.controller.createModFrame(3)
+        self.controller.getNextModFrame().update_Data(modController=self, next=__name__+"_3", previous=True, title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
+        #Greetings Page
+        self.controller.createModFrame(0)
+        self.controller.getNextModFrame().update_Data(
+            modController=self, next=__name__+"_2", previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     #TODO IMPLEMENT
     def callBack(self, actionNumer):
         switcher = {
-            0: lambda: self.findTimeTravel(),
-            1: lambda: self.saveAndReorder(__name__+"_4"),
-            # 80: lambda: self.displayPrev(__name__+"_4"),
-            #  81: lambda: self.displayNext(__name__+"_4"),
-            # 99: lambda: self.changeLog(),
+            80: lambda: self.getSettingsFromFrame(),
+            99: lambda: self.findTimeTravel(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
 
     def exec(self):
         self.createFrames()
         self.log = self.controller.getLog()
-        self.controller.showFrame(__name__+"_1")
+        self.controller.showModFrame(next=True)
 
     def findTimeTravel(self):
         eventtyp = self.settings["eventTyp"]
@@ -73,7 +69,7 @@ class module_timeTravel():
     def createTupels(self):
 
         tupellist = []
-        ratio= self.settings["checkRatio"]
+        ratio= float(self.settings["checkRatio"])
         while self.occurence :
             key=list(self.occurence)[0]
             elOne,elTwo=key.split(self.settings["String Seperator"])
@@ -138,8 +134,7 @@ class module_timeTravel():
         self.settings = settings
 
     def getSettingsFromFrame(self):
-        self.settings = self.controller.getFrameByName(
-            __name__+"_2").getCanvasAsDict()
+        self.settings = self.controller.getActiveModFrame().getCanvasAsDict()
 
     def leaveMod(self):
        self.controller.deleteModFrame()

@@ -58,12 +58,12 @@ class frame_mod_desc(tk.Frame):
     def set_Prev_Frame(self):
         if self.controller.hasPrevFrame():
             prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(prev=True)])
             prev_button.pack(side="left", fill="both")
 
     def set_Next_Frame(self, nextFrame):
         self.next_Button.configure(
-            command=lambda: [self.controller.showFrame(nextFrame)])
+            command=lambda: [self.controller.showModFrame(next=True)])
         self.next_Button.pack(side="right", fill="both")
 
     def set_Controller(self, modController):

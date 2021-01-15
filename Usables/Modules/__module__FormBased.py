@@ -16,25 +16,22 @@ class module_FormBased():
         #TODO IMPLEMENT
         # EXAMPLE
     def createFrames(self):
-        #Greetings Page
-        frameName = self.controller.createModFrame(0, __name__+"_1")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, next=__name__+"_2", previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
-        #Settings
-        frameName = self.controller.createModFrame(3, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3", previous=__name__ +
-                                                              "_1", title=self.getName(), canDict=self.getSettings(), button1_text="Save", button1_command=1)
         #Start Programm
-        frameName = self.controller.createModFrame(2, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Distored Labels", button_command=99)
+        frameName = self.controller.createModFrame(2)
+        self.controller.getNextModFrame().update_Data(
+            modController=self, previous=True, title=self.getName(), button_text="Search for Distored Labels", button_command=99)
+        #Settings
+        frameName = self.controller.createModFrame(3)
+        self.controller.getNextModFrame().update_Data(modController=self, next=True, previous=True, title=self.getName(), canDict=self.getSettings(), button1_text="Save", button1_command=80)
+        #Greetings Page
+        frameName = self.controller.createModFrame(0)
+        self.controller.getNextModFrame().update_Data(
+            modController=self, next=True, previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     #TODO IMPLEMENT
     def callBack(self, actionNumer):
         switcher = {
-
-            80: lambda: self.displayPrev(__name__+"_4"),
-            81: lambda: self.displayNext(__name__+"_4"),
+            80:  lambda:self.getSettingsFromFrame(),
             99: lambda: self.search(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
@@ -42,7 +39,7 @@ class module_FormBased():
     def exec(self):
         self.createFrames()
         self.log = self.controller.getLog()
-        self.controller.showFrame(__name__+"_1")
+        self.controller.showModFrame(next=True)
 
     def search(self):
         eventTime = self.settings["eventTime"]
@@ -151,10 +148,9 @@ class module_FormBased():
 
     def setSettings(self, settings):
         self.settings = settings
-
-    def getSettingsFromFrame(self,settingPage):
-        self.settings = self.controller.getFrameByName(
-            __name__+"_"+settingPage).getSettings()
+        
+    def getSettingsFromFrame(self):
+        self.settings=self.controller.getActiveModFrame().getCanvasAsDict()
 
     def getName(self):
         return self.name

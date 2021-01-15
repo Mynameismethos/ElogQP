@@ -25,11 +25,33 @@ class Display(tk.Tk):
         data.modFrames = loadmodules.loadFrames()
         self.showFrame("frame_start")
 
-    def showFrame(self, cont, prevPage=None):
+    def showFrame(self, cont):
         display = data.frames[cont]
         self.activeFrames.append(display)
         display.tkraise()
         display.showMe()
+
+    def showModFrame(self, next=False, prev=False):
+        display=None
+        if(next):
+            if(data.modFramesNext):
+                data.modFramesPrev.append(data.modFramesNext.pop())
+            else:
+                self.getFrameByName("frame_modules").showNextMod()
+        elif(prev):
+            if(len(data.modFramesPrev)>1):
+                data.modFramesNext.append(data.modFramesPrev.pop())
+            else: self.showPrevFrame()
+        else: 
+            pass
+
+        display = data.modFramesPrev[-1]
+        display.tkraise()
+        display.showMe()
+
+    def deleteModFrame(self):
+        data.modFramesNext= []
+        data.modFramesPrev = []
 
     def showPrevFrame(self):
         if(self.hasPrevFrame()):
@@ -61,10 +83,12 @@ class Display(tk.Tk):
         for x in modErrorList:
             data.error_List.append(x)
 
-    def createModFrame(self, number, modName):
+    def createModFrame(self, number):
         frame = data.modFrames[number]
-        self.createFrame(frame, modName)
-        return modName
+        display = frame(self.container, self)
+        display.grid(row=0, column=0, sticky="nsew")
+        data.modFramesNext.append(display)
+        
 
     def getFrameByName(self, frameName):
         return data.frames[frameName]
@@ -73,17 +97,11 @@ class Display(tk.Tk):
         data.frames[frameName].destroy()
         del data.frames[frameName]
     
-    def deleteModFrame(self):
-        for key in list(data.frames):
-            if ("Usables" in key):
-                del data.frames[key]
-       
-        for x in reversed(self.activeFrames):
-           if ("frame_mod_" in x._name):
-                self.activeFrames.remove(x)
-    
-        
-            
+    def getActiveModFrame(self):
+        return data.modFramesPrev[-1]
+
+    def getNextModFrame(self):
+        return data.modFramesNext[-1]
 
 
     def get_xes_file_list(self):

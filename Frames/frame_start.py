@@ -55,7 +55,7 @@ class frame_start(tk.Frame):
 
     def goToNext(self, controller):
         if(len(controller.getModules()) > 0 and not (not controller.getLog())):
-            controller.showFrame("frame_modules", __class__.__name__)
+            controller.showFrame("frame_modules")
         #else set Buttoncolor to red
 
     def set_Prev_Frame(self):

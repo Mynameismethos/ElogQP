@@ -29,17 +29,16 @@ class module_eventFinder():
         self.log = log
 
     def createFrames(self):
-        frameName = self.controller.createModFrame(0, __name__+"_1")
+        frameName = self.controller.createModFrame(0)
+        self.controller.getFrameByName(frameName).update_Data(modController=self, next=False,previous=True, title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
+        
+        frameName = self.controller.createModFrame(1)
         self.controller.getFrameByName(frameName).update_Data(
-            modController=self, next=__name__+"_2", previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
+            modController=self, next=True, previous=True, title=self.getName(), list={})
 
-        frameName = self.controller.createModFrame(1, __name__+"_2")
+        frameName = self.controller.createModFrame(0)
         self.controller.getFrameByName(frameName).update_Data(
-            modController=self, next=__name__+"_3", previous=__name__+"_1", title=self.getName(), list={})
-
-        frameName = self.controller.createModFrame(0, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_1",
-                                                              previous=__name__+"_2", title="Hello Module", intro=self.getOneDesc(), desc=self.getDesc())
+            modController=self, next=True, previous=False, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     def leaveMod(self):
         self.controller.deleteModFrame()
@@ -47,11 +46,10 @@ class module_eventFinder():
 
     def exec(self):
         self.createFrames()
-        self.controller.showFrame(__name__+"_1")
         self.log = self.controller.getLog()
+        self.controller.showModFrame(next=True)
         self.findEvents()
 
     def findEvents(self):
         activities = logwork.getAllActivityAsList(self.log)
-        self.controller.getFrameByName(
-            __name__+"_2").update_Data(list=activities)
+        self.controller.getActiveModFrame().update_Data(list=activities)

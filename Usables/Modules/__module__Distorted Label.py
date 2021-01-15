@@ -1,3 +1,4 @@
+from inspect import Traceback
 import internalModules.logwork as logwork
 import internalModules.compare as compare
 import internalModules.objects as objects
@@ -15,31 +16,21 @@ class module_distoredLabel():
         self.currentGroup=int(0)
 
     def createFrames(self):
-        #Greetings Page
-        frameName=self.controller.createModFrame(0, __name__+"_1")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_2",previous= None,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
-        #Settings
-        frameName=self.controller.createModFrame(3, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3",previous= __name__+"_1",title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=1)
         #Start Programm
-        frameName=self.controller.createModFrame(2, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(modController=self,previous= __name__+"_2",title=self.getName(), button_text="Search for Distored Labels", button_command =0)
-        #Display Found 
-        # frameName=self.controller.createModFrame(1, __name__+"_4")
-        # self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_5", previous=__name__+"_3",title="List Found Groups",button1_text="Previous Group", button1_command=3, button2_text="Next Group", button2_command=4)
-        # self.controller.getFrameByName(frameName).setMultiselect(False)
-        #Show Changes and Run Programm
-        # frameName=self.controller.createModFrame(2, __name__+"_5")
-        # self.controller.getFrameByName(frameName).update_Data(modController=self, previous=__name__+"_4",title=self.getName(),button_text="Apply changes to Log", button_command =99)
-    
+        frameName=self.controller.createModFrame(2)
+        self.controller.getNextModFrame().update_Data(modController=self,next=False, previous= True,title=self.getName(), button_text="Search for Distored Labels", button_command =99)
+        #Settings
+        frameName=self.controller.createModFrame(3)
+        self.controller.getNextModFrame().update_Data(modController=self, next=True,previous= True,title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
+        #Greetings Page
+        frameName=self.controller.createModFrame(0)
+        self.controller.getNextModFrame().update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
+
     #Callback der Mod_Frames
     def callBack(self, actionNumer):
         switcher={
-            0: lambda: self.findSimilarNames(),
-            1: lambda: self.getSettingsFromFrame(),
-            # 3: lambda: self.displayPrev(),
-            # 4: lambda: self.displayNext(),
-            # 99:lambda: self.changeLog(),
+            80: lambda: self.getSettingsFromFrame(),
+            99: lambda: self.findSimilarNames(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
             
@@ -47,7 +38,7 @@ class module_distoredLabel():
     def exec(self):
         self.createFrames()
         self.log=self.controller.getLog()
-        self.controller.showFrame(__name__+"_1")
+        self.controller.showModFrame(next=True)
 
     def findSimilarNames(self):
         tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.getSettings().get("LevLower")))
@@ -58,9 +49,7 @@ class module_distoredLabel():
         self.listGroups=groupListAc+groupListRe
         self.addToErrorList(self.listGroups)
         self.leaveMod()
-        #TODO update
-        #self.displayGroup()
-        #self.controller.showFrame(__name__+"_4")
+
 
     def addToErrorList(self, list):
         modErrorList= []
@@ -70,10 +59,6 @@ class module_distoredLabel():
             modErrorList.append(error)
         self.controller.addToErrorList(modErrorList)
 
-        # not Main
-
-
-
     def getSettings(self):
         return self.settings
 
@@ -82,7 +67,7 @@ class module_distoredLabel():
         self.settings=settings
 
     def getSettingsFromFrame(self):
-        self.settings=self.controller.getFrameByName(__name__+"_2").getCanvasAsDict()
+        self.settings=self.controller.getActiveModFrame().getCanvasAsDict()
 
     def leaveMod(self):
        self.controller.deleteModFrame()
