@@ -136,6 +136,9 @@ class Display(tk.Tk):
 
     def getErrorList(self):
         return data.error_List
+    def clearErrorList(self):
+        data.error_List=[]
+        data.error_Hash_Dict={}
 
     def getLog(self):
         return data.log

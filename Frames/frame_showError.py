@@ -48,10 +48,13 @@ class frame_showError(tk.Frame):
         )
         buttonEdit = Button(box_nav, text="Edit Selected",
                             command=lambda: self.editSelected())
+        buttonClearList = Button(box_nav, text="Clear Error List",
+                            command=lambda: self.clearErrorList())
         leave = Button(box_nav, text="Go Back",
                        command=lambda: self.controller.showPrevFrame())
 
         leave.grid(row=0, column=0, columnspan=2, sticky="nsew")
+        buttonClearList.grid(row=0, column=4, sticky="nsew")
         buttonEdit.grid(row=0, column=5, sticky="nsew")
         buttonAutoSolve.grid(row=0, column=6, sticky="nsew")
 
@@ -88,6 +91,10 @@ class frame_showError(tk.Frame):
 
     def editSelected(self):
         pass
+
+    def clearErrorList(self):
+        self.controller.clearErrorList()
+        self.updateList()
 
     def autoSolve(self):
         pass
