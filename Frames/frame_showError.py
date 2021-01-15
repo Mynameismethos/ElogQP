@@ -32,11 +32,14 @@ class frame_showError(tk.Frame):
         self.errorTree.heading("Module", text="Module", anchor="w")
         self.errorTree.heading("Repair", text="Repair", anchor="w")
 
-        self.errorTree.pack(fill="both", expand="yes")
+        scroll=ttk.Scrollbar(self, orient="vertical", command=self.errorTree.yview)
+        scroll.pack(side="right", fill="y")
+        self.errorTree.configure(yscrollcommand=scroll.set)
         self.filterList(self.controller.getErrorList())
-
         box_nav = tk.Frame(master=self)
         box_nav.pack(side="bottom", fill="x")
+        self.errorTree.pack(fill="both", expand="yes")
+
         for x in range(7):
             box_nav.columnconfigure(x, weight=1)
 
