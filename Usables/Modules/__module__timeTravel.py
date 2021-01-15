@@ -10,7 +10,7 @@ class module_timeTravel():
     def __init__(self, controller):
         self.controller = controller
         #TODO change
-        self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name"}
+        self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
         self.name = "Inadvertent Time Travel"
         self.oneDes = "this programm checks for the Inadvertent Time Travel Issue"
         self.desc = "The String Sperator musn´t be part of any Event Name"
@@ -48,7 +48,7 @@ class module_timeTravel():
 
     def exec(self):
         self.createFrames()
-        self.log = self.controller.getLog()
+        self.log = self.controller.getLog(request=[self.settings["eventTyp"],self.settings["eventTime"]])
         self.visible=True
         self.controller.showModFrame(__class__,next=True)
 
@@ -59,12 +59,12 @@ class module_timeTravel():
         self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
     def findTimeTravel(self):
-        eventtyp = self.settings["eventTyp"]
+        eventTyp = self.settings["eventTyp"]
         self.occurence = DefaultDict(int)
         for x in range(len(self.log)):
             for y in range(0, len(self.log[x])-1):
-                elOne = self.log[x][y][eventtyp]
-                elTwo = self.log[x][y+1][eventtyp]
+                elOne = self.log[x][y][eventTyp]
+                elTwo = self.log[x][y+1][eventTyp]
                 self.occurence[elOne+self.getSettings()
                                ["String Seperator"]+elTwo] += 1
         #Tupellist with pair with very rare Ordering
@@ -97,17 +97,17 @@ class module_timeTravel():
         return tupellist
 
     def findTraceOfTupel(self, tupel):
-        eventtyp = "concept:name"
-        eventTime = "time:timestamp"
+        eventTyp = self.settings["eventTyp"]
+        eventTime = self.settings["eventTime"]
         list = []
         for x in range(len(self.log)):
             first = None
             second = None
             for y in range(0, len(self.log[x])):
                 #not first only for Performance
-                if(not first and self.log[x][y][eventtyp] == tupel.one):
+                if(not first and self.log[x][y][eventTyp] == tupel.one):
                     first = y
-                elif(first and self.log[x][y][eventtyp] == tupel.two):
+                elif(first and self.log[x][y][eventTyp] == tupel.two):
                     second = y
                     #id = uuid.uuid4()
                     gOne = objects.Group(tupel.one)

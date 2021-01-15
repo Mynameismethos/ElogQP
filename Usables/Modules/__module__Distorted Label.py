@@ -6,7 +6,7 @@ import internalModules.objects as objects
 class module_distoredLabel():
     def __init__(self, controller):
         self.controller= controller
-        self.settings = {"LevLower": 90}
+        self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"eventResources":"org:resource", "eventTyp":"concept:name"}
         self.log = ""
         self.name = "Distorted Label"
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "
@@ -40,7 +40,7 @@ class module_distoredLabel():
     #Einstiegspunkt des Modules
     def exec(self):
         self.createFrames()
-        self.log=self.controller.getLog()
+        self.log=self.controller.getLog(request=[self.settings["eventResources"],self.settings["eventTyp"]])
         self.visible=True
         self.controller.showModFrame(__class__,next=True)
 
@@ -52,11 +52,11 @@ class module_distoredLabel():
 
 
     def findSimilarNames(self):
-        tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.getSettings().get("LevLower")))
-        groupListAc= compare.createGroups(tupelListAc,"concept:name")
+        tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.settings["LevLowerEvents"]))
+        groupListAc= compare.createGroups(tupelListAc,self.settings["eventTyp"])
 
-        tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsList(self.log),int(self.getSettings().get("LevLower")))
-        groupListRe= compare.createGroups(tupelListRe,"org:resource")
+        tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsList(self.log),int(self.settings["LevLowerResources"]))
+        groupListRe= compare.createGroups(tupelListRe,self.settings["eventResources"])
         self.listGroups=groupListAc+groupListRe
         self.addToErrorList(self.listGroups)
         self.leaveMod()

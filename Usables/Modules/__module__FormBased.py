@@ -44,7 +44,7 @@ class module_FormBased():
 
     def exec(self):
         self.createFrames()
-        self.log = self.controller.getLog()
+        self.log = self.controller.getLog(request=[self.settings["eventTyp"],self.settings["eventTime"]])
         self.visible=True
         self.controller.showModFrame(__class__,next=True)
 
