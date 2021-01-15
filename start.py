@@ -6,6 +6,7 @@ import internalModules.loadmodules as loadmodules
 
 import internalModules.loadLog as loadLog
 import internalModules.Data as data
+import internalModules.objects as objects
 
 
 #init the Display and load the singular fames
@@ -31,27 +32,26 @@ class Display(tk.Tk):
         display.tkraise()
         display.showMe()
 
-    def showModFrame(self, next=False, prev=False):
+    def showModFrame(self, name,next=False, prev=False):
         display=None
         if(next):
-            if(data.modFramesNext):
-                data.modFramesPrev.append(data.modFramesNext.pop())
+            if(data.activeMod[name].modFramesNext):
+                data.activeMod[name].modFramesPrev.append(data.activeMod[name].modFramesNext.pop())
             else:
                 self.getFrameByName("frame_modules").showNextMod()
         elif(prev):
-            if(len(data.modFramesPrev)>1):
-                data.modFramesNext.append(data.modFramesPrev.pop())
+            if(len(data.activeMod[name].modFramesPrev)>1):
+                data.activeMod[name].modFramesNext.append(data.activeMod[name].modFramesPrev.pop())
             else: self.showPrevFrame()
         else: 
             pass
 
-        display = data.modFramesPrev[-1]
+        display = data.activeMod[name].modFramesPrev[-1]
         display.tkraise()
         display.showMe()
 
-    def deleteModFrame(self):
-        data.modFramesNext= []
-        data.modFramesPrev = []
+    def deleteModFrame(self,name):
+        del data.activeMod[name]
 
     def showPrevFrame(self):
         if(self.hasPrevFrame()):
@@ -86,11 +86,12 @@ class Display(tk.Tk):
                 data.error_List.append(x)
                 data.error_Hash_Dict[hash_x]=x
 
-    def createModFrame(self, number):
+    def createModFrame(self, number,name):
         frame = data.modFrames[number]
         display = frame(self.container, self)
         display.grid(row=0, column=0, sticky="nsew")
-        data.modFramesNext.append(display)
+        if(name not in data.activeMod):data.activeMod[name]= objects.module()
+        data.activeMod[name].modFramesNext.append(display)
         
 
     def getFrameByName(self, frameName):
@@ -100,11 +101,11 @@ class Display(tk.Tk):
         data.frames[frameName].destroy()
         del data.frames[frameName]
     
-    def getActiveModFrame(self):
-        return data.modFramesPrev[-1]
+    def getActiveModFrame(self,name):
+        return data.activeMod[name].modFramesPrev[-1]
 
-    def getNextModFrame(self):
-        return data.modFramesNext[-1]
+    def getNextModFrame(self,name):
+        return data.activeMod[name].modFramesNext[-1]
 
 
     def get_xes_file_list(self):

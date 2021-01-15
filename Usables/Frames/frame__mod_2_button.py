@@ -17,12 +17,18 @@ class frame_mod_button(tk.Frame):
         self.next_Button = Button(self.box_nav, text="Next Page")
         #### Add The Layout of the Frame here ###############
         self.title_text = StringVar()
-        self.button_text = StringVar()
-        self.button_command = IntVar()
+        self.button1_text = StringVar()
+        self.button1_command = IntVar()
+        self.button2_text = StringVar()
+        self.button2_command = IntVar()
+
         Label(self, textvariable=self.title_text).pack(fill="x", side="top")
-        self.button1 = Button(self, textvariable=self.button_text, command=lambda: [
-                              self.modController.callBack(self.button_command)])
+        self.button1 = Button(self, textvariable=self.button1_text, command=lambda: [
+                              self.modController.callBack(self.button1_command)])
+        self.button2 = Button(self, textvariable=self.button2_text, command=lambda: [
+                              self.modController.callBack(self.button2_command)])
         self.button1.pack()
+        self.button2.pack()
 
         #Example
        # self.title_text = StringVar()
@@ -39,7 +45,7 @@ class frame_mod_button(tk.Frame):
 
         #TODO fill  in, find Data that needs to be added by the module
 
-    def update_Data(self, modController=None, next=None, previous=None, title="", button_text="", button_command=None):
+    def update_Data(self, modController=None, next=None, previous=None, title="", button1_text="", button1_command=None,  button2_text="", button2_command=None):
         if modController:
             self.set_Controller(modController)
         if next:
@@ -48,17 +54,25 @@ class frame_mod_button(tk.Frame):
             self.set_Prev_Frame()
         if title:
             self.title_text.set(title)
-        if button_text:
-            self.button_text.set(button_text)
-        if button_command:
-            self.button_command.set(button_command)
+        if button1_text:
+            self.button1_text.set(button1_text)
+        if button1_command:
+            self.button1_command.set(button1_command)
+        if button2_text:
+            self.button2_text.set(button2_text)
+        if button1_command:
+            self.button2_command.set(button2_command)
         print("Hello")
 
-    def set_Widgets_Visible(self, button1=None, buttonNext=None, buttonPrev=None):
+    def set_Widgets_Visible(self, button1=None, button2=None,buttonNext=None, buttonPrev=None):
         if(button1 == "yes"):
             self.button1.pack()
         elif(button1 == "no"):
             self.button1.pack_forget()
+        if(button2 == "yes"):
+            self.button2.pack()
+        elif(button2 == "no"):
+            self.button2.pack_forget()
 
         if(buttonPrev == "yes"):
             self.prev_button.pack()
@@ -74,13 +88,13 @@ class frame_mod_button(tk.Frame):
     def set_Prev_Frame(self):
         if self.controller.hasPrevFrame():
             prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(prev=True)])
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,prev=True)])
             prev_button.pack(side="left", fill="both")
         # No Need to Change
 
     def set_Next_Frame(self, nextFrame):
         next_Button = Button(
-            self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(next=True)])
+            self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,next=True)])
         next_Button.pack(side="right", fill="both")
 
     def set_Controller(self, modController):

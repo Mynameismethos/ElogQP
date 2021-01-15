@@ -1,4 +1,4 @@
-from inspect import Traceback
+import threading
 import internalModules.logwork as logwork
 import internalModules.compare as compare
 import internalModules.objects as objects
@@ -11,26 +11,29 @@ class module_distoredLabel():
         self.name = "Distorted Label"
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "
         #TODO change 
+        self.visible=False
         self.desc = ""
         self.listGroups=[]
         self.currentGroup=int(0)
 
     def createFrames(self):
         #Start Programm
-        frameName=self.controller.createModFrame(2)
-        self.controller.getNextModFrame().update_Data(modController=self,next=False, previous= True,title=self.getName(), button_text="Search for Distored Labels", button_command =99)
+        frameName=self.controller.createModFrame(2,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Distored Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
+        self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
         #Settings
-        frameName=self.controller.createModFrame(3)
-        self.controller.getNextModFrame().update_Data(modController=self, next=True,previous= True,title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
+        frameName=self.controller.createModFrame(3,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= True,title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
         #Greetings Page
-        frameName=self.controller.createModFrame(0)
-        self.controller.getNextModFrame().update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
+        frameName=self.controller.createModFrame(0,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     #Callback der Mod_Frames
     def callBack(self, actionNumer):
         switcher={
             80: lambda: self.getSettingsFromFrame(),
-            99: lambda: self.findSimilarNames(),
+            90: lambda: self.goToNext(),
+            99: lambda: self.startSearch(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
             
@@ -38,7 +41,15 @@ class module_distoredLabel():
     def exec(self):
         self.createFrames()
         self.log=self.controller.getLog()
-        self.controller.showModFrame(next=True)
+        self.visible=True
+        self.controller.showModFrame(__class__,next=True)
+
+    def startSearch(self):
+        thread = threading.Thread(target=self.findSimilarNames, args=())
+        thread.daemon = True
+        thread.start()
+        self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
+
 
     def findSimilarNames(self):
         tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.getSettings().get("LevLower")))
@@ -67,17 +78,24 @@ class module_distoredLabel():
         self.settings=settings
 
     def getSettingsFromFrame(self):
-        self.settings=self.controller.getActiveModFrame().getCanvasAsDict()
+        self.settings=self.controller.getActiveModFrame(__class__).getCanvasAsDict()
 
     def leaveMod(self):
-       self.controller.deleteModFrame()
+       print(__name__+": Module finished")
+       self.controller.deleteModFrame(__class__)
+       if(self.visible):
+            self.controller.getFrameByName("frame_modules").showNextMod()
        self.clean()
-       self.controller.getFrameByName("frame_modules").showNextMod()
+
+    def goToNext(self):
+        self.controller.getFrameByName("frame_modules").showNextMod()
+        self.visible=False
        
 
     def clean(self):
         self.currentGroup=0
         self.log = None
+        self.visible=False
         self.listGroups=[]
 
 
@@ -98,7 +116,7 @@ class module_distoredLabel():
  
 
     # def displayPrev(self):
-    #     frame=__name__+"_4"
+    #     frame=__class__+"_4"
     #     selected= self.controller.getFrameByName(frame).getSelected()
     #     if(selected):
     #         name=self.listGroups[self.currentGroup].getList()[selected[0]]
@@ -112,7 +130,7 @@ class module_distoredLabel():
         
     #     # not Main
     # def displayNext(self):
-    #     frame=__name__+"_4"
+    #     frame=__class__+"_4"
     #     selected= self.controller.getFrameByName(frame).getSelected()
     #     if(selected):
     #         name=self.listGroups[self.currentGroup].getList()[selected[0]]
@@ -130,7 +148,7 @@ class module_distoredLabel():
     #     indexOfName=None
     #     if(item.getName() in item.getList()):
     #         indexOfName= item.getList().index(item.getName())
-    #     self.controller.getFrameByName(__name__+"_4").update_Data(list=item.getList(), selected=indexOfName)
+    #     self.controller.getFrameByName(__class__+"_4").update_Data(list=item.getList(), selected=indexOfName)
 
 
     #     # not Main

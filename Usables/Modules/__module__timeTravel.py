@@ -1,4 +1,5 @@
 from typing import DefaultDict
+import threading
 import internalModules.logwork as logwork
 #import internalModules.compare as compare
 import internalModules.objects as objects
@@ -14,6 +15,7 @@ class module_timeTravel():
         self.oneDes = "this programm checks for the Inadvertent Time Travel Issue"
         self.desc = "The String Sperator musn´t be part of any Event Name"
         self.log = None
+        self.visible=False
         #EXAMPLE FOR LISTS
         self.occurence = DefaultDict(int)
         self.listGroups = []
@@ -23,29 +25,38 @@ class module_timeTravel():
         # EXAMPLE
     def createFrames(self):
         #Start Programm
-        self.controller.createModFrame(2)
-        self.controller.getNextModFrame().update_Data(
-            modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Time Travelers", button_command=99)
+        self.controller.createModFrame(2,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(
+            modController=self, previous=True, title=self.getName(), button1_text="Search for Time Travelers", button1_command=99, button2_text="Go To Next Module", button2_command =90)
+        self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
         #Settings
-        self.controller.createModFrame(3)
-        self.controller.getNextModFrame().update_Data(modController=self, next=__name__+"_3", previous=True, title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
+        self.controller.createModFrame(3,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True, previous=True, title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
         #Greetings Page
-        self.controller.createModFrame(0)
-        self.controller.getNextModFrame().update_Data(
-            modController=self, next=__name__+"_2", previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
+        self.controller.createModFrame(0,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(
+            modController=self, next=True, previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     #TODO IMPLEMENT
     def callBack(self, actionNumer):
         switcher = {
             80: lambda: self.getSettingsFromFrame(),
-            99: lambda: self.findTimeTravel(),
+            90: lambda: self.goToNext(),
+            99: lambda: self.startSearch(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
 
     def exec(self):
         self.createFrames()
         self.log = self.controller.getLog()
-        self.controller.showModFrame(next=True)
+        self.visible=True
+        self.controller.showModFrame(__class__,next=True)
+
+    def startSearch(self):
+        thread = threading.Thread(target=self.findTimeTravel, args=())
+        thread.daemon = True
+        thread.start()
+        self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
     def findTimeTravel(self):
         eventtyp = self.settings["eventTyp"]
@@ -121,12 +132,21 @@ class module_timeTravel():
             modErrorList.append(error)
         self.controller.addToErrorList(modErrorList)
 
-    def clean(self):
-        self.occurence = DefaultDict(int)
-        self.currentGroup = 0
-        self.listGroups = []
-        self.log = None
+    def leaveMod(self):
+        print(__name__+": Module finished")
+        self.controller.deleteModFrame(__class__)
+        if(self.visible):
+            self.controller.getFrameByName("frame_modules").showNextMod()
+        self.clean()
 
+    def goToNext(self):
+        self.controller.getFrameByName("frame_modules").showNextMod()
+        self.visible=False
+       
+
+    def clean(self):
+        self.log = None
+        self.visible=False
     def getSettings(self):
         return self.settings
 
@@ -136,10 +156,6 @@ class module_timeTravel():
     def getSettingsFromFrame(self):
         self.settings = self.controller.getActiveModFrame().getCanvasAsDict()
 
-    def leaveMod(self):
-       self.controller.deleteModFrame()
-       self.clean()
-       self.controller.getFrameByName("frame_modules").showNextMod()
 
     def getName(self):
         return self.name

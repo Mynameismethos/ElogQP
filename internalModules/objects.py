@@ -149,3 +149,8 @@ class error():
         self.classInfo,
         self.autoRepair,
         self.fixedVal))
+        
+class module():
+    def __init__(self):
+        self.modFramesNext =[]
+        self.modFramesPrev =[]

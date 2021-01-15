@@ -164,13 +164,13 @@ class frame_mod_canvas(tk.Frame):
     def set_Prev_Frame(self):
         if self.controller.hasPrevFrame():
             prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(prev=True)])
+                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,prev=True)])
             prev_button.pack(side="left", fill="both")
         # No Need to Change
 
     def set_Next_Frame(self, nextFrame):
         next_Button = Button(
-            self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(next=True)])
+            self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,next=True)])
         next_Button.pack(side="right", fill="both")
 
     def set_Controller(self, modController):

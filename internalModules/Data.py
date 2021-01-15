@@ -4,5 +4,4 @@ error_Hash_Dict ={}
 log = []
 frames = {}
 modFrames = {}
-modFramesNext =[]
-modFramesPrev =[]
+activeMod={}

@@ -8,7 +8,6 @@ def levinRatio(list, lowerBound):
         for y in range(x+1, len(list)):
                  ratio = fuzz.ratio(str.lower(list[x]), str.lower(list[y]))
                  if(ratio > lowerBound):
-                     print("comparing: "+list[x]+" and " + list[y])
                      closeList.append(objects.tupel(list[x], list[y], ratio))
     closeList.sort()
     return closeList
