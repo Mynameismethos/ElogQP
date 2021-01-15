@@ -141,6 +141,7 @@ class module_FormBased():
 
     def leaveMod(self):
        self.controller.deleteModFrame()
+       self.clean()
        self.controller.getFrameByName("frame_modules").showNextMod()
 
     def getSettings(self):

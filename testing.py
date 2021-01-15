@@ -6,11 +6,10 @@ import pm4py
 
 class test():
     def __init__(self, *args,):
-        self.log = loadLogByName("LOGEDV.xes")
-        print(self.log[100][2]["concept:name"])
-        print(len(self.log))
-        print(len(self.log[0][2].index("kategorieseren")))
-
+       list =[1,2,3,4]
+       tupel=(*list, )
+       print(hash(tupel ))
+       
 
 def loadLogByName(name):
     try:

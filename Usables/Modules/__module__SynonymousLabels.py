@@ -165,4 +165,10 @@ class module_synonymousLabels():
 
     def leaveMod(self):
         self.controller.deleteModFrame()
+        self.clean()
         self.controller.getFrameByName("frame_modules").showNextMod()
+
+    def clean(self):
+        self.listGroups = []
+        self.currentGroup = int(0)
+        self.events = []

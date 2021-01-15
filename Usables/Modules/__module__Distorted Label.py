@@ -71,8 +71,14 @@ class module_distoredLabel():
 
     def leaveMod(self):
        self.controller.deleteModFrame()
+       self.clean()
        self.controller.getFrameByName("frame_modules").showNextMod()
-       self.currentGroup=0
+       
+
+    def clean(self):
+        self.currentGroup=0
+        self.log = None
+        self.listGroups=[]
 
 
     def getName(self):

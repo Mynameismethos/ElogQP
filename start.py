@@ -81,7 +81,10 @@ class Display(tk.Tk):
     def addToErrorList(self, modErrorList):
         #Check if Entrys already Exist
         for x in modErrorList:
-            data.error_List.append(x)
+            hash_x= hash(x)
+            if(hash_x not in data.error_Hash_Dict):
+                data.error_List.append(x)
+                data.error_Hash_Dict[hash_x]=x
 
     def createModFrame(self, number):
         frame = data.modFrames[number]

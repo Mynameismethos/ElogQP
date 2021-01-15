@@ -98,16 +98,16 @@ class module_timeTravel():
                     first = y
                 elif(first and self.log[x][y][eventtyp] == tupel.two):
                     second = y
-                    id = uuid.uuid4()
+                    #id = uuid.uuid4()
                     gOne = objects.Group(tupel.one)
                     #TODO One Error
                     #TODO make Tupel The Error Parent
                     gOne.set(event=first, trace=x, value=self.log[x][first][eventTime],
-                             typ=eventTime, name=id)
+                             typ=eventTime)
 
                     gTwo = objects.Group(tupel.two)
                     gTwo.set(event=second, trace=x, value=self.log[x][second][eventTime],
-                             typ=eventTime, name=id)
+                             typ=eventTime)
                     list.append(gOne)
                     list.append(gTwo)
         return list
@@ -138,9 +138,8 @@ class module_timeTravel():
 
     def leaveMod(self):
        self.controller.deleteModFrame()
+       self.clean()
        self.controller.getFrameByName("frame_modules").showNextMod()
-
-       self.currentGroup = 0
 
     def getName(self):
         return self.name

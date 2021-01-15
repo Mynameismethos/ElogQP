@@ -1,4 +1,5 @@
 from tkinter import EventType
+from typing import Iterable
 
 
 class Group():
@@ -7,7 +8,7 @@ class Group():
         self.name = None
         self.trace = None
         self.event = None
-        self.typ = None
+        self.typ = None 
         self.value = None
 
     def set(self, event=None,
@@ -120,3 +121,31 @@ class error():
             self.autoRepair = autoRepair
         if(fixedVal != None):
             self.fixedVal = fixedVal
+
+    def __eq__(self, other):
+        if(not self or not other): return False
+        return (self.trace == other.trace and 
+        self.event == other.event  and 
+        self.parent== other.parent and 
+        self.desc == other.desc  and 
+        self.dictkey == other.dictkey  and 
+        self.dictVal == other.dictVal  and 
+        self.errorModul == other.errorModul  and 
+        self.classInfo == other.classInfo  and 
+        self.autoRepair == other.autoRepair  and 
+        self.fixedVal == other.fixedVal  )
+
+    def __hash__(self):
+        dictVal= self.dictVal
+        if(isinstance(self.dictVal, list)):
+            dictVal= "".join(*self.dictVal)
+
+        return hash((self.trace,
+        self.event,
+        self.parent,
+        self.dictkey,
+        dictVal,
+        #self.errorModul,
+        self.classInfo,
+        self.autoRepair,
+        self.fixedVal))
