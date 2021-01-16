@@ -1,14 +1,13 @@
-
-
 import os
 import pm4py
 
 
 class test():
     def __init__(self, *args,):
-       list =[1,2,3,4]
-       tupel=(*list, )
-       print(hash(tupel ))
+       list =["a",2,3,4]
+       retrunValue=all_Subgroups(list,5)
+       for x in retrunValue:
+        print(x)
        
 
 def loadLogByName(name):
@@ -23,4 +22,8 @@ def loadLogByName(name):
         print(self.test)
 
 
+
+
 app = test()
+
+

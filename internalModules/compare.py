@@ -44,3 +44,29 @@ def createGroups(tupelList, typ):
             groupeID[tupel.two] = len(groupeList)
             groupeList.append(g)
     return groupeList
+
+
+def all_Subgroups(list, minlength):
+    group_List=[]
+    newGroup=[]
+    for x in list:
+        group_List.append(x)
+        newGroup.append([x])
+
+    finalGroup=[]
+    while(len(newGroup[0])<len(list)):
+        newGroup=inner(newGroup,group_List)
+        finalGroup.extend(newGroup)
+    x=finalGroup[0]
+    while(len(x)<minlength):
+        finalGroup.pop(0)
+        if(not finalGroup): return []
+        x=finalGroup[0]
+    return finalGroup
+
+def inner(listOfGroup, list):
+    newGroup=[]
+    for element in listOfGroup:
+        for value in list[list.index(element[-1])+1:]:
+            newGroup.append(element + [value])
+    return newGroup
