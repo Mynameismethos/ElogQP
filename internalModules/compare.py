@@ -2,26 +2,44 @@ from fuzzywuzzy import fuzz
 import internalModules.objects as objects
 
 
-def levinRatio(list, lowerBound):
+def levinRatio(dict, lowerBound, maxRatio=None):
+    if(not dict): return []
+    subGroups = all_Subgroups(list(dict.keys()), 2, maxlen=2)
+
+    for x in reversed(subGroups):
+        occurenceRatio = min(dict[x[0]], dict[x[1]]) / \
+            max(dict[x[0]], dict[x[1]])
+        if(occurenceRatio > maxRatio):
+            subGroups.remove(x)
+
     closeList = []
-    for x in range(len(list)-1):
-        for y in range(x+1, len(list)):
-                 ratio = fuzz.ratio(str.lower(list[x]), str.lower(list[y]))
-                 if(ratio > lowerBound):
-                     closeList.append(objects.tupel(list[x], list[y], ratio))
+    for x in subGroups:
+        ratio = fuzz.ratio(str.lower(x[0]), str.lower(x[1]))
+        if(ratio > lowerBound):
+            closeList.append(objects.tupel(x[0], x[1], ratio))
     closeList.sort()
     return closeList
 
 
-def tokenRatio(list, lowerBound):
+def tokenRatio(dict, lowerBound, maxRatio=1):
+    if(not dict): return []
+
+    subGroups = all_Subgroups(list(dict.keys()), 2, maxlen=2)
+
+    for x in reversed(subGroups):
+        occurenceRatio = min(dict[x[0]], dict[x[1]]) / \
+            max(dict[x[0]], dict[x[1]])
+        if(occurenceRatio > maxRatio):
+            subGroups.remove(x)
     closeList = []
-    for x in range(len(list)-1):
-        for y in range(x+1, len(list)):
-            ratio = fuzz.token_set_ratio(
-                str.lower(list[x]), str.lower(list[y]))
-            if(ratio > lowerBound):
-                print("comparing: "+list[x]+" and " + list[y])
-                closeList.append(objects.tupel(list[x], list[y], ratio))
+
+    for x in subGroups:
+        ratio = fuzz.token_set_ratio(
+            str.lower(x[0]), str.lower(x[1]))
+        if(ratio > lowerBound):
+            print("comparing: "+x[0]+" and " + x[1])
+
+            closeList.append(objects.tupel(x[0], x[1], ratio))
     closeList.sort()
     return closeList
 
@@ -46,26 +64,34 @@ def createGroups(tupelList, typ):
     return groupeList
 
 
-def all_Subgroups(list, minlength):
-    group_List=[]
-    newGroup=[]
+def all_Subgroups(list, minlength, maxlen=None):
+    group_List = []
+    newGroup = []
+
+    if(len(list)<minlength):return[]
+
+    if(not maxlen):
+        maxlen = len(list)
+
     for x in list:
         group_List.append(x)
         newGroup.append([x])
 
-    finalGroup=[]
-    while(len(newGroup[0])<len(list)):
-        newGroup=inner(newGroup,group_List)
+    finalGroup = []
+    while(len(newGroup[0]) < maxlen):
+        newGroup = inner(newGroup, group_List)
         finalGroup.extend(newGroup)
-    x=finalGroup[0]
-    while(len(x)<minlength):
+    x = finalGroup[0]
+    while(len(x) < minlength):
         finalGroup.pop(0)
-        if(not finalGroup): return []
-        x=finalGroup[0]
+        if(not finalGroup):
+            return []
+        x = finalGroup[0]
     return finalGroup
 
+
 def inner(listOfGroup, list):
-    newGroup=[]
+    newGroup = []
     for element in listOfGroup:
         for value in list[list.index(element[-1])+1:]:
             newGroup.append(element + [value])

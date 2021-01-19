@@ -6,7 +6,7 @@ import internalModules.objects as objects
 class module_distoredLabel():
     def __init__(self, controller):
         self.controller= controller
-        self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"eventResources":"org:resource", "eventTyp":"concept:name"}
+        self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name"}
         self.log = ""
         self.name = "Distorted Label"
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "
@@ -18,14 +18,14 @@ class module_distoredLabel():
 
     def createFrames(self):
         #Start Programm
-        frameName=self.controller.createModFrame(2,__class__)
+        self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Distored Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
         self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
         #Settings
-        frameName=self.controller.createModFrame(3,__class__)
+        self.controller.createModFrame(3,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= True,title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
         #Greetings Page
-        frameName=self.controller.createModFrame(0,__class__)
+        self.controller.createModFrame(0,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     #Callback der Mod_Frames
@@ -40,7 +40,7 @@ class module_distoredLabel():
     #Einstiegspunkt des Modules
     def exec(self):
         self.createFrames()
-        self.log=self.controller.getLog(request=[self.settings["eventResources"],self.settings["eventTyp"]])
+        self.log=self.controller.getLog()
         self.visible=True
         self.controller.showModFrame(__class__,next=True)
 
@@ -52,10 +52,10 @@ class module_distoredLabel():
 
 
     def findSimilarNames(self):
-        tupelListAc=compare.levinRatio(logwork.getAllActivityAsList(self.log),int(self.settings["LevLowerEvents"]))
+        tupelListAc=compare.levinRatio(logwork.getAllActivityAsDict(self.log),int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
         groupListAc= compare.createGroups(tupelListAc,self.settings["eventTyp"])
 
-        tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsList(self.log),int(self.settings["LevLowerResources"]))
+        tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsDict(self.log),int(self.settings["LevLowerResources"]),maxRatio=float(self.settings["occurrenceRatio"]))
         groupListRe= compare.createGroups(tupelListRe,self.settings["eventResources"])
         self.listGroups=groupListAc+groupListRe
         self.addToErrorList(self.listGroups)

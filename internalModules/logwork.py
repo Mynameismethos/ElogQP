@@ -12,12 +12,12 @@ def getAllActivityAsList(log):
     return events
 
 
-def getAllResources(log):
+def getAllResourcesAsDict(log):
     resources = attributes_filter.get_attribute_values(log, "org:resource")
     return resources
 
 def getAllResourcesAsList(log):
     resources =[]
-    for key in getAllResources(log):
+    for key in getAllResourcesAsDict(log):
         resources.append(key)
     return resources

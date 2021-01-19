@@ -152,7 +152,7 @@ class module_synonymousLabels():
         return self.desc
 
     def getSettingsFromFrame(self):
-        self.settings=self.controller.getActiveModFrame().getCanvasAsDict()
+        self.settings=self.controller.getActiveModFrame(__class__).getCanvasAsDict()
 
     def getSettings(self):
         return self.settings

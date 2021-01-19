@@ -48,7 +48,7 @@ class module_timeTravel():
 
     def exec(self):
         self.createFrames()
-        self.log = self.controller.getLog(request=[self.settings["eventTyp"],self.settings["eventTime"]])
+        self.log = self.controller.getLog()
         self.visible=True
         self.controller.showModFrame(__class__,next=True)
 
@@ -154,7 +154,7 @@ class module_timeTravel():
         self.settings = settings
 
     def getSettingsFromFrame(self):
-        self.settings = self.controller.getActiveModFrame().getCanvasAsDict()
+        self.settings = self.controller.getActiveModFrame(__class__).getCanvasAsDict()
 
 
     def getName(self):

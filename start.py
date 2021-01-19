@@ -141,21 +141,8 @@ class Display(tk.Tk):
         data.error_List=[]
         data.error_Hash_Dict={}
 
-    def getLog(self, request=[]):
-        filtert_log=data.log
-        if(request):
-            for trace in filtert_log:
-                for event in trace:
-                    filtert_dict={}
-                    for key in request:
-                        if key in event:
-                            filtert_dict[key]=event[key]
-                    event._dict=filtert_dict
-                    
-
-
-
-        return filtert_log
+    def getLog(self):
+        return data.log
 
     def setLog(self, log, button=None,name=None):
         if(button):
