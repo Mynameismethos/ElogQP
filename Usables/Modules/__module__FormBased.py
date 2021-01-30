@@ -18,7 +18,9 @@ class module_FormBased():
         ## Settings
         self.settings = {"eventTime": "time:timestamp",
                          "eventTyp": "concept:name",
-                         "String Seperator": "//://",}
+                         "String Seperator": "//://",
+                         "minimum appearances" : 20}
+
 
         #TODO IMPLEMENT
         # EXAMPLE
@@ -97,8 +99,13 @@ class module_FormBased():
         print("No more elements")
         dictList=[]
         for key, value in groupDict.items():
-            dictList.append([key.split(self.settings["String Seperator"]),value])
+            #FilterRareGroups
+            if(value>=int(self.settings["minimum appearances"])):
+                dictList.append([key.split(self.settings["String Seperator"]),value])
        
+
+
+
         
 
         #GroupDict is now a comprehensiv List of simultaneous Events
@@ -149,7 +156,7 @@ class module_FormBased():
                 if(elementsinTrace):
                     if(self.settings["String Seperator"].join(elementsinTrace) not in errorDict):
                          error_parent = objects.error()
-                         error_parent.set(trace="global", desc="TODO",
+                         error_parent.set(trace="global", desc="Traces with corresponding Part of Form",
                                 parent=error_form, dictVal=self.settings["String Seperator"].join(elementsinTrace), errorModul=self)
                          errorDict[self.settings["String Seperator"].join(elementsinTrace)] = error_parent
                          modErrorList.append(error_parent)
