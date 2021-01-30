@@ -68,7 +68,7 @@ class module_timeTravel():
                 self.occurence[elOne+self.getSettings()
                                ["String Seperator"]+elTwo] += 1
         #Tupellist with pair with very rare Ordering
-        tupellist = self.createTupels()
+        tupellist = self.findRare()
         
         for t in tupellist:
             #find Occurence of this Tupel
@@ -77,7 +77,7 @@ class module_timeTravel():
         self.createErrorList(self.listGroups)
         self.leaveMod()
 
-    def createTupels(self):
+    def findRare(self):
 
         tupellist = []
         ratio= float(self.settings["checkRatio"])

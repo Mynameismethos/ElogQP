@@ -1,5 +1,9 @@
 import threading
+import operator
+from typing import DefaultDict
 import internalModules.objects as objects
+import internalModules.compare as compare
+
 
 
 class module_FormBased():
@@ -13,23 +17,24 @@ class module_FormBased():
         self.visible=False
         ## Settings
         self.settings = {"eventTime": "time:timestamp",
-                         "eventTyp": "concept:name"}
+                         "eventTyp": "concept:name",
+                         "String Seperator": "//://",}
 
         #TODO IMPLEMENT
         # EXAMPLE
 
     def createFrames(self):
         #Start Programm
-        frameName = self.controller.createModFrame(2,__class__)
+        self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(
             modController=self, previous=True, title=self.getName(), button1_text="Search for Events from Forms", button1_command=99, button2_text="Go To Next Module", button2_command =90)
         self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
         #Settings
-        frameName = self.controller.createModFrame(3,__class__)
+        self.controller.createModFrame(3,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True, previous=True,
                                                       title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
         #Greetings Page
-        frameName = self.controller.createModFrame(0,__class__)
+        self.controller.createModFrame(0,__class__)
         self.controller.getNextModFrame(__class__).update_Data(
             modController=self, next=True, previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
@@ -57,54 +62,73 @@ class module_FormBased():
     def search(self):
         eventTime = self.settings["eventTime"]
         groupList = []
-        groupDict = {}
+        groupDict = DefaultDict (int)
         eventTyp = self.settings["eventTyp"]
         for x in range(len(self.log)):
             blue = self.log[x]
-            traceList = sorted(blue._list, key=lambda x: x[eventTime])
-            for y in range(len(traceList)-1):
-                elOne = traceList[y]
-                elTwo = traceList[y+1]
-                elOneName = elOne._dict[eventTyp]
-                elTwoName = elTwo._dict[eventTyp]
 
-                if(elOne[eventTime] == elTwo[eventTime]):
-                    #test if already in a group:
-                    # elOne in groupDict and elTwo in groupDict
-                    if(elOneName in groupDict and elTwoName in groupDict):
-                        #test if the same:
-                        gOne = groupDict[elOneName]
-                        gTwo = groupDict[elTwoName]
-                        if(gOne == gTwo):
-                            ##sameGroup, Do Nothing
-                            pass
-                        else:
-                            #Add Group Two to Group One
-                            for x in groupList[gTwo].getList():
-                                groupDict[x] = gOne
-                                groupList[gOne].addToList(x)
-                            groupList[gTwo] = None
-                    elif(elOneName in groupDict):
-                        #Add elTwo to Group One
-                        groupList[groupDict[elOneName]].addToList(elTwoName)
-                    elif(elTwoName in groupDict):
-                        #Add elTwo to Group One
-                        groupList[groupDict[elTwoName]].addToList(elOneName)
-                    else:
-                        #Create New Group and add to Dict And List
-                        g = objects.Group([elOneName, elTwoName])
-                        index = len(groupList)
+            traceList = sorted(blue._list, key=lambda x: x[eventTime])
+            x=traceList[0]
+            g=[]
+            for y in range(len(traceList)-1):
+                if(traceList[y][eventTime]!=x[eventTime]):
+                    if(len(g)>1):
                         groupList.append(g)
-                        groupDict[elOneName] = index
-                        groupDict[elTwoName] = index
-        #GroupList is now a comprehensiv List of simultaneous Events
-        #Clean GroupList
-        groupList = list(filter(None, groupList))
+                    g=[]
+                    x=traceList[y]
+                    g.append(x[eventTyp])
+                elif(traceList[y][eventTime]==x[eventTime]):
+                    g.append(traceList[y][eventTyp])
+
+
+        #
+        for x in range(len(groupList)):
+            groupList[x] = sorted(groupList[x])
+
+        
+        while(groupList):
+            element=groupList[0]
+            allper=compare.all_Subgroups(element,2)
+            f=groupList.count(element)
+            for x in allper:
+                name= self.settings["String Seperator"].join(x)
+                groupDict[name]=+f
+            groupList=list(filter((element).__ne__, groupList))
+        print("No more elements")
+        dictList=[]
+        for key, value in groupDict.items():
+            dictList.append([key.split(self.settings["String Seperator"]),value])
+       
+        
+
+        #GroupDict is now a comprehensiv List of simultaneous Events
+        #refill groupList by finding Relevant Forms
+        groupList=self.preferences(dictList)
+
 
     #TODO set Group Names
         modErrorList = self.createErrorList(groupList)
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
+
+    def preferences(self,dictList):
+        groupList = []
+        #find larges item and longest
+        dictList.sort(key=lambda s : len(s[0]), reverse=True)
+        dictList.sort(key=lambda s : s[1], reverse=True)
+        while(dictList):
+            element = dictList[0][0]
+            g= objects.Group(dictList[0][0])
+            #TODO fill G
+            groupList.append(g)
+            
+            for i in reversed(range(len(dictList))):
+                if (any(el in dictList[i][0] for el in element)):
+                        dictList.pop(i)
+
+                
+
+        return groupList
 
     def createErrorList(self, list):
         modErrorList = []
