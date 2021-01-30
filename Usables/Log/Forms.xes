@@ -52,12 +52,6 @@
 		</event>
 		<event>
 			<string key="org:resource" value="NONE"/>
-			<string key="concept:name" value="Form 4"/>
-			<string key="lifecycle:transition" value="complete"/>
-			<date key="time:timestamp" value="2021-01-19T21:19:53.217+01:00"/>
-		</event>
-		<event>
-			<string key="org:resource" value="NONE"/>
 			<string key="concept:name" value="t10"/>
 			<string key="lifecycle:transition" value="complete"/>
 			<date key="time:timestamp" value="2021-01-19T22:19:53.217+01:00"/>
@@ -142,12 +136,6 @@
 			<string key="concept:name" value="Start T"/>
 			<string key="lifecycle:transition" value="complete"/>
 			<date key="time:timestamp" value="2021-01-20T07:19:53.217+01:00"/>
-		</event>
-		<event>
-			<string key="org:resource" value="NONE"/>
-			<string key="concept:name" value="From 1"/>
-			<string key="lifecycle:transition" value="complete"/>
-			<date key="time:timestamp" value="2021-01-20T08:19:53.217+01:00"/>
 		</event>
 		<event>
 			<string key="org:resource" value="NONE"/>
@@ -13097,18 +13085,6 @@
 		<event>
 			<string key="org:resource" value="NONE"/>
 			<string key="concept:name" value="From 1"/>
-			<string key="lifecycle:transition" value="complete"/>
-			<date key="time:timestamp" value="2021-03-18T19:19:53.217+01:00"/>
-		</event>
-		<event>
-			<string key="org:resource" value="NONE"/>
-			<string key="concept:name" value="Form 2"/>
-			<string key="lifecycle:transition" value="complete"/>
-			<date key="time:timestamp" value="2021-03-18T19:19:53.217+01:00"/>
-		</event>
-		<event>
-			<string key="org:resource" value="NONE"/>
-			<string key="concept:name" value="Form 3"/>
 			<string key="lifecycle:transition" value="complete"/>
 			<date key="time:timestamp" value="2021-03-18T19:19:53.217+01:00"/>
 		</event>

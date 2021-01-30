@@ -130,32 +130,36 @@ class module_FormBased():
 
         return groupList
 
-    def createErrorList(self, list):
+    def createErrorList(self, dictList):
         modErrorList = []
         eventTyp = self.settings["eventTyp"]
-        for element in list:
+        for element in dictList:
             #Create Group Error Object
             error_form = objects.error()
             error_form.set(trace="global", desc="FormBased", dictVal=element.getName(
             ), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error_form)
             #Create Event Error
-            errorDict = {}
-            for event in element.getList():
-                error_event = objects.error()
-                error_event.set(trace="global", desc="TODO",
-                                parent=error_form, dictVal=event, errorModul=self)
-                errorDict[event] = error_event
-                modErrorList.append(error_event)
+            errorDict = {}           
             #Create Instance Error
+            elementSet=set(element.getList())
             for x in range(len(self.log)):
-                for y in range(len(self.log[x])):
-                    if(self.log[x][y][eventTyp] in element.getList()):
-                        parent = errorDict[self.log[x][y][eventTyp]]
-                        error_child = objects.error()
-                        error_child.set(
-                            trace=x, parent=parent, dictVal=self.log[x][y][eventTyp], dictkey=eventTyp, errorModul=self)
-                        modErrorList.append(error_child)
+                eventlist= [u[eventTyp] for u in self.log[x]]
+                elementsinTrace=sorted(list(elementSet.intersection(eventlist)))
+                if(elementsinTrace):
+                    if(self.settings["String Seperator"].join(elementsinTrace) not in errorDict):
+                         error_parent = objects.error()
+                         error_parent.set(trace="global", desc="TODO",
+                                parent=error_form, dictVal=self.settings["String Seperator"].join(elementsinTrace), errorModul=self)
+                         errorDict[self.settings["String Seperator"].join(elementsinTrace)] = error_parent
+                         modErrorList.append(error_parent)
+
+                    parent=errorDict[self.settings["String Seperator"].join(elementsinTrace)]
+                    error_child = objects.error()
+                    error_child.set(
+                        trace=x, parent=parent, dictVal="", dictkey=eventTyp, errorModul=self)
+                    modErrorList.append(error_child)
+
 
         return modErrorList
 
