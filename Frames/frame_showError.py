@@ -73,14 +73,6 @@ class frame_showError(tk.Frame):
             id=self.errorTree.insert(parent=parent, index="end",
                                   iid=counter, text="", values=val)
             parentDict[x]=id
-            
-            #TODO add Repairchild
-            if(x.autoRepair):
-                val = (counter, x.desc, x.trace, x.event,
-                       x.fixedVal, x.errorModul, x.autoRepair)
-                self.errorTree.insert(
-                    parent=counter, index="end", iid=counter+1, text="", values=val)
-                counter += 1
             counter += 1
 
     def filterList(self, list):

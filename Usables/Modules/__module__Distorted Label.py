@@ -66,8 +66,11 @@ class module_distoredLabel():
         modErrorList= []
         for group in list:
             error = objects.error()
-            error.set(trace="Global",dictVal=[group.getList()],dictkey=group.getTyp(), classInfo=0,errorModul=self)
+            error.set(trace="Global",desc="Distored Label: "+ group.getList()[0],dictVal=group.getList()[0],dictkey=group.getTyp(), classInfo=0,errorModul=self)
+            error_fix= objects.error()
+            error_fix.set(trace="Global",desc="proposed Correct Label: "+group.getList()[1],dictVal=[group.getList()],parent=error,dictkey=group.getTyp(), classInfo=0,errorModul=self, autoRepair=True)
             modErrorList.append(error)
+            modErrorList.append(error_fix)
         self.controller.addToErrorList(modErrorList)
 
     def getSettings(self):

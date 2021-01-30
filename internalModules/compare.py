@@ -7,8 +7,8 @@ def levinRatio(dict, lowerBound, maxRatio=None):
     subGroups = all_Subgroups(list(dict.keys()), 2, maxlen=2)
 
     for x in reversed(subGroups):
-        occurenceRatio = min(dict[x[0]], dict[x[1]]) / \
-            max(dict[x[0]], dict[x[1]])
+        x.sort(key= lambda l: dict[l])
+        occurenceRatio = dict[x[0]] / dict[x[1]]
         if(occurenceRatio > maxRatio):
             subGroups.remove(x)
 
@@ -27,8 +27,8 @@ def tokenRatio(dict, lowerBound, maxRatio=1):
     subGroups = all_Subgroups(list(dict.keys()), 2, maxlen=2)
 
     for x in reversed(subGroups):
-        occurenceRatio = min(dict[x[0]], dict[x[1]]) / \
-            max(dict[x[0]], dict[x[1]])
+        x.sort(key= lambda l: dict[l])
+        occurenceRatio = dict[x[0]] / dict[x[1]]
         if(occurenceRatio > maxRatio):
             subGroups.remove(x)
     closeList = []
