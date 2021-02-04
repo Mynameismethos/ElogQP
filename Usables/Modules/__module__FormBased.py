@@ -97,7 +97,7 @@ class module_FormBased():
             f=groupList.count(element)
             for x in allper:
                 name= self.settings["String Seperator"].join(x)
-                groupDict[name]=+f
+                groupDict[name]+=f
             groupList=list(filter((element).__ne__, groupList))
         print("No more elements")
         dictList=[]

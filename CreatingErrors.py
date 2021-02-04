@@ -2,13 +2,14 @@ import os
 import pm4py
 import random
 import string
+import datetime
 
 
 class test():
     def __init__(self, *args,):
         self.log= self.loadLogByName("timeTravel.xes")
-        self.error_pollutedLabels()
-        self.exportLog("pollutedLabels.xes")
+        self.error_collateralEvents()
+        self.exportLog("collateralEvents.xes")
      
 
 
@@ -22,7 +23,16 @@ class test():
                 if(case[event]==triggerEvent):
                     bla="".join(random.choices(string.ascii_uppercase, k=5))
                     case[event]=case[event]+": ID: "+bla
-    
+
+
+    def error_collateralEvents(self):
+        event="concept:name"
+        time="time:timestamp"
+        triggerEvent="Recherchieren"
+        for trace in self.log:
+            for i in range(len(trace)-1):
+                if(trace[i][event]==triggerEvent):
+                    trace[i+1][time]=trace[i][time]+datetime.timedelta(seconds=180)    
 
     def loadLogByName(self,name):
         try:

@@ -45,7 +45,8 @@ class module_Example():
     def exec(self):
         self.createFrames()
         self.log = self.controller.getLog()
-        self.controller.showFrame(__name__+"_1")
+        self.visible=True
+        self.controller.showModFrame(__class__,next=True)
 
     def startSearch(self):
         if(not self.started):

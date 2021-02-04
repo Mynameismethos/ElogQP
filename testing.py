@@ -1,13 +1,20 @@
 import os
 import pm4py
+import internalModules.objects as objects
 
 
 class test():
-    def __init__(self, *args,):
-       list =["a",2,3,4]
-       retrunValue=all_Subgroups(list,5)
-       for x in retrunValue:
-        print(x)
+    def __init__(self, *args):
+        g1= objects.Group([1,2,3])
+        g2= objects.Group([7,2,3])
+        g3= objects.Group([4,2,3])
+        liste=[g1,g2,g3]
+        for x in liste:
+            x.listNames.sort()
+       
+        print(liste)
+
+
        
 
 def loadLogByName(name):
