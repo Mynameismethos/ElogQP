@@ -16,6 +16,7 @@ class module_timeTravel():
         self.desc = "The String Sperator musn´t be part of any Event Name"
         self.log = None
         self.visible=False
+        self.started=False
         #EXAMPLE FOR LISTS
         self.occurence = DefaultDict(int)
         self.listGroups = []
@@ -53,10 +54,12 @@ class module_timeTravel():
         self.controller.showModFrame(__class__,next=True)
 
     def startSearch(self):
-        thread = threading.Thread(target=self.findTimeTravel, args=())
-        thread.daemon = True
-        thread.start()
-        self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
+        if(not self.started):
+            self.started=True
+            thread = threading.Thread(target=self.findTimeTravel, args=())
+            thread.daemon = True
+            thread.start()
+            self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
     def findTimeTravel(self):
         eventTyp = self.settings["eventTyp"]
@@ -147,6 +150,8 @@ class module_timeTravel():
     def clean(self):
         self.log = None
         self.visible=False
+        self.started=False
+
     def getSettings(self):
         return self.settings
 

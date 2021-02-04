@@ -1,4 +1,5 @@
 import internalModules.objects as objects
+import threading
 #TODO change name
 #TODO Change Desc
 
@@ -13,6 +14,7 @@ class module_Example():
         #EXAMPLE FOR LISTS
         self.listGroups = []
         self.currentGroup = int(0)
+        self.started=False
         ## Settings
         self.settings = {"Setting": 90}
 
@@ -20,26 +22,23 @@ class module_Example():
         #TODO IMPLEMENT
         # EXAMPLE
     def createFrames(self):
-        #Greetings Page
-        frameName = self.controller.createModFrame(0, __name__+"_1")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, next=__name__+"_2", previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
-        #Settings
-        frameName = self.controller.createModFrame(3, __name__+"_2")
-        self.controller.getFrameByName(frameName).update_Data(modController=self, next=__name__+"_3", previous=__name__ +
-                                                              "_1", title=self.getName(), canDict=self.getSettings(), button1_text="Save", button1_command=1)
         #Start Programm
-        frameName = self.controller.createModFrame(2, __name__+"_3")
-        self.controller.getFrameByName(frameName).update_Data(
-            modController=self, previous=__name__+"_2", title=self.getName(), button_text="Search for Distored Labels", button_command=99)
+        self.controller.createModFrame(2,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Distored Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
+        self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
+        #Settings
+        self.controller.createModFrame(3,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= True,title=self.getName(), canDict=self.getSettings(), button3_text="Save", button3_command=80)
+        #Greetings Page
+        self.controller.createModFrame(0,__class__)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     #TODO IMPLEMENT
     def callBack(self, actionNumer):
-        switcher = {
-
-            80: lambda: self.displayPrev(__name__+"_4"),
-            81: lambda: self.displayNext(__name__+"_4"),
-            99: lambda: self.search(),
+        switcher={
+            80: lambda: self.getSettingsFromFrame(),
+            90: lambda: self.goToNext(),
+            99: lambda: self.startSearch(),
         }
         switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
 
@@ -48,12 +47,13 @@ class module_Example():
         self.log = self.controller.getLog()
         self.controller.showFrame(__name__+"_1")
 
-    def search(self):
-
-
-        modErrorList=self.createErrorList(self.listGroups)
-        self.controller.addToErrorList(modErrorList)
-        self.leaveMod()
+    def startSearch(self):
+        if(not self.started):
+            self.started=True
+            thread = threading.Thread(target=self.findSimilarNames, args=())
+            thread.daemon = True
+            thread.start()
+            self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
    #TODO IMPLEMENT Create Error Objects
     def createErrorList(self, list):
@@ -68,24 +68,33 @@ class module_Example():
  
   
     #TODO IMPLEMENT set Parameter to  start
-    def clean(self): 
+    def clean(self):
         self.log = None
+        self.visible=False
+        self.started=False
 
 
     ##STOP IMPLEMENTING
-    def leaveMod(self):
-       self.controller.deleteModFrame()
-       self.controller.getFrameByName("frame_modules").showNextMod()
-
     def getSettings(self):
         return self.settings
 
     def setSettings(self, settings):
         self.settings = settings
 
-    def getSettingsFromFrame(self,settingPage):
-        self.settings = self.controller.getFrameByName(
-            __name__+"_"+settingPage).getSettings()
+    def getSettingsFromFrame(self):
+        self.settings=self.controller.getActiveModFrame(__class__).getCanvasAsDict()
+
+    def leaveMod(self):
+       print(__name__+": Module finished")
+       self.controller.deleteModFrame(__class__)
+       if(self.visible):
+            self.controller.getFrameByName("frame_modules").showNextMod()
+       self.clean()
+
+    def goToNext(self):
+        self.controller.getFrameByName("frame_modules").showNextMod()
+        self.visible=False
+    
 
     def getName(self):
         return self.name

@@ -12,6 +12,7 @@ class module_distoredLabel():
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "
         #TODO change 
         self.visible=False
+        self.started=False
         self.desc = ""
         self.listGroups=[]
         self.currentGroup=int(0)
@@ -45,10 +46,12 @@ class module_distoredLabel():
         self.controller.showModFrame(__class__,next=True)
 
     def startSearch(self):
-        thread = threading.Thread(target=self.findSimilarNames, args=())
-        thread.daemon = True
-        thread.start()
-        self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
+        if(not self.started):
+            self.started=True
+            thread = threading.Thread(target=self.findSimilarNames, args=())
+            thread.daemon = True
+            thread.start()
+            self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
 
     def findSimilarNames(self):
@@ -73,9 +76,9 @@ class module_distoredLabel():
             modErrorList.append(error_fix)
         self.controller.addToErrorList(modErrorList)
 
+    
     def getSettings(self):
         return self.settings
-
 
     def setSettings(self, settings):
         self.settings=settings
@@ -99,6 +102,7 @@ class module_distoredLabel():
         self.currentGroup=0
         self.log = None
         self.visible=False
+        self.started=False
         self.listGroups=[]
 
 

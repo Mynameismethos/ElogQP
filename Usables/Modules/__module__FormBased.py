@@ -15,6 +15,7 @@ class module_FormBased():
         self.desc = ""
         self.log = None
         self.visible=False
+        self.started=False
         ## Settings
         self.settings = {"eventTime": "time:timestamp",
                          "eventTyp": "concept:name",
@@ -56,10 +57,12 @@ class module_FormBased():
         self.controller.showModFrame(__class__,next=True)
 
     def startSearch(self):
-        thread = threading.Thread(target=self.search, args=())
-        thread.daemon = True
-        thread.start()
-        self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
+        if(not self.started):
+            self.started=True
+            thread = threading.Thread(target=self.search, args=())
+            thread.daemon = True
+            thread.start()
+            self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
     def search(self):
         eventTime = self.settings["eventTime"]
@@ -195,7 +198,7 @@ class module_FormBased():
     def clean(self):
         self.log = None
         self.visible=False
-
+        self.started=False
 
     def getSettings(self):
         return self.settings
