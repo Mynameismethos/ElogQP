@@ -6,7 +6,7 @@ import internalModules.objects as objects
 class module_distoredLabel():
     def __init__(self, controller):
         self.controller= controller
-        self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name"}
+        self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name","maxEvents": 100,"maxRes":100}
         self.log = ""
         self.name = "Distorted Label"
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "
@@ -55,9 +55,22 @@ class module_distoredLabel():
 
 
     def findSimilarNames(self):
-        tupelListAc=compare.levinRatio(logwork.getAllActivityAsDict(self.log),int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
+        eventList=logwork.getAllActivityAsDict(self.log)
+        if(len(eventList)>int(self.settings["maxEvents"])):
+            error_max=objects.error()
+            error_max.set(trace="global",desc="More Events than allowed",dictVal=len(eventList),errorModul=self)
+            self.controller.addToErrorList([error_max])
+            eventList=dict((k, eventList[k]) for k in(list(eventList)[:int(self.settings["maxEvents"])]))
+        
+        resList=logwork.getAllResourcesAsDict(self.log)
+        if(len(resList)>int(self.settings["maxEvents"])):
+            error_max=objects.error()
+            error_max.set(trace="global",desc="More Ressources than allowed",dictVal=len(resList),errorModul=self)
+            self.controller.addToErrorList([error_max])
+            resList=dict((k, resList[k]) for k in(list(resList)[:int(self.settings["maxRes"])])) 
+        
+        tupelListAc=compare.levinRatio(eventList,int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
         groupListAc= compare.createGroups(tupelListAc,self.settings["eventTyp"])
-
         tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsDict(self.log),int(self.settings["LevLowerResources"]),maxRatio=float(self.settings["occurrenceRatio"]))
         groupListRe= compare.createGroups(tupelListRe,self.settings["eventResources"])
         self.listGroups=groupListAc+groupListRe
