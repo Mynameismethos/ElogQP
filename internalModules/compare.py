@@ -1,4 +1,6 @@
 from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+from difflib import SequenceMatcher 
 import internalModules.objects as objects
 
 
@@ -33,16 +35,24 @@ def tokenRatio(dict, lowerBound, maxRatio=1):
             subGroups.remove(x)
     closeList = []
 
+    closeList= tokenRatioTupel(subGroups,lowerBound)
+
+    return closeList
+
+def tokenRatioTupel(subGroups, lowerBound):
+    closeList=[]
     for x in subGroups:
         ratio = fuzz.token_set_ratio(
             str.lower(x[0]), str.lower(x[1]))
         if(ratio > lowerBound):
-            print("comparing: "+x[0]+" and " + x[1])
-
             closeList.append(objects.tupel(x[0], x[1], ratio))
     closeList.sort()
     return closeList
 
+def largestSubstring(element):
+    result = SequenceMatcher(None,element[0],element[1]).find_longest_match(0,len(element[0]),0,len(element[1]))
+    string=element[0][result.a:result.a+result.size]
+    return string
 
 def createGroups(tupelList, typ):
     groupeID = {}
@@ -90,9 +100,11 @@ def all_Subgroups(list, minlength, maxlen=None):
     return finalGroup
 
 
+
 def inner(listOfGroup, list):
     newGroup = []
     for element in listOfGroup:
         for value in list[list.index(element[-1])+1:]:
             newGroup.append(element + [value])
     return newGroup
+

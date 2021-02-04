@@ -11,13 +11,19 @@
             "request": "launch",
             "program": "${workspaceFolder}/start.py",
             "console": "integratedTerminal"
-        }
-
+        },
         {
             "name": "Python: Test",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/testing.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Create Error",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/CreatingErrors.py",
             "console": "integratedTerminal"
         }
     ]
