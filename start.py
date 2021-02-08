@@ -1,6 +1,6 @@
 from internalModules.Frame_Controller import Frame_Controller
-import internalModules.loadmodules as loadmodules
-import internalModules.loadLog as loadLog
+from internalModules.loadmodules import *
+from internalModules.loadLog import *
 import internalModules.Data as dataBase
 
 
@@ -8,7 +8,7 @@ import internalModules.Data as dataBase
 class Display(Frame_Controller):
     def __init__(self, *args, **kwargs):
         self.data=dataBase
-        self.data.modFrames = loadmodules.loadFrames()
+        self.data.modFrames = loadFrames()
         Frame_Controller.__init__(self, *args, **kwargs)
 
         
@@ -23,15 +23,15 @@ class Display(Frame_Controller):
 
 
     def get_xes_file_list(self):
-        list = loadLog.getAllLogs()
+        list = getAllLogs()
         self.getFrameByName("frame_start").updateData(list)
 
     def import_xes_Log(self, button, name):
-        self.data.log = loadLog.loadLogByName(self,name,button)
+        self.data.log = loadLogByName(self,name,button)
 
 
     def importModule(self, button):
-        self.data.module_List = loadmodules.loadmodules(self)
+        self.data.module_List = loadmodules(self)
         for module in self.data.module_List:
             print(
                 "This Module is called: '"

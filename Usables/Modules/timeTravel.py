@@ -1,10 +1,7 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.logwork as logwork
-import internalModules.compare as compare
-import internalModules.objects as objects
+from internalModules.objects import *
 
 from typing import DefaultDict
-import threading
 
 
 class module_timeTravel(ModuleFiles):
@@ -68,9 +65,9 @@ class module_timeTravel(ModuleFiles):
             key_opposite=elTwo+self.settings["String Seperator"]+elOne
             if key_opposite in self.occurence:
                 if(self.occurence[key]/ self.occurence[key_opposite] < ratio):
-                    tupellist.append(objects.tupel(elOne, elTwo, self.occurence[key]/ self.occurence[key_opposite]))
+                    tupellist.append(tupel(elOne, elTwo, self.occurence[key]/ self.occurence[key_opposite]))
                 elif(self.occurence[key_opposite]/ self.occurence[key] < ratio):
-                    tupellist.append(objects.tupel(elTwo, elOne, self.occurence[key_opposite]/ self.occurence[key]))
+                    tupellist.append(tupel(elTwo, elOne, self.occurence[key_opposite]/ self.occurence[key]))
             
             self.occurence.pop(key,None)
             self.occurence.pop(key_opposite,None)
@@ -91,13 +88,13 @@ class module_timeTravel(ModuleFiles):
                 elif(first and self.log[x][y][eventTyp] == tupel.two):
                     second = y
                     #id = uuid.uuid4()
-                    gOne = objects.Group(tupel.one)
+                    gOne = Group(tupel.one)
                     #TODO One Error
                     #TODO make Tupel The Error Parent
                     gOne.set(event=first, trace=x, value=self.log[x][first][eventTime],
                              typ=eventTime)
 
-                    gTwo = objects.Group(tupel.two)
+                    gTwo = Group(tupel.two)
                     gTwo.set(event=second, trace=x, value=self.log[x][second][eventTime],
                              typ=eventTime)
                     list.append(gOne)
@@ -107,7 +104,7 @@ class module_timeTravel(ModuleFiles):
     def createErrorList(self, list):
         modErrorList = []
         for element in list:
-            error = objects.error()
+            error = error()
             error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
             ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error)

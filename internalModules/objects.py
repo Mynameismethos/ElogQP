@@ -1,7 +1,3 @@
-from tkinter import EventType
-from typing import Iterable
-
-
 class Group():
     def __init__(self, list):
         self.listNames = list

@@ -1,7 +1,6 @@
 from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
 from difflib import SequenceMatcher 
-import internalModules.objects as objects
+from internalModules.objects import *
 
 
 def levinRatio(dict, lowerBound, maxRatio=None):
@@ -18,7 +17,7 @@ def levinRatio(dict, lowerBound, maxRatio=None):
     for x in subGroups:
         ratio = fuzz.ratio(str.lower(x[0]), str.lower(x[1]))
         if(ratio > lowerBound):
-            closeList.append(objects.tupel(x[0], x[1], ratio))
+            closeList.append(tupel(x[0], x[1], ratio))
     closeList.sort()
     return closeList
 
@@ -45,7 +44,7 @@ def tokenRatioTupel(subGroups, lowerBound):
         ratio = fuzz.token_set_ratio(
             str.lower(x[0]), str.lower(x[1]))
         if(ratio > lowerBound):
-            closeList.append(objects.tupel(x[0], x[1], ratio))
+            closeList.append(tupel(x[0], x[1], ratio))
     closeList.sort()
     return closeList
 
@@ -66,7 +65,7 @@ def createGroups(tupelList, typ):
         elif (groupeID.get(tupel.two)):
             groupeList[groupeID.get(tupel.two)].addToList(tupel.one)
         else:
-            g = objects.Group([tupel.one, tupel.two])
+            g = Group([tupel.one, tupel.two])
             g.setTyp(typ)
             groupeID[tupel.one] = len(groupeList)
             groupeID[tupel.two] = len(groupeList)

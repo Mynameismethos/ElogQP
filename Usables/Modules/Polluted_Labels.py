@@ -1,8 +1,8 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.objects as objects
-import internalModules.compare as compare
-import internalModules.logwork as logwork
-import threading
+from internalModules.logwork import *
+from internalModules.compare import *
+from internalModules.objects import *
+ 
 
 
 class module_Polluted_Labels(ModuleFiles):
@@ -35,14 +35,14 @@ class module_Polluted_Labels(ModuleFiles):
 
  
     def searchAlg(self):
-        eventNames=logwork.getAllActivityAsList(self.log)
-        subGroups=compare.all_Subgroups(eventNames,2,maxlen=2)
+        eventNames=getAllActivityAsList(self.log)
+        subGroups=all_Subgroups(eventNames,2,maxlen=2)
         popped=subGroups.pop()
         while(popped):
-            sub=compare.largestSubstring(popped)
+            sub=largestSubstring(popped)
             if(len(sub)>int(self.settings["minEventNamelength"])):
                 print(sub)
-                g=objects.Group([])
+                g=Group([])
                 g.value=sub
                 value=0
                 for eName in reversed(eventNames):
@@ -53,7 +53,7 @@ class module_Polluted_Labels(ModuleFiles):
                         if(sub in eName):
                             eventNames.remove(eName)
                     self.listGroups.append(g)
-                    subGroups=compare.all_Subgroups(eventNames,2,maxlen=2)
+                    subGroups=all_Subgroups(eventNames,2,maxlen=2)
             popped=None
             if(subGroups):
                 popped=subGroups.pop()
@@ -68,14 +68,14 @@ class module_Polluted_Labels(ModuleFiles):
     def createErrorList(self, list):
         modErrorList = []
         for element in list:
-            p_error = objects.error()
+            p_error = error()
             p_error.set(trace="global",dictVal=element.getValue(), dictkey=self.settings["eventTyp"], classInfo=0,errorModul=self)
             modErrorList.append(p_error)
             for x in range(len(self.log)):
                 eventlist= [u[self.settings["eventTyp"]] for u in self.log[x]]
                 for eName in eventlist:
                     if(element.getValue() in eName):
-                        c_error= objects.error()
+                        c_error= error()
                         c_error.set(trace=x,parent=p_error,dictVal=eName, dictkey=self.settings["eventTyp"], classInfo=0,errorModul=self)
                         modErrorList.append(c_error) 
         return modErrorList

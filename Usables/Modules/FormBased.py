@@ -1,7 +1,6 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.objects as objects
-import internalModules.compare as compare
-import threading
+from internalModules.compare import *
+from internalModules.objects import *
 from typing import DefaultDict
 
 
@@ -68,7 +67,7 @@ class module_FormBased(ModuleFiles):
         
         while(groupList):
             element=groupList[0]
-            allper=compare.all_Subgroups(element,2)
+            allper=all_Subgroups(element,2)
             f=groupList.count(element)
             for x in allper:
                 name= self.settings["String Seperator"].join(x)
@@ -103,7 +102,7 @@ class module_FormBased(ModuleFiles):
         dictList.sort(key=lambda s : s[1], reverse=True)
         while(dictList):
             element = dictList[0][0]
-            g= objects.Group(dictList[0][0])
+            g= Group(dictList[0][0])
             #TODO fill G
             groupList.append(g)
             
@@ -120,7 +119,7 @@ class module_FormBased(ModuleFiles):
         eventTyp = self.settings["eventTyp"]
         for element in dictList:
             #Create Group Error Object
-            error_form = objects.error()
+            error_form = error()
             error_form.set(trace="global", desc="FormBased", dictVal=element.getName(
             ), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error_form)
@@ -133,14 +132,14 @@ class module_FormBased(ModuleFiles):
                 elementsinTrace=sorted(list(elementSet.intersection(eventlist)))
                 if(elementsinTrace):
                     if(self.settings["String Seperator"].join(elementsinTrace) not in errorDict):
-                         error_parent = objects.error()
+                         error_parent = error()
                          error_parent.set(trace="global", desc="Traces with corresponding Part of Form",
                                 parent=error_form, dictVal=self.settings["String Seperator"].join(elementsinTrace), errorModul=self)
                          errorDict[self.settings["String Seperator"].join(elementsinTrace)] = error_parent
                          modErrorList.append(error_parent)
 
                     parent=errorDict[self.settings["String Seperator"].join(elementsinTrace)]
-                    error_child = objects.error()
+                    error_child = error()
                     error_child.set(
                         trace=x, parent=parent, dictVal="", dictkey=eventTyp, errorModul=self)
                     modErrorList.append(error_child)
@@ -152,7 +151,7 @@ class module_FormBased(ModuleFiles):
     def addToErrorList(self, list):
         modErrorList = []
         for element in list:
-            error = objects.error()
+            error = error()
             error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
             ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error)

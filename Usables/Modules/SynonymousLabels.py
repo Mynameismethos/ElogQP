@@ -1,9 +1,8 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.objects as objects
-import internalModules.logwork as logwork
-import internalModules.compare as compare
+from internalModules.logwork import *
+from internalModules.compare import *
+from internalModules.objects import *
 
-import threading
 #TODO change name
 #TODO Change Desc
 
@@ -38,9 +37,9 @@ class module_SynonymousLabels(ModuleFiles):
 
 
     def searchAlg(self):
-        eventList=logwork.getAllActivityAsList(self.log)
+        eventList=getAllActivityAsList(self.log)
         if(len(eventList)>int(self.settings["maxEvents"])):
-            error_max=objects.error()
+            error_max=error()
             error_max.set(trace="global",desc="More Events than allowed",dictVal=len(eventList),errorModul=self)
             self.controller.addToErrorList([error_max])
             eventList=eventList[:int(self.settings["maxEvents"])]
@@ -60,7 +59,7 @@ class module_SynonymousLabels(ModuleFiles):
 
 
     def findPairs(self,eventList):
-        subT=compare.all_Subgroups(eventList,2,maxlen=2)
+        subT=all_Subgroups(eventList,2,maxlen=2)
         pairList=[]
         eventTyp= self.settings["eventTyp"]
         
@@ -82,7 +81,7 @@ class module_SynonymousLabels(ModuleFiles):
     def createErrorList(self, list):
         modErrorList = []
         for element in list:
-            error = objects.error()
+            error = error()
             error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
             ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error)

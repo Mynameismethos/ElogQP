@@ -1,11 +1,9 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.objects as objects
-import internalModules.compare as compare
-import threading
+from internalModules.objects import *
 import datetime
 from typing import DefaultDict
-#TODO change name
-#TODO Change Desc
+
+
 
 class module_CollateralEvents(ModuleFiles):
     def __init__(self, controller):
@@ -48,7 +46,7 @@ class module_CollateralEvents(ModuleFiles):
         eventTyp = self.settings["eventTyp"]
         for x in range(len(self.log)):
             traceList = sorted(self.log[x]._list, key=lambda x: x[eventTime])
-            g=objects.Group([traceList[0][eventTyp]])
+            g=Group([traceList[0][eventTyp]])
             g.set(trace=x)
             maxtime=datetime.timedelta(seconds=int(self.settings["delta Time"]))
             zeroTime=datetime.timedelta(seconds=0)
@@ -59,7 +57,7 @@ class module_CollateralEvents(ModuleFiles):
                 else:
                     if(len(g.getList())>1):
                         groupList.append(g)
-                    g=objects.Group([traceList[y+1][eventTyp]])
+                    g=Group([traceList[y+1][eventTyp]])
                     g.set(trace=x)
             if(len(g.getList())>1):
                groupList.append(g)
@@ -91,7 +89,7 @@ class module_CollateralEvents(ModuleFiles):
         dictList.sort(key=lambda s : s[1], reverse=True)
         while(dictList):
             element = dictList[0][0]
-            g= objects.Group(dictList[0][0])
+            g= Group(dictList[0][0])
             #TODO fill G
             groupList.append(g)
             
@@ -108,13 +106,13 @@ class module_CollateralEvents(ModuleFiles):
         errorDict={}
         for element in groupList:            
             if(element.getName() not in errorDict):
-                error_p=objects.error()
+                error_p=error()
                 error_p.set(trace="global", desc="Parent Container Colleteral Event", dictVal=element.getName(), errorModul=self)
                 modErrorList.append(error_p)
                 errorDict[element.getName()]=error_p
             parent=errorDict[element.getName()]
 
-            error_form = objects.error()
+            error_form = error()
             error_form.set(trace=element.getTrace(),parent=parent, desc="Colleteral Event", dictVal=element.getName(), errorModul=self)
             modErrorList.append(error_form)
 

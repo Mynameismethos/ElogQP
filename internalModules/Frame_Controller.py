@@ -1,4 +1,4 @@
-import internalModules.objects as objects
+from internalModules.objects import *
 import tkinter as tk
 import Frames.frame_start
 import Frames.frame_modules
@@ -86,7 +86,7 @@ class Frame_Controller(tk.Tk):
         frame = self.data.modFrames[number]
         display = frame(self.container, self)
         display.grid(row=0, column=0, sticky="nsew")
-        if(name not in self.data.activeMod):self.data.activeMod[name]= objects.module()
+        if(name not in self.data.activeMod):self.data.activeMod[name]= module()
         self.data.activeMod[name].modFramesNext.append(display)
 
     def getActiveModFrame(self,name):

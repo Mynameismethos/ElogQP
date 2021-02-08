@@ -1,6 +1,7 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.objects as objects
-import threading
+from internalModules.logwork import *
+from internalModules.compare import *
+from internalModules.objects import *
 #TODO change name
 #TODO Change Desc
 

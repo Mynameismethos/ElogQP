@@ -1,8 +1,7 @@
 from internalModules.ModuleFiles import ModuleFiles
-import internalModules.logwork as logwork
-import internalModules.compare as compare
-import internalModules.objects as objects
-import threading
+from internalModules.logwork import *
+from internalModules.compare import *
+from internalModules.objects import *
 
 class module_distoredLabel(ModuleFiles):
     def __init__(self, controller):
@@ -31,24 +30,24 @@ class module_distoredLabel(ModuleFiles):
         self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     def searchAlg(self):
-        eventList=logwork.getAllActivityAsDict(self.log)
+        eventList=getAllActivityAsDict(self.log)
         if(len(eventList)>int(self.settings["maxEvents"])):
-            error_max=objects.error()
+            error_max=error()
             error_max.set(trace="global",desc="More Events than allowed",dictVal=len(eventList),errorModul=self)
             self.controller.addToErrorList([error_max])
             eventList=dict((k, eventList[k]) for k in(list(eventList)[:int(self.settings["maxEvents"])]))
         
-        resList=logwork.getAllResourcesAsDict(self.log)
+        resList=getAllResourcesAsDict(self.log)
         if(len(resList)>int(self.settings["maxEvents"])):
-            error_max=objects.error()
+            error_max=error()
             error_max.set(trace="global",desc="More Ressources than allowed",dictVal=len(resList),errorModul=self)
             self.controller.addToErrorList([error_max])
             resList=dict((k, resList[k]) for k in(list(resList)[:int(self.settings["maxRes"])])) 
         
-        tupelListAc=compare.levinRatio(eventList,int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
-        groupListAc= compare.createGroups(tupelListAc,self.settings["eventTyp"])
-        tupelListRe=compare.tokenRatio(logwork.getAllResourcesAsDict(self.log),int(self.settings["LevLowerResources"]),maxRatio=float(self.settings["occurrenceRatio"]))
-        groupListRe= compare.createGroups(tupelListRe,self.settings["eventResources"])
+        tupelListAc=levinRatio(eventList,int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
+        groupListAc= createGroups(tupelListAc,self.settings["eventTyp"])
+        tupelListRe=tokenRatio(getAllResourcesAsDict(self.log),int(self.settings["LevLowerResources"]),maxRatio=float(self.settings["occurrenceRatio"]))
+        groupListRe= createGroups(tupelListRe,self.settings["eventResources"])
         self.listGroups=groupListAc+groupListRe
         self.addToErrorList(self.listGroups)
         self.leaveMod()
@@ -57,9 +56,9 @@ class module_distoredLabel(ModuleFiles):
     def addToErrorList(self, list):
         modErrorList= []
         for group in list:
-            error = objects.error()
+            error = error()
             error.set(trace="Global",desc="Distored Label: "+ group.getList()[0],dictVal=group.getList()[0],dictkey=group.getTyp(), classInfo=0,errorModul=self)
-            error_fix= objects.error()
+            error_fix= error()
             error_fix.set(trace="Global",desc="proposed Correct Label: "+group.getList()[1],dictVal=[group.getList()],parent=error,dictkey=group.getTyp(), classInfo=0,errorModul=self, autoRepair=True)
             modErrorList.append(error)
             modErrorList.append(error_fix)
