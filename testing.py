@@ -1,18 +1,15 @@
 import os
 import pm4py
-import internalModules.objects as objects
+import internalModules.compare as compare
 
 
 class test():
     def __init__(self, *args):
-        g1= objects.Group([1,2,3])
-        g2= objects.Group([7,2,3])
-        g3= objects.Group([4,2,3])
-        liste=[g1,g2,g3]
-        for x in liste:
-            x.listNames.sort()
-       
-        print(liste)
+        liste=[1,2,3,4]
+        reListe=list(reversed(liste))
+        sub=compare.all_Subgroups(liste,2,maxlen=2)+compare.all_Subgroups(list(reversed(liste)),2,maxlen=2)
+        sub.sort()
+        print(sub)
 
 
        

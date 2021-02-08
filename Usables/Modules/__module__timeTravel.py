@@ -1,29 +1,29 @@
+from internalModules.ModuleFiles import ModuleFiles
+import internalModules.logwork as logwork
+import internalModules.compare as compare
+import internalModules.objects as objects
+
 from typing import DefaultDict
 import threading
-import internalModules.logwork as logwork
-#import internalModules.compare as compare
-import internalModules.objects as objects
-import uuid
 
 
-class module_timeTravel():
+class module_timeTravel(ModuleFiles):
     def __init__(self, controller):
-        self.controller = controller
-        #TODO change
+        self.setup(__class__,controller)
         self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
         self.name = "Inadvertent Time Travel"
         self.oneDes = "this programm checks for the Inadvertent Time Travel Issue"
         self.desc = "The String Sperator musn´t be part of any Event Name"
-        self.log = None
-        self.visible=False
-        self.started=False
+        
         #EXAMPLE FOR LISTS
         self.occurence = DefaultDict(int)
         self.listGroups = []
-        self.currentGroup = int(0)
 
-        #TODO IMPLEMENT
-        # EXAMPLE
+
+    def clean(self):
+       self.baseClean()
+       self.listGroups = []
+
     def createFrames(self):
         #Start Programm
         self.controller.createModFrame(2,__class__)
@@ -38,30 +38,8 @@ class module_timeTravel():
         self.controller.getNextModFrame(__class__).update_Data(
             modController=self, next=True, previous=None, title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
-    #TODO IMPLEMENT
-    def callBack(self, actionNumer):
-        switcher = {
-            80: lambda: self.getSettingsFromFrame(),
-            90: lambda: self.goToNext(),
-            99: lambda: self.startSearch(),
-        }
-        switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
 
-    def exec(self):
-        self.createFrames()
-        self.log = self.controller.getLog()
-        self.visible=True
-        self.controller.showModFrame(__class__,next=True)
-
-    def startSearch(self):
-        if(not self.started):
-            self.started=True
-            thread = threading.Thread(target=self.findTimeTravel, args=())
-            thread.daemon = True
-            thread.start()
-            self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
-
-    def findTimeTravel(self):
+    def searchAlg(self):
         eventTyp = self.settings["eventTyp"]
         self.occurence = DefaultDict(int)
         for x in range(len(self.log)):
@@ -134,85 +112,3 @@ class module_timeTravel():
             ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error)
         self.controller.addToErrorList(modErrorList)
-
-    def leaveMod(self):
-        print(__name__+": Module finished")
-        self.controller.deleteModFrame(__class__)
-        if(self.visible):
-            self.controller.getFrameByName("frame_modules").showNextMod()
-        self.clean()
-
-    def goToNext(self):
-        self.controller.getFrameByName("frame_modules").showNextMod()
-        self.visible=False
-       
-
-    def clean(self):
-        self.log = None
-        self.visible=False
-        self.started=False
-
-    def getSettings(self):
-        return self.settings
-
-    def setSettings(self, settings):
-        self.settings = settings
-
-    def getSettingsFromFrame(self):
-        self.settings = self.controller.getActiveModFrame(__class__).getCanvasAsDict()
-
-
-    def getName(self):
-        return self.name
-
-    def getOneDesc(self):
-        return self.oneDes
-
-    def getDesc(self):
-        return self.desc
-
-    def getLog(self, log):
-        self.log = log
-
-    # def changeLog(self):
-    #     updatedLog = self.log
-    #     for case in self.listGroups:
-    #         updatedLog[case.getName()]._list = case.getTrace()
-    #     self.controller.setLog(updatedLog)
-    #     self.clean()
-    #     self.leaveMod()
-
-    # def saveAndReorder(self, frame):
-    #     canList = self.controller.getFrameByName(frame).getCanvasAsList()
-    #     trace = self.listGroups[self.currentGroup].getTrace()
-    #     for x in range(len(canList)):
-    #         trace[x]["time:timestamp"] = canList[x]
-    #     trace.sort(key=lambda x: x["time:timestamp"])
-    #     self.listGroups[self.currentGroup].setTrace(trace)
-    #     self.displayGroup(frame)
-
-    # def displayPrev(self, frame):
-    #     if(self.currentGroup > 0):
-    #         self.currentGroup -= 1
-    #         self.controller.getFrameByName(
-    #             frame).set_Widgets_Visible(button2="yes")
-    #         self.displayGroup(frame)
-    #     else:  # removebutton
-    #         self.controller.getFrameByName(
-    #             frame).set_Widgets_Visible(button1="no")
-
-    # def displayNext(self, frame):
-    #     if(self.currentGroup < len(self.listGroups)-1):
-    #         self.currentGroup += 1
-    #         self.controller.getFrameByName(
-    #             frame).set_Widgets_Visible(button1="yes")
-    #         self.displayGroup(frame)
-    #     else:  # removebutton
-    #         self.controller.getFrameByName(
-    #             frame).set_Widgets_Visible(button2="no")
-
-    # def displayGroup(self, frame):
-    #     trace = self.listGroups[self.currentGroup].getTrace()
-    #     highlightList = self.listGroups[self.currentGroup].getList()
-    #     self.controller.getFrameByName(frame).update_Data(
-    #         canList=trace, highlight=highlightList)

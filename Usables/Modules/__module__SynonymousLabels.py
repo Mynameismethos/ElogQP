@@ -1,3 +1,4 @@
+from internalModules.ModuleFiles import ModuleFiles
 import internalModules.objects as objects
 import internalModules.logwork as logwork
 import internalModules.compare as compare
@@ -6,23 +7,21 @@ import threading
 #TODO change name
 #TODO Change Desc
 
-class module_SynonymousLabels():
+class module_SynonymousLabels(ModuleFiles):
     def __init__(self, controller):
-        self.controller = controller
+        self.setup(__class__,controller)
         #TODO change
         self.name = "Synonymous Labels"
         self.oneDes = "this programm checks The Event Names for SynonymousLabels"
         self.desc = ""
-        self.log = None
-        #EXAMPLE FOR LISTS
-        self.listGroups = []
-        self.currentGroup = int(0)
-        self.started=False
         ## Settings
         self.settings = {"maxEvents": 50, "eventTyp":"concept:name"}
 
 
-        #TODO IMPLEMENT
+        #TODO IMPLEMENT set Parameter to  start
+    def clean(self):
+        self.baseClean()
+
         # EXAMPLE
     def createFrames(self):
         #Start Programm
@@ -36,28 +35,7 @@ class module_SynonymousLabels():
         self.controller.createModFrame(0,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
-    #TODO IMPLEMENT
-    def callBack(self, actionNumer):
-        switcher={
-            80: lambda: self.getSettingsFromFrame(),
-            90: lambda: self.goToNext(),
-            99: lambda: self.startSearch(),
-        }
-        switcher.get(int(actionNumer.get()), lambda: print("Wrong Action"))()
 
-    def exec(self):
-        self.createFrames()
-        self.log = self.controller.getLog()
-        self.visible=True
-        self.controller.showModFrame(__class__,next=True)
-
-    def startSearch(self):
-        if(not self.started):
-            self.started=True
-            thread = threading.Thread(target=self.searchAlg, args=())
-            thread.daemon = True
-            thread.start()
-            self.controller.getActiveModFrame(__class__).set_Widgets_Visible(button2="yes")
 
     def searchAlg(self):
         eventList=logwork.getAllActivityAsList(self.log)
@@ -112,43 +90,3 @@ class module_SynonymousLabels():
 
  
   
-    #TODO IMPLEMENT set Parameter to  start
-    def clean(self):
-        self.log = None
-        self.visible=False
-        self.started=False
-
-
-    ##STOP IMPLEMENTING
-    def getSettings(self):
-        return self.settings
-
-    def setSettings(self, settings):
-        self.settings = settings
-
-    def getSettingsFromFrame(self):
-        self.settings=self.controller.getActiveModFrame(__class__).getCanvasAsDict()
-
-    def leaveMod(self):
-       print(__name__+": Module finished")
-       self.controller.deleteModFrame(__class__)
-       if(self.visible):
-            self.controller.getFrameByName("frame_modules").showNextMod()
-       self.clean()
-
-    def goToNext(self):
-        self.controller.getFrameByName("frame_modules").showNextMod()
-        self.visible=False
-    
-
-    def getName(self):
-        return self.name
-
-    def getOneDesc(self):
-        return self.oneDes
-
-    def getDesc(self):
-        return self.desc
-
-    def getLog(self, log):
-        self.log = log
