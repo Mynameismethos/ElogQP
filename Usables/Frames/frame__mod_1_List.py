@@ -1,23 +1,14 @@
+from Usables.Frames.ModFrame import ModFrame
 import tkinter as tk
-from tkinter import Button, IntVar, Label, Listbox, Message, Scrollbar, StringVar
-
-#TODO change Class Name MUST start with frame
+from tkinter import Button, IntVar, Label, StringVar
 
 
-class frame_mod_List(tk.Frame):
+class frame_mod_List(ModFrame):
     def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        self.modController = None
-        self.box_nav = tk.Frame(master=self)
-        self.box_nav.pack(side="bottom", fill="x")
-        Button(self.box_nav, text="Leave Module", command=lambda: [
-               self.leaveModule()]).pack(side="left", fill="both")
-        self.prev_button = Button(self.box_nav, text="Previous Page")
-        self.next_Button = Button(self.box_nav, text="Next Page")
+        super().__init__(parent,controller)
 
         #### Add The Layout of the Frame here ###############
-        self.title_text = StringVar()
+
         Label(self, textvariable=self.title_text).pack(fill="x", side="top")
         self.listBox = tk.Listbox(self)
         self.listBox.pack(fill="both", expand="yes")
@@ -35,29 +26,13 @@ class frame_mod_List(tk.Frame):
                               self.modController.callBack(self.button2_command)])
         self.button1.grid(row=0, column=0, sticky="nsew")
         self.button2.grid(row=0, column=1, sticky="nsew")
-        #Example
-       # self.title_text = StringVar()
-       # self.intro_text = StringVar()
-       # self.desc_text = StringVar()
-       # self.title_text.set("This is Mod1")
-       # Label(self, textvariable=self.title_text).pack(fill="x",side="top")
-       # #TODO better Width
-       # Message(self, textvariable=self.intro_text,width=400).pack(fill="x",side="top")
-       # Message(self, textvariable=self.desc_text,width=400).pack(fill="x",side="top")
 
     def showMe(self):
         pass
 
         #TODO fill in, find Data that needs to be added by the module
     def update_Data(self, modController=None, next=None, previous=None, title="", list=[], button1_text="", button2_text="", button1_command=None, button2_command=None, selected=[]):
-        if modController:
-            self.set_Controller(modController)
-        if next:
-            self.set_Next_Frame(next)
-        if previous:
-            self.set_Prev_Frame()
-        if title:
-            self.title_text.set(title)
+        super().update_Data(modController,next, previous, title)
         if button1_text:
             self.button1_text.set(button1_text)
         if button1_command:
@@ -104,25 +79,6 @@ class frame_mod_List(tk.Frame):
             self.next_Button.pack()
         elif(buttonNext == "no"):
             self.next_Button.pack_forget()
-
-     # No Need to Change
-    def set_Prev_Frame(self):
-        if self.controller.hasPrevFrame():
-            prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,prev=True)])
-            prev_button.pack(side="left", fill="both")
-
-        # No Need to Change
-    def set_Next_Frame(self, nextFrame):
-        self.next_Button.configure(
-            command=lambda: [self.controller.showModFrame(self.modController.__class__,next=True)])
-        self.next_Button.pack(side="right", fill="both")
-
-    def leaveModule(self):
-        self.modController.leaveMod()
-
-    def set_Controller(self, modController):
-        self.modController = modController
 
     def getSelected(self):
         return self.listBox.curselection()

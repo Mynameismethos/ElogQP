@@ -1,29 +1,19 @@
+from Usables.Frames.ModFrame import ModFrame
 import tkinter as tk
 from tkinter import Button, Entry, Label, StringVar, IntVar
 from tkinter.constants import ANCHOR, INSERT, NO, NONE
 
 
 #TODO change Class Name MUST start with frame
-class frame_mod_canvas(tk.Frame):
+class frame_mod_canvas(ModFrame):
     def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        self.title_text = StringVar()
-        Label(self, textvariable=self.title_text).pack(fill="x", side="top")
-        self.box_nav = tk.Frame(master=self)
-        self.box_nav.pack(side="bottom", fill="x")
-        Button(self.box_nav, text="Leave Module", command=lambda: [
-               self.leaveModule()]).pack(side="left", fill="both")
-        self.prev_button = Button(self.box_nav, text="Previous Page")
-        self.next_Button = Button(self.box_nav, text="Next Page")
-        #### Add The Layout of the Frame here ###############
+        super().__init__(parent,controller)
+    
         self.settingsCanvas = tk.Frame(self)
         self.settingsCanvas.pack(fill="both", expand="yes")
 
         self.box_bellowList = tk.Frame(master=self)
         self.box_bellowList.pack(fill="x", expand="no")
-        #self.box_bellowList.rowconfigure(0,weight=1)
-        #self.box_bellowList.rowconfigure(1,weight=1)
         self.box_bellowList.columnconfigure(0, weight=1)
         self.box_bellowList.columnconfigure(1, weight=1)
         self.button1_text = StringVar()
@@ -50,14 +40,7 @@ class frame_mod_canvas(tk.Frame):
 
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc="", canDict={}, canList=[], highlight=[],
                     button1_text="", button1_command=None, button2_text="", button2_command=None, button3_text="", button3_command=None):
-        if modController:
-            self.set_Controller(modController)
-        if next:
-            self.set_Next_Frame(next)
-        if previous:
-            self.set_Prev_Frame()
-        if title:
-            self.title_text.set(title)
+        super().update_Data(modController,next, previous, title)
         if intro:
             self.intro_text.set(intro)
         if desc:
@@ -158,23 +141,3 @@ class frame_mod_canvas(tk.Frame):
                     returnList.append(child.get())
 
         return returnList
-
-        # No Need to Change
-
-    def set_Prev_Frame(self):
-        if self.controller.hasPrevFrame():
-            prev_button = Button(
-                self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,prev=True)])
-            prev_button.pack(side="left", fill="both")
-        # No Need to Change
-
-    def set_Next_Frame(self, nextFrame):
-        next_Button = Button(
-            self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,next=True)])
-        next_Button.pack(side="right", fill="both")
-
-    def set_Controller(self, modController):
-        self.modController = modController
-
-    def leaveModule(self):
-        self.modController.leaveMod()
