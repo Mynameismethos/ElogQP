@@ -2,21 +2,21 @@ import os
 import importlib
 import inspect
 import sys
+import internalModules.ModuleFiles as ModuleFiles
 
 
 def loadmodules(controller):
     dir = os.listdir(os.path.abspath(os.curdir) + "\\Usables\\Modules\\")
     list = []
     for file in dir:
-        if file.startswith("__module__"):
-            filename, file_extention = os.path.splitext(file)
-            print(filename)
-            name = "Usables.Modules." + filename
-            importlib.import_module(name)
-            for name, obj in inspect.getmembers(sys.modules[name]):
-                if inspect.isclass(obj) and obj.__name__.startswith("module"):
-                    t = obj(controller)
-                    list.append(t)
+        filename, file_extention = os.path.splitext(file)
+        print(filename)
+        name = "Usables.Modules." + filename
+        importlib.import_module(name)
+        for name, obj in inspect.getmembers(sys.modules[name]):
+            if inspect.isclass(obj) and issubclass(obj , ModuleFiles.ModuleFiles) and (name != "ModuleFiles"):
+                t = obj(controller)
+                list.append(t)
 
     return list
 
