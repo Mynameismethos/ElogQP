@@ -4,11 +4,11 @@ import pm4py
 
 
 def loadLogByName(controller, name, button):
-        thread = threading.Thread(target=run, args=(controller,name, button))
+        thread = threading.Thread(target=_run, args=(controller,name, button))
         thread.daemon = True                            # Daemonize thread
         thread.start()                                  # Start the execution
 
-def run(controller,name,button):
+def _run(controller,name,button):
     try:
         filePath = os.path.abspath(os.curdir) + "\\Usables\\Log\\"+name
         controller.setLog(pm4py.read_xes(filePath),button=button, name=name)

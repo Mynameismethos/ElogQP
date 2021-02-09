@@ -5,7 +5,7 @@ from internalModules.objects import *
 
 class module_distoredLabel(ModuleFiles):
     def __init__(self, controller):
-        self.setup(__class__,controller)
+        super().__init__(__class__,controller)
         self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name","maxEvents": 100,"maxRes":100}
         self.name = "Distorted Label"
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "

@@ -19,7 +19,7 @@ class Display(Frame_Controller):
             hash_x= hash(x)
             if(hash_x not in self.data.error_Hash_Dict):
                 self.data.error_List.append(x)
-                self.data.error_Hash_Dict[hash_x]=x
+                self.data.error_Hash_Dict[hash_x]=len(self.data.error_List)
 
 
     def get_xes_file_list(self):

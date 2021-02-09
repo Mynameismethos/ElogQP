@@ -6,7 +6,7 @@ from typing import DefaultDict
 
 class module_timeTravel(ModuleFiles):
     def __init__(self, controller):
-        self.setup(__class__,controller)
+        super().__init__(__class__,controller)
         self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
         self.name = "Inadvertent Time Travel"
         self.oneDes = "this programm checks for the Inadvertent Time Travel Issue"
@@ -104,8 +104,8 @@ class module_timeTravel(ModuleFiles):
     def createErrorList(self, list):
         modErrorList = []
         for element in list:
-            error = error()
-            error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
+            c_error = error()
+            c_error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
             ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
-            modErrorList.append(error)
+            modErrorList.append(c_error)
         self.controller.addToErrorList(modErrorList)

@@ -88,7 +88,7 @@ def all_Subgroups(list, minlength, maxlen=None):
 
     finalGroup = []
     while(len(newGroup[0]) < maxlen):
-        newGroup = inner(newGroup, group_List)
+        newGroup = _inner(newGroup, group_List)
         finalGroup.extend(newGroup)
     x = finalGroup[0]
     while(len(x) < minlength):
@@ -100,7 +100,7 @@ def all_Subgroups(list, minlength, maxlen=None):
 
 
 
-def inner(listOfGroup, list):
+def _inner(listOfGroup, list):
     newGroup = []
     for element in listOfGroup:
         for value in list[list.index(element[-1])+1:]:

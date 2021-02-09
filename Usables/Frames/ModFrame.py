@@ -36,10 +36,5 @@ class ModFrame(tk.Frame):
             self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,next=True)])
         next_Button.pack(side="right", fill="both")
 
-
-    def set_Controller(self, modController):
-        self.modController = modController
-
-
     def leaveModule(self):
         self.modController.leaveMod()

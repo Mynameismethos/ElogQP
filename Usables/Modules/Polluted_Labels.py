@@ -7,7 +7,7 @@ from internalModules.objects import *
 
 class module_Polluted_Labels(ModuleFiles):
     def __init__(self, controller):
-        self.setup(__class__,controller)
+        super().__init__(__class__,controller)
         #TODO change
         self.name = "Polluted Labels"
         self.oneDes = "this programm checks The Event Names for Attributes in the Event name "

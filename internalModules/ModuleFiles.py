@@ -1,9 +1,8 @@
 import threading
 
 class ModuleFiles():
-    def __init__(self):
-        pass
-    def setup(self,classTyp,controller):
+
+    def __init__(self,classTyp,controller):
         self.visible=False
         self.started=False
         self.log = None

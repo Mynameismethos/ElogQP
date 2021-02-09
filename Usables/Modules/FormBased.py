@@ -7,7 +7,7 @@ from typing import DefaultDict
 
 class module_FormBased(ModuleFiles):
     def __init__(self, controller):
-        self.setup(__class__,controller)
+        super().__init__(__class__,controller)
         #TODO change
         self.name = "Form-based Event Capture"
         self.oneDes = "this programm checks For Form-based Event Capture"

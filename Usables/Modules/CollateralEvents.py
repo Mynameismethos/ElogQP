@@ -7,7 +7,7 @@ from typing import DefaultDict
 
 class module_CollateralEvents(ModuleFiles):
     def __init__(self, controller):
-        self.setup(__class__,controller)
+        super().__init__(__class__,controller)
         #TODO change
         self.name = "Collateral Events"
         self.oneDes = "this programm checks for Collateral Events"
