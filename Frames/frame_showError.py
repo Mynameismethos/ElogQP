@@ -13,12 +13,12 @@ class frame_showError(tk.Frame):
         self.errorTree = ttk.Treeview(self)
 
         self.errorTree["columns"] = (
-            "ID", "Desc", "Trace", "Event", "Value", "Module", "Repair")
+            "ID", "Desc", "Trace", "Value", "Module", "Repair")
         self.errorTree.column("#0", width=25, stretch=False)
         self.errorTree.column("ID", anchor="w", width=120)
         self.errorTree.column("Desc", anchor="w")
         self.errorTree.column("Trace", anchor="w")
-        self.errorTree.column("Event", anchor="w")
+       # self.errorTree.column("Event", anchor="w")
         self.errorTree.column("Value", anchor="w")
         self.errorTree.column("Module", anchor="w")
         self.errorTree.column("Repair", anchor="w")
@@ -27,7 +27,7 @@ class frame_showError(tk.Frame):
         self.errorTree.heading("ID", text="ID", anchor="w")
         self.errorTree.heading("Desc", text="Desc", anchor="w")
         self.errorTree.heading("Trace", text="Trace", anchor="w")
-        self.errorTree.heading("Event", text="Event", anchor="w")
+       # self.errorTree.heading("Event", text="Event", anchor="w")
         self.errorTree.heading("Value", text="Value", anchor="w")
         self.errorTree.heading("Module", text="Module", anchor="w")
         self.errorTree.heading("Repair", text="Repair", anchor="w")
@@ -66,7 +66,7 @@ class frame_showError(tk.Frame):
         counter = 0
         parentDict = {}
         for x in list:
-            val = (counter, x.desc, x.trace, x.event,
+            val = (counter, x.desc, x.trace,
                    x.dictVal, x.errorModul, x.autoRepair)
             parent=""
             if(x.parent in parentDict):parent=parentDict[x.parent]

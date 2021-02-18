@@ -10,11 +10,11 @@ class module_SynonymousLabels(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
         #TODO change
-        self.name = "Not Ready Synonymous Labels"
+        self.name = "Synonymous Labels"
         self.oneDes = "this programm checks The Event Names for SynonymousLabels"
         self.desc = ""
         ## Settings
-        self.settings = {"maxEvents": 50, "eventTyp":"concept:name"}
+        self.settings = {"maxEvents": 50, "eventTyp":"concept:name", "position Delta": 3, "time (min) Delta": 10,"time (sec) Delta": 0}
 
 
         #TODO IMPLEMENT set Parameter to  start
@@ -45,17 +45,35 @@ class module_SynonymousLabels(ModuleFiles):
             eventList=eventList[:int(self.settings["maxEvents"])]
 
         notConnectedPairs=self.findPairs(eventList)
-        for entry in notConnectedPairs:
-            pass
-            # check if similiar length
-            # check if at similiar positions
-            # check if uses similiar resources 
-            # weighing stuff is gonna suck
+        weightedPairs = self.filterWithWeight(notConnectedPairs)
+        
 
 
-        modErrorList = self.createErrorList([])
+        modErrorList = self.createErrorList(weightedPairs)
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
+
+
+    def filterWithWeight(self, pairList):
+        filteredList=[]
+        for entry in pairList:
+            # check if at similiar positions
+            avr_pos_one= getAveragePosition(self.log,entry[0])
+            avr_pos_two= getAveragePosition(self.log,entry[1])
+            #compare if within bounds continue
+            if(abs(avr_pos_one-avr_pos_two)<float(self.settings["position Delta"])):
+                # check if similiar length
+                avr_time_one= getAvereageLength(self.log,entry[0])
+                avr_time_two= getAvereageLength(self.log,entry[1])
+                #compare if within bounds
+                if(abs(avr_time_one-avr_time_two)<int(self.settings["time (min) Delta"])*60+int(self.settings["time (sec) Delta"])):    
+                    # check if uses similiar resources 
+                    used_res_one=getUsedResources(self.log,entry[0])
+                    used_res_two=getUsedResources(self.log,entry[1])
+                    if(isSimilarResources(used_res_one,used_res_two)):
+                        filteredList.append(entry)
+
+        return filteredList
 
 
     def findPairs(self,eventList):
@@ -78,13 +96,12 @@ class module_SynonymousLabels(ModuleFiles):
         
 
    #TODO IMPLEMENT Create Error Objects
-    def createErrorList(self, list):
+    def createErrorList(self, liste):
         modErrorList = []
-        for element in list:
-            error = error()
-            error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
-            ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
-            modErrorList.append(error)
+        for element in liste:
+            error_el = error()
+            error_el.set(trace="global", desc="possible Synonymous Labels", dictVal= [element], errorModul=self)
+            modErrorList.append(error_el)
         return modErrorList
 
  

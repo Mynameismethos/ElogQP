@@ -48,6 +48,10 @@ def tokenRatioTupel(subGroups, lowerBound):
     closeList.sort()
     return closeList
 
+def isSimilarResources(dict_one, dict_two):
+    #TODO impl
+    return True
+    
 def largestSubstring(element):
     result = SequenceMatcher(None,element[0],element[1]).find_longest_match(0,len(element[0]),0,len(element[1]))
     string=element[0][result.a:result.a+result.size]
