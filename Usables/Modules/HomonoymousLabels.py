@@ -2,15 +2,14 @@ from internalModules.ModuleFiles import ModuleFiles
 from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
-#TODO change name
-#TODO Change Desc
 
-class module_Example(ModuleFiles):
+
+class module_HomonymousLabels(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
-        self.name = "Distorted Label"
-        self.oneDes = "this programm checks The Event Names for similar but unequal Names "
+
+        self.name = " Not Done Homonymous Label"
+        self.oneDes = "this programm checks for Homonymous Labels"
         self.desc = ""
         #EXAMPLE FOR LISTS
         self.listGroups = []
@@ -18,11 +17,6 @@ class module_Example(ModuleFiles):
         ## Settings
         self.settings = {"Setting": 90}
 
-
-        #TODO IMPLEMENT
-        # EXAMPLE
-
-        #TODO IMPLEMENT set Parameter to  start
     def clean(self):
         self.baseClean()
 

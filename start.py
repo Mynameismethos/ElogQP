@@ -4,8 +4,8 @@ from internalModules.loadLog import *
 import internalModules.Data as dataBase
 
 
-#init the Display and load the singular fames
-class Display(Frame_Controller):
+
+class Controll(Frame_Controller):
     def __init__(self, *args, **kwargs):
         self.data=dataBase
         self.data.modFrames = loadFrames()
@@ -51,6 +51,7 @@ class Display(Frame_Controller):
 
     def getErrorList(self):
         return self.data.error_List
+        
     def clearErrorList(self):
         self.data.error_List=[]
         self.data.error_Hash_Dict={}
@@ -66,5 +67,5 @@ class Display(Frame_Controller):
 
 
 # Start of Programm
-app = Display()
+app = Controll()
 app.mainloop()

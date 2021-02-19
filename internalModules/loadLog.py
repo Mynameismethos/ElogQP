@@ -13,7 +13,7 @@ def _run(controller,name,button):
         filePath = os.path.abspath(os.curdir) + "\\Usables\\Log\\"+name
         controller.setLog(pm4py.read_xes(filePath),button=button, name=name)
     except FileNotFoundError:
-        controller.log = [0][0]
+        controller.setLog([0][0])
     
 
 
