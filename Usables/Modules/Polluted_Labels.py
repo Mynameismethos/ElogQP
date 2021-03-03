@@ -14,7 +14,7 @@ class module_Polluted_Labels(ModuleFiles):
         self.desc = ""
         self.listGroups = []
         ## Settings
-        self.settings = {"minEventNamelength": 6,"MinRes" : 95,"min Occurence": 10, "eventTyp":"concept:name"}
+        self.settings = {"minEventNamelength": 6,"MinRes" : 95,"min Occurence": 6, "eventTyp":"concept:name"}
 
     def clean(self): 
         self.baseClean()
@@ -22,7 +22,7 @@ class module_Polluted_Labels(ModuleFiles):
      
      
     def createFrames(self):
- #Start Programm
+        #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Polluted Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
         self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
@@ -45,9 +45,11 @@ class module_Polluted_Labels(ModuleFiles):
                 g=Group([])
                 g.value=sub
                 value=0
+                #Häufigkeit testen
                 for eName in reversed(eventNames):
                     if(sub in eName):
                         value+=1
+                
                 if(value>int(self.settings["min Occurence"])):
                     for eName in reversed(eventNames):
                         if(sub in eName):
@@ -69,13 +71,13 @@ class module_Polluted_Labels(ModuleFiles):
         modErrorList = []
         for element in list:
             p_error = error()
-            p_error.set(trace="global",dictVal=element.getValue(), dictkey=self.settings["eventTyp"], classInfo=0,errorModul=self)
+            p_error.set(trace="global",dictVal=element.getValue(), desc= "Polluted Labels",dictkey=self.settings["eventTyp"], classInfo=0,errorModul=self)
             modErrorList.append(p_error)
             for x in range(len(self.log)):
                 eventlist= [u[self.settings["eventTyp"]] for u in self.log[x]]
                 for eName in eventlist:
                     if(element.getValue() in eName):
                         c_error= error()
-                        c_error.set(trace=x,parent=p_error,dictVal=eName, dictkey=self.settings["eventTyp"], classInfo=0,errorModul=self)
+                        c_error.set(trace=x,parent=p_error,dictVal=eName, desc= "Polluted Labels", dictkey=self.settings["eventTyp"], classInfo=0,errorModul=self)
                         modErrorList.append(c_error) 
         return modErrorList

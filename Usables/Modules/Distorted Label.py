@@ -1,3 +1,4 @@
+from nltk.corpus.reader import wordnet
 from internalModules.ModuleFiles import ModuleFiles
 from internalModules.logwork import *
 from internalModules.compare import *
@@ -10,7 +11,8 @@ class module_distoredLabel(ModuleFiles):
         self.name = "Distorted Label"
         self.oneDes = "this programm checks The Event Names for similar but unequal Names "
         #TODO change 
-        self.desc = ""
+        self.desc = "Distorted Labels describes a group of event attributes,that are "+\
+        "unequal but similar to one another yet refer to one real live attribute"
         self.listGroups=[]
 
     def clean(self):
@@ -45,7 +47,12 @@ class module_distoredLabel(ModuleFiles):
             resList=dict((k, resList[k]) for k in(list(resList)[:int(self.settings["maxRes"])])) 
         
         tupelListAc=levinRatio(eventList,int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
+        tupleListWN= matchWordnet(eventList)
+        for el in tupleListWN:
+            if (el not in tupelListAc):
+                tupelListAc.append(el) 
         groupListAc= createGroups(tupelListAc,self.settings["eventTyp"])
+        
         tupelListRe=tokenRatio(getAllResourcesAsDict(self.log),int(self.settings["LevLowerResources"]),maxRatio=float(self.settings["occurrenceRatio"]))
         groupListRe= createGroups(tupelListRe,self.settings["eventResources"])
         self.listGroups=groupListAc+groupListRe
@@ -64,4 +71,3 @@ class module_distoredLabel(ModuleFiles):
             modErrorList.append(error_fix)
         self.controller.addToErrorList(modErrorList)
        
-

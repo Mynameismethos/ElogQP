@@ -5,11 +5,10 @@ import internalModules.compare as compare
 
 class test():
     def __init__(self, *args):
-        liste=[1,2,3,4]
-        reListe=list(reversed(liste))
-        sub=compare.all_Subgroups(liste,2,maxlen=2)+compare.all_Subgroups(list(reversed(liste)),2,maxlen=2)
-        sub.sort()
-        print(sub)
+        liste=["hallo", "wie ", "gehts"]
+        dictVal= "---".join(liste)
+        
+        print(dictVal)
 
 
        

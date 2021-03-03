@@ -7,7 +7,7 @@ class frame_modules(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        myText = Label(self, text="Hello World from Modules")
+        myText = Label(self, text="List of all Modules")
         myText.pack()
         self.box_nav = tk.Frame(master=self)
         self.box_nav.pack(side="bottom", fill="x")

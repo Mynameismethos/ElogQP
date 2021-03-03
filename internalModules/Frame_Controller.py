@@ -7,7 +7,7 @@ import Frames.frame_showError
 class Frame_Controller(tk.Tk):
     def __init__(self,*args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.winfo_toplevel().title("Lennart Brandt")
+        self.winfo_toplevel().title("ElogQP")
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)

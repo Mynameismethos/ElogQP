@@ -7,13 +7,13 @@ class frame_start(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        Label(self, text="Tool zum Finden und Beheben von Fehlern in Eventlog",
+        Label(self, text="Discovering error patterns in eventlogs",
               bg="light blue").pack(fill="x")
-        Label(self, text="Bitte geben Sie den Namen der Logdatei an und Laden sie den Log",
+        Label(self, text="Please select and load the eventlog below:",
               bg="light blue").pack(fill="x")
         #entry = Entry(self)
         #entry.insert(INSERT, "LOGEDV.xes")
-        b_search = Button(self, text="Find XES Files", command=lambda: [
+        b_search = Button(self, text="find XES files", command=lambda: [
                           controller.get_xes_file_list()])
         b_search.pack()
         self.listbox = Listbox(self)

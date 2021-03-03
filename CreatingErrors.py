@@ -7,9 +7,9 @@ import datetime
 
 class test():
     def __init__(self, *args,):
-        self.log= self.loadLogByName("timeTravel.xes")
-        self.error_collateralEvents()
-        self.exportLog("collateralEvents.xes")
+        self.log= self.loadLogByName("Kitchen Error_Second.xes")
+        self.error_pollutedLabels()
+        self.exportLog("Kitchen Error.xes")
      
 
 
@@ -17,12 +17,13 @@ class test():
 
     def error_pollutedLabels(self):
         event="concept:name"
-        triggerEvent="Eingang Anfrage"
+        triggerEvent="open Fridge"
+        ids=["Peter", "Gustav", "Susanne", "Frank", "Herbert", "Julia", "Jeff", "Tobias", "Nicht Jeff", "Manuel"]
         for trace in self.log:
             for case in trace:
                 if(case[event]==triggerEvent):
-                    bla="".join(random.choices(string.ascii_uppercase, k=5))
-                    case[event]=case[event]+": ID: "+bla
+                    bla="".join(random.choices(ids))
+                    case[event]=case[event]+"-- ID: "+bla
 
 
     def error_collateralEvents(self):
@@ -41,6 +42,24 @@ class test():
         except FileNotFoundError:
             log = [0][0]
         return log
+
+    def deleteFields(self, number):
+        fields={"time":"time:timestamp","name":"concept:name", "org":"org:resource"}
+        for x in range(number):
+            trace= self.log[random.randrange(len(self.log))]
+            event= trace[random.randrange(len(trace))]
+            choice= random.choice(list(fields.keys()))
+            event[fields[choice]]=""
+
+
+
+
+    def deleteEvents(self, number):
+         for x in range(number):
+            trace= self.log[random.randrange(len(self.log))]
+            event= trace[random.randrange(len(trace))]
+            del event
+
 
     def exportLog(self, name):
         filePath = os.path.abspath(os.curdir) + "\\Usables\\Log\\"+name

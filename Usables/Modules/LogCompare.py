@@ -5,8 +5,6 @@ from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
 from internalModules.loadLog import *
-#TODO change name
-#TODO Change Desc
 
 class module_LogCompare(ModuleFiles):
     def __init__(self, controller):
@@ -19,7 +17,8 @@ class module_LogCompare(ModuleFiles):
         self.listGroups = []
         self.currentGroup = int(0)
         ## Settings
-        self.settings = {"Check Empty Fields" : 1, "Check Missing Events" : 1, "Check Skipping Events" : 1, "Date Format": "%Y-%m-%d'"}
+        self.settings = {"Check Empty Fields" : 1, "Check Missing Events" : 1, "Check Skipping Events" : 1, "earliest Date": "2000-01-01","latest Date":"2030-01-01"}
+        #self.settings["latest Date"]=datetime.datetime.now().strftime("%Y-%m-%d")
         self.correctedLog =None
         self.LogNames=getAllLogs()
 
@@ -31,7 +30,7 @@ class module_LogCompare(ModuleFiles):
     def createFrames(self):
         #Start Programm
         self.controller.createModFrame(2,__class__)
-        self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Distored Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
+        self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Compare Logs", button1_command =99, button2_text="Go To Next Module", button2_command =90)
         self.controller.getNextModFrame(__class__).set_Widgets_Visible(button2="no")
         #Settings
         self.controller.createModFrame(3,__class__)
@@ -52,20 +51,26 @@ class module_LogCompare(ModuleFiles):
 
           # check Empty fields 
         if(int(self.settings["Check Empty Fields"])==1):
+            self.setTime()
             for counter in range(len(self.log)):
-                test1=self.log[counter]._list
-                if(self.log[counter]._list[name] ==""):
-                    error_el=error()
-                    error_el.set(trace=counter,desc="missing Event Name", dictkey=name, errorModul=self)
-                    modErrorList.append(error_el)
-                if(self.log[counter]._list["org:resource"] ==""):
-                    error_el=error()
-                    error_el.set(trace=counter,desc="missing Resources", dictkey="org:resource", errorModul=self)
-                    modErrorList.append(error_el)
-                if(not self.validateDate(self.log[counter]._list["time:timestamp"])):
-                    error_el=error()
-                    error_el.set(trace=counter,desc="Wrong Timestamp", dictkey="time:timestamp", errorModul=self)
-                    modErrorList.append(error_el)
+                trace=self.log[counter]
+                for pos in range(len(trace)):
+                    event=trace[pos]
+                    if(event[name] ==""):
+                        surround=[]
+                        surround.append(trace[pos-1][name]) if(pos>0) else surround.append("")
+                        surround.append(trace[pos+1][name]) if(pos<len(trace)-1) else surround.append("")
+                        g= Group(surround)
+                        g.set(name="Missing Event Name",typ=name,trace=counter,value=10)
+                        modErrorList.append(g)
+                    if(event["org:resource"] ==""):
+                        g= Group([event[name]])
+                        g.set(name="Missing Event Res",trace=counter,typ="org:resource",value=11)
+                        modErrorList.append(g)
+                    if(not self.validateDate(event["time:timestamp"])):
+                        g= Group([event[name]])
+                        g.set(name="Wrong Timestamp",trace=counter,typ="time:timestamp",value=12)
+                        modErrorList.append(g)
 
 
         if(self.correctedLog):
@@ -75,48 +80,53 @@ class module_LogCompare(ModuleFiles):
                 Events_GL=getAllActivityAsList(self.correctedLog)
                 for event in Events_BL:
                     if(event not in Events_GL):
-                        error_el=error()
-                        error_el.set(trace="Global",desc="New Event in Log",dictVal=event, dictkey=name, errorModul=self)
-                        modErrorList.append(error_el)
+                        g= Group([event])
+                        g.set(name="New Event in Log",typ=name,trace="Global",value=20)
+                        modErrorList.append(g)
 
                 for event in Events_GL:
                     if(event not in Events_BL):
-                        error_el=error()
-                        error_el.set(trace="Global",desc="Missing Event in Log",dictVal=event, dictkey=name, errorModul=self)
-                        modErrorList.append(error_el)
-                        
+                        g= Group([event])
+                        g.set(name="Missing Event in Log",typ=name,trace="Global",value=21)
+                        modErrorList.append(g)
+
         
             #check if skipping EVents
             if(int(self.settings["Check Skipping Events"])==1):
                 ordering=self.getEventOrdering()
-                for trace in self.log:
+                for index in range(len(self.log)):
+                    trace= self.log[index]
                     for count in range(len(trace)-1):
-                        if(trace[count][name] in ordering):
-                            e1 = trace[count+1][name]
-                            e2= ordering[(trace[count][name])]
-                            if(trace[count+1][name] not in ordering[(trace[count][name])]):
-                                error_el=error()
-                                error_el.set(trace="TODO",desc="Missing Event between Events",dictVal=trace[count][name]+"---"+trace[count+1][name], dictkey=name, errorModul=self)
-                                modErrorList.append(error_el)
-                        else:
-                            error_el=error()
-                            error_el.set(trace="TODO",desc="Missing Sources",dictVal=trace[count][name], dictkey=name, errorModul=self)
-                            modErrorList.append(error_el)
+                        if(trace[count][name]!="" and trace[count+1][name]!=""):
+                            if(trace[count][name] in ordering):
+                                if(trace[count+1][name] not in ordering[(trace[count][name])]):
+
+                                    surround=[]
+                                    surround.append(trace[count][name]) if(count>0) else surround.append("start")
+                                    surround.append(trace[count+1][name]) if(count<len(trace)-1) else surround.append("end")
+                                    g= Group(surround)
+                                    g.set(name="Missing Event",typ=name,trace=index,value=30)
+                                    modErrorList.append(g)
+                            else:
+                                g= Group([trace[count][name]])
+                                g.set(name="Missing Sources",typ=name,trace=index,value=31)
+                                modErrorList.append(g)
 
 
 
-        #modErrorList = self.createErrorList([])
+
+        modErrorList = self.createErrorList(modErrorList)
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
 
 
     def callBack(self, actionNumber):
         super().callBack(actionNumber)
-        #NOT 80,90,99
-        switcher={
-            70: lambda: self.importLog(),
-                }
-        switcher.get(int(actionNumber.get()), lambda: print("Wrong Action"))()
+        if(actionNumber != 80,90,99):
+            switcher={
+                70: lambda: self.importLog(),
+                    }
+            switcher.get(int(actionNumber.get()), lambda: print("Wrong Action"))()
 
     def importLog(self):
         pos=self.controller.getActiveModFrame(__class__).getSelected()
@@ -127,21 +137,62 @@ class module_LogCompare(ModuleFiles):
    #TODO IMPLEMENT Create Error Objects
     def createErrorList(self, list):
         modErrorList = []
+        error_pEmpty=error()
+        error_pEmptyEvents=error()
+        error_pEmptyRes=error()
+        error_pEmptyTime=error()
+        error_pMissing=error()
+        error_pSkipping=error()
+        error_pEmpty.set(trace="Global",desc="Empty Fields",errorModul=self)
+        error_pEmptyEvents.set(trace="Global",desc="Missing Event Name",parent=error_pEmpty,errorModul=self)
+        error_pEmptyRes.set(trace="Global",desc="Missing Ressources",parent=error_pEmpty,errorModul=self)
+        error_pEmptyTime.set(trace="Global",desc="Missing Time Data",parent=error_pEmpty,errorModul=self)
+        error_pMissing.set(trace="Global",desc="Missing Events",errorModul=self)
+        error_pSkipping.set(trace="Global",desc="Skipping Events",errorModul=self)
+
+        if(int(self.settings["Check Empty Fields"])==1):
+            modErrorList.append(error_pEmpty)
+            modErrorList.append(error_pEmptyEvents)
+            modErrorList.append(error_pEmptyRes)
+            modErrorList.append(error_pEmptyTime)
+        if(int(self.settings["Check Missing Events"])==1):
+            modErrorList.append(error_pMissing)
+        if(int(self.settings["Check Skipping Events"])==1):
+            modErrorList.append(error_pSkipping)
+
         for element in list:
             error_el = error()
-            error_el.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
-            ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
+            switcher={
+                10: error_pEmptyEvents,
+                11: error_pEmptyRes,
+                12: error_pEmptyTime,
+                20: error_pMissing,
+                21: error_pMissing,
+                30: error_pSkipping,
+                31: error_pSkipping,
+                }
+            parent=switcher.get(element.value,None)
+            val= "---".join(element.getList())
+            error_el.set(trace=element.getTrace(),desc=element.getName(),parent= parent, dictVal=val, dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error_el)
+            #TODO REMOVE
+        if(modErrorList):self.controller.data.errorRate=2
         return modErrorList
 
+    #@Override
     def setLog(self,log, button=None, name=None):
         self.correctedLog =log
 
+    def setTime(self):
+        self.startTime=datetime.datetime.strptime(self.settings["earliest Date"],"%Y-%m-%d")
+        self.latestTime=datetime.datetime.strptime(self.settings["latest Date"],"%Y-%m-%d")
+
     def validateDate(self, date):
-        try:
-            datetime.strptime(date, self.settings["Date Format"])
-        except ValueError:
-            return False
+        if(not date): return False
+        date=date.replace(tzinfo=None)
+        if(self.startTime>date): return False
+        if(self.latestTime<date): return False
+
         return True
 
     def getEventOrdering(self):

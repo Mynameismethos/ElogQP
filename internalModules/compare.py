@@ -1,5 +1,6 @@
 from fuzzywuzzy import fuzz
 from difflib import SequenceMatcher 
+from nltk.corpus import wordnet as wn
 from internalModules.objects import *
 
 
@@ -51,6 +52,29 @@ def tokenRatioTupel(subGroups, lowerBound):
 def isSimilarResources(dict_one, dict_two):
     #TODO impl
     return True
+
+def matchWordnet(eventList):
+    if(not eventList): return []
+
+    subGroups = all_Subgroups(list(eventList.keys()), 2, maxlen=2)
+    wordNetMatches=[]
+    for x in reversed(subGroups):
+        if( isAMatchInWordNet(x[0],x[1])):
+            wordNetMatches.append(x)
+
+    return wordNetMatches
+
+
+def isAMatchInWordNet(word1, word2):
+    wordmaps= wn.synsets(word1)
+    for el in wordmaps:
+        pos_names=el.lemma_names()
+        for name in pos_names:
+            if(name==word2):
+                return True
+    return False
+    
+
     
 def largestSubstring(element):
     result = SequenceMatcher(None,element[0],element[1]).find_longest_match(0,len(element[0]),0,len(element[1]))

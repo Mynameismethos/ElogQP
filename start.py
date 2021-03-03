@@ -14,6 +14,8 @@ class Controll(Frame_Controller):
         
 
     def addToErrorList(self, modErrorList):
+        #TODO REMOVE
+        if(self.data.errorRate>3):self.data.errorRate=3
         #Check if Entrys already Exist
         for x in modErrorList:
             hash_x= hash(x)
@@ -53,6 +55,8 @@ class Controll(Frame_Controller):
         return self.data.error_List
         
     def clearErrorList(self):
+        #TODO REMOVE
+        self.data.errorRate=4
         self.data.error_List=[]
         self.data.error_Hash_Dict={}
 

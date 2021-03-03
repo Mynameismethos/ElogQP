@@ -137,6 +137,7 @@ class error():
             dictVal= "".join(*self.dictVal)
 
         return hash((self.trace,
+        self.desc,
         self.event,
         self.parent,
         self.dictkey,

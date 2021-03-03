@@ -5,3 +5,5 @@ log = []
 frames = {}
 modFrames = {}
 activeMod={}
+#TODO REMOVE
+errorRate=4

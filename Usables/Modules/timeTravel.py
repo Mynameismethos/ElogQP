@@ -38,11 +38,13 @@ class module_timeTravel(ModuleFiles):
 
     def searchAlg(self):
         eventTyp = self.settings["eventTyp"]
+        eventTime = self.settings["eventTime"]
         self.occurence = DefaultDict(int)
         for x in range(len(self.log)):
-            for y in range(0, len(self.log[x])-1):
-                elOne = self.log[x][y][eventTyp]
-                elTwo = self.log[x][y+1][eventTyp]
+            trace = sorted(self.log[x]._list, key=lambda b: b[eventTime])
+            for y in range(0, len(trace)-1):
+                elOne = trace[y][eventTyp]
+                elTwo = trace[y+1][eventTyp]
                 self.occurence[elOne+self.getSettings()
                                ["String Seperator"]+elTwo] += 1
         #Tupellist with pair with very rare Ordering
@@ -79,33 +81,23 @@ class module_timeTravel(ModuleFiles):
         eventTime = self.settings["eventTime"]
         list = []
         for x in range(len(self.log)):
-            first = None
-            second = None
-            for y in range(0, len(self.log[x])):
-                #not first only for Performance
-                if(not first and self.log[x][y][eventTyp] == tupel.one):
-                    first = y
-                elif(first and self.log[x][y][eventTyp] == tupel.two):
-                    second = y
-                    #id = uuid.uuid4()
-                    gOne = Group(tupel.one)
-                    #TODO One Error
-                    #TODO make Tupel The Error Parent
-                    gOne.set(event=first, trace=x, value=self.log[x][first][eventTime],
-                             typ=eventTime)
+            trace = sorted(self.log[x]._list, key=lambda b: b[eventTime])
+            for y in range(0, len(trace)-1):
+                if(trace[y][eventTyp] == tupel.one):
+                    if(trace[y+1][eventTyp] == tupel.two):
+                        gOne = Group([tupel.one,tupel.two])
+                        gOne.set(trace=x, value=str(trace[y][eventTime])+"----"+str(trace[y+1][eventTime]), typ=eventTime)
+                        list.append(gOne)
 
-                    gTwo = Group(tupel.two)
-                    gTwo.set(event=second, trace=x, value=self.log[x][second][eventTime],
-                             typ=eventTime)
-                    list.append(gOne)
-                    list.append(gTwo)
+
+                    
         return list
 
     def createErrorList(self, list):
         modErrorList = []
         for element in list:
             c_error = error()
-            c_error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
+            c_error.set(trace=element.getTrace(),desc="Time Travel:"+element.getList()[0]+" and "+element.getList()[1], dictVal=element.getValue(
             ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(c_error)
         self.controller.addToErrorList(modErrorList)

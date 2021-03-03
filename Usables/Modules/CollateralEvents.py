@@ -8,7 +8,7 @@ from typing import DefaultDict
 class module_CollateralEvents(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
+
         self.name = "Collateral Events"
         self.oneDes = "this programm checks for Collateral Events"
         self.desc = ""
@@ -19,9 +19,6 @@ class module_CollateralEvents(ModuleFiles):
                          "delta Time":300,
                          "minimum appearances" : 20}
 
-
-        #TODO IMPLEMENT
-        # EXAMPLE
 
     def clean(self):
         self.baseClean()
@@ -90,7 +87,6 @@ class module_CollateralEvents(ModuleFiles):
         while(dictList):
             element = dictList[0][0]
             g= Group(dictList[0][0])
-            #TODO fill G
             groupList.append(g)
             
             for i in reversed(range(len(dictList))):
@@ -120,5 +116,3 @@ class module_CollateralEvents(ModuleFiles):
         return modErrorList
  
   
-    #TODO IMPLEMENT set Parameter to  start
-    

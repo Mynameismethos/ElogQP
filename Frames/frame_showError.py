@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Button, Label
+from tkinter import Button, Label, StringVar
 import internalModules.objects as objects
 from tkinter import ttk
 
@@ -7,14 +7,17 @@ from tkinter import ttk
 class frame_showError(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        Label(self, text="Tool zum Finden und Beheben von Fehlern in Eventlog",
+        Label(self, text="Discovering error patterns in eventlogs",
               bg="light blue").pack(fill="x")
         self.controller = controller
         self.errorTree = ttk.Treeview(self)
+        self.eRate=StringVar()
+        ErrorRate = Label(self, textvariable=self.eRate)
+        ErrorRate.pack()
 
         self.errorTree["columns"] = (
             "ID", "Desc", "Trace", "Value", "Module", "Repair")
-        self.errorTree.column("#0", width=25, stretch=False)
+        self.errorTree.column("#0", width=50, stretch=False)
         self.errorTree.column("ID", anchor="w", width=120)
         self.errorTree.column("Desc", anchor="w")
         self.errorTree.column("Trace", anchor="w")
@@ -63,6 +66,7 @@ class frame_showError(tk.Frame):
 
     def updateTable(self, list):
         self.cleanTree()
+        self.eRate.set("Log Quality: "+str(self.controller.data.errorRate))
         counter = 0
         parentDict = {}
         for x in list:
