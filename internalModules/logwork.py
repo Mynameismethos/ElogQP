@@ -1,13 +1,18 @@
+"""
+A collection of functions to retrive information from a given log 
+"""
 from typing import DefaultDict
 from pm4py.algo.filtering.log.attributes import attributes_filter
 import datetime
 
 
 def getAllActivityAsDict(log):
+    """ returns a Dictionary of Events present in the event log """
     return attributes_filter.get_attribute_values(log, "concept:name")
 
 
 def getAllActivityAsList(log):
+    """ returns a List of Events present in the event log """
     events = []
     for key in getAllActivityAsDict(log):
         events.append(key)
@@ -15,16 +20,19 @@ def getAllActivityAsList(log):
 
 
 def getAllResourcesAsDict(log):
+    """returns a Dictionary of the Ressources used in the eventlog  """
     resources = attributes_filter.get_attribute_values(log, "org:resource")
     return resources
 
 def getAllResourcesAsList(log):
+    """returns a List of the Ressources used in the eventlog"""
     resources =[]
     for key in getAllResourcesAsDict(log):
         resources.append(key)
     return resources
 
 def getAveragePosition(log,event_name):
+    """  returns the avereage position of an event in an eventlog"""
     counter=0
     position=0
     for trace in log:
@@ -37,6 +45,7 @@ def getAveragePosition(log,event_name):
     return -1 
 
 def getAvereageLength(log,event_name):
+    """ returns the average length of an event in an eventlog"""
     counter=0
     total_length=0
     for trace in log:
@@ -51,6 +60,7 @@ def getAvereageLength(log,event_name):
     return -1 
 
 def getUsedResources(log,event_name):
+    """returns a dictionary of Ressources used by an event"""
     res_dict=DefaultDict (int)
     for trace in log:
         for index in range(len(trace)):

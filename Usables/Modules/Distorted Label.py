@@ -9,7 +9,7 @@ class module_distoredLabel(ModuleFiles):
         super().__init__(__class__,controller)
         self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name","maxEvents": 100,"maxRes":100}
         self.name = "Distorted Label"
-        self.oneDes = "this programm checks The Event Names for similar but unequal Names "
+        self.oneDes = "this module checks The Event Names for similar but unequal Names "
         #TODO change 
         self.desc = "Distorted Labels describes a group of event attributes,that are "+\
         "unequal but similar to one another yet refer to one real live attribute"

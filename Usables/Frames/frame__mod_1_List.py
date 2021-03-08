@@ -32,6 +32,22 @@ class frame_mod_List(ModFrame):
 
         #TODO fill in, find Data that needs to be added by the module
     def update_Data(self, modController=None, next=None, previous=None, title="", list=[], button1_text="", button2_text="", button1_command=None, button2_command=None, selected=[]):
+        """  
+        function to update Data represented in this module
+        
+        Keyword arguments:
+
+        modController   --  Module that is in charge of Frame (default : None)
+        next            -- if not None --> has next Frame (default: None)
+        previous        -- if not None --> has previous Frame (default: None)
+        title           -- String of the title (default: "")
+        list            -- a list of elements to be displayed (default :[])
+        button1_text    -- String shown on button1 (default: "")
+        button1_command -- int flag for callback of button1 (default: None)
+        button2_text    -- String shown on button2 (default: "")
+        button2_command -- int flag for callback of button2 (default: None)
+        selected        -- list of highlighted elements (default: [])
+        """
         super().update_Data(modController,next, previous, title)
         if button1_text:
             self.button1_text.set(button1_text)
@@ -52,6 +68,7 @@ class frame_mod_List(ModFrame):
             self.listBox.selection_set(selected)
 
     def setMultiselect(self, multiselect):
+        #TODO comment
         if multiselect:
             self.listBox["selectmode"] = "extended"
         else:
@@ -60,6 +77,7 @@ class frame_mod_List(ModFrame):
         # No Need to Change
 
     def set_Widgets_Visible(self, button1=None, button2=None, buttonNext=None, buttonPrev=None):
+        #TODO comment
         if(button1 == "yes"):
             self.button1.grid()
         elif(button1 == "no"):

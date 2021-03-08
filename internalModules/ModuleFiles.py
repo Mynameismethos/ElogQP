@@ -1,8 +1,12 @@
 import threading
 
 class ModuleFiles():
+    """ 
+    Super class of all error searching modules
+    """
 
     def __init__(self,classTyp,controller):
+        """ init module by creating base variables and objects """
         self.visible=False
         self.started=False
         self.log = None
@@ -11,19 +15,26 @@ class ModuleFiles():
 
 
     def baseClean(self):
+        """ function to reset varibales set in init """
         self.log = None
         self.visible=False
         self.started=False
 
     
     def exec(self):
+        """
+        execution point of the module
+        create and show modularframes
+        
+        """
         self.createFrames()
         self.log=self.controller.getLog()
         self.visible=True
         self.controller.showModFrame(self.classTyp,next=True)
 
-        #TODO IMPLEMENT
+        
     def callBack(self, actionNumer):
+        """ function to allow buttons from the gui to interact with functions of the module """
         switcher={
             80: lambda: self.getSettingsFromFrame(),
             90: lambda: self.goToNext(),
@@ -33,6 +44,11 @@ class ModuleFiles():
 
 
     def startSearch(self):
+        """  
+        starting point of the search algorithm
+
+        Creates a new thread for the algorithm to run
+        """
         if(not self.started):
             self.started=True
             thread = threading.Thread(target=self.searchAlg, args=())

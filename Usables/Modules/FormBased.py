@@ -10,8 +10,8 @@ class module_FormBased(ModuleFiles):
         super().__init__(__class__,controller)
         #TODO change
         self.name = "Form-based Event Capture"
-        self.oneDes = "this programm checks For Form-based Event Capture"
-        self.desc = ""
+        self.oneDes = "this module checks For Form-based Event Capture through time data"
+        self.desc = "Form-based events describe a cluster of Events, that are recorded together, but as individual Events"
         ## Settings
         self.settings = {"eventTime": "time:timestamp",
                          "eventTyp": "concept:name",

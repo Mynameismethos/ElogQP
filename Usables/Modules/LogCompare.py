@@ -11,8 +11,8 @@ class module_LogCompare(ModuleFiles):
         super().__init__(__class__,controller)
         #TODO change
         self.name = "Log Compare"
-        self.oneDes = "this programm compares an uncleaned event log to an processed Event log"
-        self.desc = ""
+        self.oneDes = "this module compares an uncleaned event log to an processed Event log"
+        self.desc = "This Modul can detect issues already cleared up on a secondary log (of the same Process)."
         #EXAMPLE FOR LISTS
         self.listGroups = []
         self.currentGroup = int(0)

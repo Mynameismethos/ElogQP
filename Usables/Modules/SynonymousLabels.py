@@ -11,8 +11,8 @@ class module_SynonymousLabels(ModuleFiles):
         super().__init__(__class__,controller)
         #TODO change
         self.name = "Synonymous Labels"
-        self.oneDes = "this programm checks The Event Names for SynonymousLabels"
-        self.desc = ""
+        self.oneDes = "this module checks The Event Names for SynonymousLabels"
+        self.desc = "Synonymous Labels describes a pair of Events that describe the same process, though have a different name attribute"
         ## Settings
         self.settings = {"maxEvents": 50, "eventTyp":"concept:name", "position Delta": 3, "time (min) Delta": 10,"time (sec) Delta": 0}
 

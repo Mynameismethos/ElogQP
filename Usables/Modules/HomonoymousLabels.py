@@ -9,7 +9,7 @@ class module_HomonymousLabels(ModuleFiles):
         super().__init__(__class__,controller)
 
         self.name = " Not Done Homonymous Label"
-        self.oneDes = "this programm checks for Homonymous Labels"
+        self.oneDes = "this module checks for Homonymous Labels"
         self.desc = ""
         #EXAMPLE FOR LISTS
         self.listGroups = []

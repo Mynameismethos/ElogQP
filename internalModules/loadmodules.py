@@ -4,8 +4,13 @@ import inspect
 import sys
 import internalModules.ModuleFiles as ModuleFiles
 
-
+"""
+A collection of functions to load Modules and Frames
+"""
 def loadmodules(controller):
+    """
+     function to load Modules stored in '\Usables\Modules' into the persistent Storage
+    """
     dir = os.listdir(os.path.abspath(os.curdir) + "\\Usables\\Modules\\")
     list = []
     for file in dir:
@@ -22,6 +27,9 @@ def loadmodules(controller):
 
 
 def loadFrames():
+    """
+    function to load Frames stored in '\Usables\Frames\'  into the persistent storage
+    """
     dir = os.listdir(os.path.abspath(os.curdir) + "\\Usables\\Frames\\")
     list = []
     for file in dir:

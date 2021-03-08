@@ -10,8 +10,8 @@ class module_Polluted_Labels(ModuleFiles):
         super().__init__(__class__,controller)
         #TODO change
         self.name = "Polluted Labels"
-        self.oneDes = "this programm checks The Event Names for Attributes in the Event name "
-        self.desc = ""
+        self.oneDes = "this module checks The Event Names for Attributes in the Event name "
+        self.desc = "Polluted Labels describes Events whos name Attribute is a composite of a fixed and variable part."
         self.listGroups = []
         ## Settings
         self.settings = {"minEventNamelength": 6,"MinRes" : 95,"min Occurence": 6, "eventTyp":"concept:name"}

@@ -40,6 +40,26 @@ class frame_mod_canvas(ModFrame):
 
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc="", canDict={}, canList=[], highlight=[],
                     button1_text="", button1_command=None, button2_text="", button2_command=None, button3_text="", button3_command=None):
+                        """  
+        function to update Data represented in this module
+        
+        Keyword arguments:
+
+        modController   --  Module that is in charge of Frame (default : None)
+        next            -- if not None --> has next Frame (default: None)
+        previous        -- if not None --> has previous Frame (default: None)
+        title           -- String of the title (default: "")
+        desc            -- String of describtion (default: "")
+        canDict         -- Dictionary to be displayed on canvas (default: {})
+        canList         -- List  to be displayed on canvas (default:[])
+        highlight       -- List of elements to be highlighted (default: [])
+        button1_text    -- String shown on Button1 (default: "")
+        button1_command -- int flag for callback of Button1 (default: None)
+        button2_text    -- String shown on Button2 (default: "")
+        button2_command -- int flag for callback of Button2 (default: None)
+        button3_text    -- String shown on Button3 (default: "")
+        button3_command -- int flag for callback of Button3 (default: None)
+        """
         super().update_Data(modController,next, previous, title)
         if intro:
             self.intro_text.set(intro)

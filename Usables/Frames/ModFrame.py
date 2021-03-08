@@ -15,6 +15,16 @@ class ModFrame(tk.Frame):
         self.next_Button = Button(self.box_nav, text="Next Page")
 
     def update_Data(self, modController, next, previous, title):
+        """"
+        function to update Data represented in this module
+        
+        Keyword arguments:
+
+        modController   --  Module that is in charge of Frame (default : None)
+        next            -- if not None --> has next Frame (default: None)
+        previous        -- if not None --> has previous Frame (default: None)
+        title           -- String of the title (default: "")
+        """
         if modController:
             self.modController=modController
         if next:

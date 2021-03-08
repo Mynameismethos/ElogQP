@@ -1,10 +1,20 @@
+"""
+This internal Module is a composite of function that compare Elements and elements in Lists
+"""
 from fuzzywuzzy import fuzz
 from difflib import SequenceMatcher 
 from nltk.corpus import wordnet as wn
 from internalModules.objects import *
 
+def levinRatio(dict, lowerBound, maxRatio=0):
+    """
+    funtion to compare the elements in the dictionary to each other through levinstein
 
-def levinRatio(dict, lowerBound, maxRatio=None):
+    Keyword arguments:
+    maxRatio -- maximal Ratio two similar elements must have to be considert (default: 0)
+    
+    Return a list of Strings that are similar to each other
+    """
     if(not dict): return []
     subGroups = all_Subgroups(list(dict.keys()), 2, maxlen=2)
 
@@ -23,7 +33,15 @@ def levinRatio(dict, lowerBound, maxRatio=None):
     return closeList
 
 
-def tokenRatio(dict, lowerBound, maxRatio=1):
+def tokenRatio(dict, lowerBound, maxRatio=0):
+    """
+    Function to compare elements in the dict pairwise through Token Ratio and Levinstein
+
+    Keyword arguments:
+    maxRatio -- maximal Ratio two similar elements must have to be considert (default: 0)
+    
+    Return a list of Strings that are similar to each other
+    """
     if(not dict): return []
 
     subGroups = all_Subgroups(list(dict.keys()), 2, maxlen=2)
@@ -35,11 +53,15 @@ def tokenRatio(dict, lowerBound, maxRatio=1):
             subGroups.remove(x)
     closeList = []
 
-    closeList= tokenRatioTupel(subGroups,lowerBound)
+    closeList= _tokenRatioTupel(subGroups,lowerBound)
 
     return closeList
 
-def tokenRatioTupel(subGroups, lowerBound):
+def _tokenRatioTupel(subGroups, lowerBound):
+    """
+    inner function of tokenRatio
+    returns a list of elements that a similiar to each other
+    """
     closeList=[]
     for x in subGroups:
         ratio = fuzz.token_set_ratio(
@@ -54,18 +76,27 @@ def isSimilarResources(dict_one, dict_two):
     return True
 
 def matchWordnet(eventList):
+    """
+    function to Wordnet macht-elements in the list pairwise to each other
+    returns a list of elements that are pairwise similiar to each other  
+    """
     if(not eventList): return []
 
     subGroups = all_Subgroups(list(eventList.keys()), 2, maxlen=2)
     wordNetMatches=[]
     for x in reversed(subGroups):
-        if( isAMatchInWordNet(x[0],x[1])):
+        if( _isAMatchInWordNet(x[0],x[1])):
             wordNetMatches.append(x)
 
     return wordNetMatches
 
 
-def isAMatchInWordNet(word1, word2):
+def _isAMatchInWordNet(word1, word2):
+    """
+    inner function of matchWornet 
+
+    returns boolean = if two elements are similiar to each other
+    """
     wordmaps= wn.synsets(word1)
     for el in wordmaps:
         pos_names=el.lemma_names()
@@ -77,11 +108,18 @@ def isAMatchInWordNet(word1, word2):
 
     
 def largestSubstring(element):
+    """
+    function to find the largest Substring in a tuple
+
+    returns larges string included in both elements
+    """
     result = SequenceMatcher(None,element[0],element[1]).find_longest_match(0,len(element[0]),0,len(element[1]))
     string=element[0][result.a:result.a+result.size]
     return string
 
 def createGroups(tupelList, typ):
+    #TODO find out what this is
+
     groupeID = {}
     groupeList = []
 
@@ -102,6 +140,13 @@ def createGroups(tupelList, typ):
 
 
 def all_Subgroups(list, minlength, maxlen=None):
+    """
+    function to get all different (unsorted) permutations of the elements in the given list
+
+    Keyword arguments: maxlen is the maximum allowed number of elements in a given List(default : None)
+
+    returns a List of all Permutations
+    """
     group_List = []
     newGroup = []
 
@@ -116,7 +161,7 @@ def all_Subgroups(list, minlength, maxlen=None):
 
     finalGroup = []
     while(len(newGroup[0]) < maxlen):
-        newGroup = _inner(newGroup, group_List)
+        newGroup = _innerSubGroups(newGroup, group_List)
         finalGroup.extend(newGroup)
     x = finalGroup[0]
     while(len(x) < minlength):
@@ -128,7 +173,13 @@ def all_Subgroups(list, minlength, maxlen=None):
 
 
 
-def _inner(listOfGroup, list):
+def _innerSubGroups(listOfGroup, list):
+    #TODO check this out
+    """
+    inner function of all_subGroups 
+
+
+    """
     newGroup = []
     for element in listOfGroup:
         for value in list[list.index(element[-1])+1:]:

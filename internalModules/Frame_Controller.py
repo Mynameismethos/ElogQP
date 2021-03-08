@@ -1,11 +1,21 @@
+
 from internalModules.objects import *
 import tkinter as tk
 import Frames.frame_start
 import Frames.frame_modules
 import Frames.frame_showError
 
+
 class Frame_Controller(tk.Tk):
+"""
+The Frame controller controlls the GUI
+"""
     def __init__(self,*args, **kwargs):
+        """
+        init the Gui
+        load the frames of the Framework
+        show the first Frame
+        """
         tk.Tk.__init__(self, *args, **kwargs)
         self.winfo_toplevel().title("ElogQP")
         self.container = tk.Frame(self)
@@ -19,14 +29,20 @@ class Frame_Controller(tk.Tk):
         self.showFrame("frame_start")  
   
 
-    def showFrame(self, cont):
-        display = self.data.frames[cont]
+    def showFrame(self, position):
+        """
+        function to display the frame specified by the postion
+        """
+        display = self.data.frames[position]
         self.activeFrames.append(display)
         display.tkraise()
         display.showMe()
 
 
     def showPrevFrame(self):
+        """
+        function to pop frames from the Previous stack and show the previous Framework Frame
+        """
         if(self.hasPrevFrame()):
             self.activeFrames.pop()
             self.activeFrames[-1].tkraise()
@@ -34,10 +50,18 @@ class Frame_Controller(tk.Tk):
             self.showFrame("frame_start")
 
     def hasPrevFrame(self):
+        """
+        function to check if a previous Framework Frame exists
+
+        returns boolean
+        """
         self.deleteDouble()
         return (len(self.activeFrames) > 1)
 
     def deleteDouble(self):
+        """
+        function to clean up the frame Stack
+        """
         prev=None
         for x in reversed(self.activeFrames):
             if(prev):
@@ -46,21 +70,29 @@ class Frame_Controller(tk.Tk):
             prev=x
 
     def createFrame(self, module, name):
+        """
+        #TODO check if we still use this
+        """
         if name not in self.data.frames:
             display = module(self.container, self)
             display.grid(row=0, column=0, sticky="nsew")
             self.data.frames[name] = display
 
     def getFrameByName(self, frameName):
+        """" return the frame specified by the name""""
         return self.data.frames[frameName]
 
     def delFrameByName(self, frameName):
+        """" delete frame specified by the name"""
         self.data.frames[frameName].destroy()
         del self.data.frames[frameName]
 
     ###Controlling Modular Frames######
 
     def showModFrame(self, name,next=False, prev=False):
+        """
+        function to display a Modular Frame
+        """
         display=None
         if(next):
             if(self.data.activeMod[name].modFramesNext):
@@ -79,10 +111,18 @@ class Frame_Controller(tk.Tk):
         display.showMe()
 
     def deleteModFrame(self,name):
+        """
+        function to delete modframe Stack
+        """
         del self.data.activeMod[name]
 
 
     def createModFrame(self, number,name):
+        """
+        function to create mod Frames
+        creates modframe Stack and loads the first Frame of the stack
+
+        """
         frame = self.data.modFrames[number]
         display = frame(self.container, self)
         display.grid(row=0, column=0, sticky="nsew")
@@ -90,7 +130,9 @@ class Frame_Controller(tk.Tk):
         self.data.activeMod[name].modFramesNext.append(display)
 
     def getActiveModFrame(self,name):
+        """returns the Modframe that is currently visible"""
         return self.data.activeMod[name].modFramesPrev[-1]
 
     def getNextModFrame(self,name):
+        """returns the modframe that is next on the modframe stack"""
         return self.data.activeMod[name].modFramesNext[-1]
