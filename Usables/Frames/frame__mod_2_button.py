@@ -27,6 +27,20 @@ class frame_mod_button(ModFrame):
         #TODO fill  in, find Data that needs to be added by the module
 
     def update_Data(self, modController=None, next=None, previous=None, title="", button1_text="", button1_command=None,  button2_text="", button2_command=None):
+                        """  
+        function to update Data represented in this module
+        
+        Keyword arguments:
+
+        modController   --  Module that is in charge of Frame (default : None)
+        next            -- if not None --> has next Frame (default: None)
+        previous        -- if not None --> has previous Frame (default: None)
+        title           -- String of the title (default: "")
+        button1_text    -- String shown on Button1 (default: "")
+        button1_command -- int flag for callback of Button1 (default: None)
+        button2_text    -- String shown on Button2 (default: "")
+        button2_command -- int flag for callback of Button2 (default: None)
+        """
         super().update_Data(modController,next, previous, title)
         if button1_text:
             self.button1_text.set(button1_text)
@@ -39,6 +53,7 @@ class frame_mod_button(ModFrame):
         print("Hello")
 
     def set_Widgets_Visible(self, button1=None, button2=None,buttonNext=None, buttonPrev=None):
+        #TODO comment
         if(button1 == "yes"):
             self.button1.pack()
         elif(button1 == "no"):
