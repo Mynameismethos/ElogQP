@@ -27,7 +27,7 @@ class frame_mod_button(ModFrame):
         #TODO fill  in, find Data that needs to be added by the module
 
     def update_Data(self, modController=None, next=None, previous=None, title="", button1_text="", button1_command=None,  button2_text="", button2_command=None):
-                        """  
+        """  
         function to update Data represented in this module
         
         Keyword arguments:

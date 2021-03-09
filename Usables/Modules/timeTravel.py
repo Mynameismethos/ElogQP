@@ -10,7 +10,7 @@ class module_timeTravel(ModuleFiles):
         self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
         self.name = "Inadvertent Time Travel"
         self.oneDes = "this module checks for the Inadvertent Time Travel Issue"
-        self.desc = "Inadvertent time travel describes a case in which an event that has a strong temporal ordering" /+
+        self.desc = "Inadvertent time travel describes a case in which an event that has a strong temporal ordering" +\
         ", breaks this order. Thereby creating paths that do not exist in the underlying process"
         
         #EXAMPLE FOR LISTS

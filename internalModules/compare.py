@@ -1,6 +1,7 @@
 """
 This internal Module is a composite of function that compare Elements and elements in Lists
 """
+from internalModules.logwork import getAllActivityAsDict
 from fuzzywuzzy import fuzz
 from difflib import SequenceMatcher 
 from nltk.corpus import wordnet as wn
@@ -86,7 +87,8 @@ def matchWordnet(eventList):
     wordNetMatches=[]
     for x in reversed(subGroups):
         if( _isAMatchInWordNet(x[0],x[1])):
-            wordNetMatches.append(x)
+            t=[tupel(x[0],x[1],1),tupel(x[1],x[0],1)][eventList[x[0]]>eventList[x[1]]]
+            wordNetMatches.append(t)
 
     return wordNetMatches
 

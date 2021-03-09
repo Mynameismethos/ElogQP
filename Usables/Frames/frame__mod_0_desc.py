@@ -58,3 +58,6 @@ class frame_mod_desc(ModFrame):
             self.next_Button.pack()
         elif(buttonNext == "no"):
             self.next_Button.pack_forget()
+
+    def showMe(self):
+        pass

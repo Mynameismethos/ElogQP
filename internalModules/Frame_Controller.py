@@ -7,9 +7,9 @@ import Frames.frame_showError
 
 
 class Frame_Controller(tk.Tk):
-"""
-The Frame controller controlls the GUI
-"""
+    """
+    The Frame controller controlls the GUI
+    """
     def __init__(self,*args, **kwargs):
         """
         init the Gui
@@ -79,7 +79,7 @@ The Frame controller controlls the GUI
             self.data.frames[name] = display
 
     def getFrameByName(self, frameName):
-        """" return the frame specified by the name""""
+        """ return the frame specified by the name"""
         return self.data.frames[frameName]
 
     def delFrameByName(self, frameName):

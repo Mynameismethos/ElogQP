@@ -40,7 +40,7 @@ class frame_mod_canvas(ModFrame):
 
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc="", canDict={}, canList=[], highlight=[],
                     button1_text="", button1_command=None, button2_text="", button2_command=None, button3_text="", button3_command=None):
-                        """  
+        """  
         function to update Data represented in this module
         
         Keyword arguments:

@@ -10,9 +10,9 @@ def loadLogByName(controller, name, button):
     """
      Starts a thread in which the log, specified by the name, is loaded into the persistent storage
     """
-        thread = threading.Thread(target=_run, args=(controller,name, button))
-        thread.daemon = True                            # Daemonize thread
-        thread.start()                                  # Start the execution
+    thread = threading.Thread(target=_run, args=(controller,name, button))
+    thread.daemon = True                            # Daemonize thread
+    thread.start()                                  # Start the execution
 
 def _run(controller,name,button):
     """inner function of loadLogByName    """
@@ -27,7 +27,7 @@ def _run(controller,name,button):
 
 def getAllLogs():
     """
-     function to get a list of all eventlogs stored under '\Usables\Log\ '
+     function to get a list of all eventlogs stored under \\Usables\\Log
 
      returns a list of strings
     """

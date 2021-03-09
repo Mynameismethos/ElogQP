@@ -7,9 +7,9 @@ import datetime
 
 class test():
     def __init__(self, *args,):
-        self.log= self.loadLogByName("Kitchen Error_Second.xes")
+        self.log= self.loadLogByName("global Log.xes")
         self.error_pollutedLabels()
-        self.exportLog("Kitchen Error.xes")
+        self.exportLog("addedErros.xes")
      
 
 
@@ -17,8 +17,8 @@ class test():
 
     def error_pollutedLabels(self):
         event="concept:name"
-        triggerEvent="open Fridge"
-        ids=["Peter", "Gustav", "Susanne", "Frank", "Herbert", "Julia", "Jeff", "Tobias", "Nicht Jeff", "Manuel"]
+        triggerEvent="stopping work"
+        ids=["Peter", "Gustav", "Susanne", "Frank", "Herbert", "Julia", "Jeff", "Tobias", "Not Jeff", "Manuel"]
         for trace in self.log:
             for case in trace:
                 if(case[event]==triggerEvent):
