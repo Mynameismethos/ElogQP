@@ -93,7 +93,7 @@ class module_CollateralEvents(ModuleFiles):
                         groupList.remove(n)
 
 
-        #TODO set Group Names
+
         modErrorList = self.createErrorList(groupList)
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()

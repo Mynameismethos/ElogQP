@@ -56,6 +56,8 @@ class ModuleFiles():
             thread.start()
             self.controller.getActiveModFrame(self.classTyp).set_Widgets_Visible(button2="yes")
 
+
+    
     def getSettings(self):
         return self.settings
 

@@ -71,7 +71,7 @@ class Frame_Controller(tk.Tk):
 
     def createFrame(self, module, name):
         """
-        #TODO check if we still use this
+        function to init Frames of the Framework
         """
         if name not in self.data.frames:
             display = module(self.container, self)

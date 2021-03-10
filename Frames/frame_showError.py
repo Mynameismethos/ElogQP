@@ -3,7 +3,7 @@ from tkinter import Button, Label, StringVar
 import internalModules.objects as objects
 from tkinter import ttk
 
-
+#TODO Comment Module
 class frame_showError(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -58,8 +58,8 @@ class frame_showError(tk.Frame):
 
         leave.grid(row=0, column=0, columnspan=2, sticky="nsew")
         buttonClearList.grid(row=0, column=4, sticky="nsew")
-        buttonEdit.grid(row=0, column=5, sticky="nsew")
-        buttonAutoSolve.grid(row=0, column=6, sticky="nsew")
+        #buttonEdit.grid(row=0, column=5, sticky="nsew")
+        #buttonAutoSolve.grid(row=0, column=6, sticky="nsew")
 
     def showMe(self):
         self.updateList()

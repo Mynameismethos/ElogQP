@@ -4,7 +4,7 @@ from tkinter import Button, Entry, Label, StringVar, IntVar
 from tkinter.constants import ANCHOR, INSERT, NO, NONE
 
 
-#TODO change Class Name MUST start with frame
+#TODO Comment Module
 class frame_mod_canvas(ModFrame):
     def __init__(self, parent, controller):
         super().__init__(parent,controller)
@@ -36,7 +36,7 @@ class frame_mod_canvas(ModFrame):
     def showMe(self):
         pass
 
-    #TODO fill in, find Data that needs to be added by the module
+
 
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc="", canDict={}, canList=[], highlight=[],
                     button1_text="", button1_command=None, button2_text="", button2_command=None, button3_text="", button3_command=None):

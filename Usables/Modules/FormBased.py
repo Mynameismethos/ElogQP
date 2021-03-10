@@ -4,11 +4,11 @@ from internalModules.objects import *
 from typing import DefaultDict
 
 
-
+#TODO Comment Module
 class module_FormBased(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
+
         self.name = "Form-based Event Capture"
         self.oneDes = "this module checks For Form-based Event Capture through time data"
         self.desc = "Form-based events describe a cluster of Events, that are recorded together, but as individual Events"
@@ -90,7 +90,7 @@ class module_FormBased(ModuleFiles):
         groupList=self.preferences(dictList)
 
 
-    #TODO set Group Names
+
         modErrorList = self.createErrorList(groupList)
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
@@ -103,7 +103,7 @@ class module_FormBased(ModuleFiles):
         while(dictList):
             element = dictList[0][0]
             g= Group(dictList[0][0])
-            #TODO fill G
+
             groupList.append(g)
             
             for i in reversed(range(len(dictList))):
@@ -147,7 +147,7 @@ class module_FormBased(ModuleFiles):
 
         return modErrorList
 
-    #TODO IMPLEMENT Create Error Objects and Add TO ERRORLIST
+
     def addToErrorList(self, list):
         modErrorList = []
         for element in list:

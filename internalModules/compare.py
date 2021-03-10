@@ -72,6 +72,7 @@ def _tokenRatioTupel(subGroups, lowerBound):
     closeList.sort()
     return closeList
 
+#TODO Comment Function
 def isSimilarResources(dict_one, dict_two):
     #TODO impl
     return True
@@ -120,8 +121,10 @@ def largestSubstring(element):
     return string
 
 def createGroups(tupelList, typ):
-    #TODO find out what this is
-
+    """ function to turn a tupel list into a larger objects that contatins the variable typ  
+    
+    returns list of Group object containing the tupels and the typ
+    """
     groupeID = {}
     groupeList = []
 
@@ -178,9 +181,10 @@ def all_Subgroups(list, minlength, maxlen=None):
 def _innerSubGroups(listOfGroup, list):
     #TODO check this out
     """
-    inner function of all_subGroups 
+    function to extend every object in the listOfGroups with one element not yet included in this object
 
 
+    returns a list of permutations with a depth of one greater than the given list
     """
     newGroup = []
     for element in listOfGroup:

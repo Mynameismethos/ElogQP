@@ -2,16 +2,17 @@ from internalModules.ModuleFiles import ModuleFiles
 from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
-#TODO change name
-#TODO Change Desc
+#Impl TODO change name
+#Impl TODO Change Desc
 
+#TODO Comment Module
 class module_Example(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
-        self.name = "Distorted Label"
-        self.oneDes = "this programm checks The Event Names for similar but unequal Names "
-        self.desc = ""
+        #Impl TODO change
+        self.name = "Module name"
+        self.oneDes = "One line description"
+        self.desc = "Longer descriptoion"
         #EXAMPLE FOR LISTS
         self.listGroups = []
         self.currentGroup = int(0)
@@ -19,10 +20,7 @@ class module_Example(ModuleFiles):
         self.settings = {"Setting": 90}
 
 
-        #TODO IMPLEMENT
-        # EXAMPLE
-
-        #TODO IMPLEMENT set Parameter to  start
+        #Impl TODO IMPLEMENT set Parameter to  start
     def clean(self):
         self.baseClean()
 
@@ -41,12 +39,12 @@ class module_Example(ModuleFiles):
 
 
     def searchAlg(self):
-        #TODO impl
+        #Impl  TODO impl
         modErrorList = self.createErrorList([])
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
 
-   #TODO IMPLEMENT Create Error Objects
+   #Impl  TODO IMPLEMENT Create Error Objects
     def createErrorList(self, list):
         modErrorList = []
         for element in list:

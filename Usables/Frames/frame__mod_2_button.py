@@ -1,9 +1,7 @@
 from Usables.Frames.ModFrame import ModFrame
 from tkinter import Button, IntVar, Label, StringVar
 
-#TODO change Class Name MUST start with frame
-
-
+#TODO Comment Module
 class frame_mod_button(ModFrame):
     def __init__(self, parent, controller):
         super().__init__(parent,controller)
@@ -24,7 +22,7 @@ class frame_mod_button(ModFrame):
     def showMe(self):
         pass
 
-        #TODO fill  in, find Data that needs to be added by the module
+
 
     def update_Data(self, modController=None, next=None, previous=None, title="", button1_text="", button1_command=None,  button2_text="", button2_command=None):
         """  

@@ -2,7 +2,7 @@ from Usables.Frames.ModFrame import ModFrame
 import tkinter as tk
 from tkinter import Button, IntVar, Label, StringVar
 
-
+#TODO Comment Module
 class frame_mod_List(ModFrame):
     def __init__(self, parent, controller):
         super().__init__(parent,controller)
@@ -27,10 +27,11 @@ class frame_mod_List(ModFrame):
         self.button1.grid(row=0, column=0, sticky="nsew")
         self.button2.grid(row=0, column=1, sticky="nsew")
 
+    #TODO Comment Function
     def showMe(self):
         pass
 
-        #TODO fill in, find Data that needs to be added by the module
+
     def update_Data(self, modController=None, next=None, previous=None, title="", list=[], button1_text="", button2_text="", button1_command=None, button2_command=None, selected=[]):
         """  
         function to update Data represented in this module
@@ -67,6 +68,7 @@ class frame_mod_List(ModFrame):
         if selected:
             self.listBox.selection_set(selected)
 
+    #TODO Comment Function
     def setMultiselect(self, multiselect):
         #TODO comment
         if multiselect:

@@ -3,13 +3,12 @@ from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
 
-#TODO change name
-#TODO Change Desc
 
+#TODO Comment Module
 class module_SynonymousLabels(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
+
         self.name = "Synonymous Labels"
         self.oneDes = "this module checks The Event Names for SynonymousLabels"
         self.desc = "Synonymous Labels describes a pair of Events that describe the same process, though have a different name attribute"
@@ -17,7 +16,7 @@ class module_SynonymousLabels(ModuleFiles):
         self.settings = {"maxEvents": 50, "eventTyp":"concept:name", "position Delta": 3, "time (min) Delta": 10,"time (sec) Delta": 0}
 
 
-        #TODO IMPLEMENT set Parameter to  start
+
     def clean(self):
         self.baseClean()
 
@@ -95,7 +94,6 @@ class module_SynonymousLabels(ModuleFiles):
 
         
 
-   #TODO IMPLEMENT Create Error Objects
     def createErrorList(self, liste):
         modErrorList = []
         for element in liste:

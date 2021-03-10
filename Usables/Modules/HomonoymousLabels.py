@@ -3,15 +3,14 @@ from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
 
-
+#TODO Comment Module
 class module_HomonymousLabels(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
 
-        self.name = " Homonymous Label"
+        self.name = "Homonymous Label"
         self.oneDes = "this programm checks for Homonymous Labels"
         self.desc = ""
-        #EXAMPLE FOR LISTS
         ## Settings
         self.settings = {"checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
 

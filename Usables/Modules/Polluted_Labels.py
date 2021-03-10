@@ -4,11 +4,10 @@ from internalModules.compare import *
 from internalModules.objects import *
  
 
-
+#TODO Comment Module
 class module_Polluted_Labels(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
         self.name = "Polluted Labels"
         self.oneDes = "this module checks The Event Names for Attributes in the Event name "
         self.desc = "Polluted Labels describes Events whos name Attribute is a composite of a fixed and variable part."
@@ -66,7 +65,7 @@ class module_Polluted_Labels(ModuleFiles):
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
 
-   #TODO IMPLEMENT Create Error Objects
+
     def createErrorList(self, list):
         modErrorList = []
         for element in list:

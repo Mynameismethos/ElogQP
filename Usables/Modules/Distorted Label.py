@@ -4,13 +4,14 @@ from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
 
+#TODO Comment Module
 class module_distoredLabel(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
         self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name","maxEvents": 100,"maxRes":100}
         self.name = "Distorted Label"
         self.oneDes = "this module checks The Event Names for similar but unequal Names "
-        #TODO change 
+
         self.desc = "Distorted Labels describes a group of event attributes,that are "+\
         "unequal but similar to one another yet refer to one real live attribute"
         self.listGroups=[]

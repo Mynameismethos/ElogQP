@@ -4,7 +4,7 @@ import random
 import string
 import datetime
 
-
+#TODO Comment Module
 class test():
     def __init__(self, *args,):
         self.log= self.loadLogByName("global Log.xes")

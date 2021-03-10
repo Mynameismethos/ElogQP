@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import Button, Label, Message, StringVar
 
-#TODO change Class Name MUST start with frame
+#Impl TODO change Class Name MUST start with frame
 
-
+#TODO Comment Module
 class frame_mod_example(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -19,15 +19,14 @@ class frame_mod_example(tk.Frame):
        # self.desc_text = StringVar()
        # self.title_text.set("This is Mod1")
        # Label(self, textvariable=self.title_text).pack(fill="x",side="top")
-       # #TODO better Width
+
        # Message(self, textvariable=self.intro_text,width=400).pack(fill="x",side="top")
        # Message(self, textvariable=self.desc_text,width=400).pack(fill="x",side="top")
 
     def showMe():
         pass
 
-    #TODO fill in, find Data that needs to be added by the module
-
+    #Impl TODO fill in, find Data that needs to be added by the module
     def update_Data(self, modController=None, next=None, previous=None, title="", intro="", desc=""):
         if modController:
             self.set_Controller(modController)
@@ -62,5 +61,4 @@ class frame_mod_example(tk.Frame):
         self.modController = modController
 
     def leaveModule(self):
-        #TODO SHOW WARNING
         self.modController.leaveMod()

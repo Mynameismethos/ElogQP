@@ -1,3 +1,4 @@
+#TODO Comment Module
 class Group():
     def __init__(self, list):
         self.listNames = list

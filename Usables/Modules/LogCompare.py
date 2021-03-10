@@ -6,16 +6,15 @@ from internalModules.compare import *
 from internalModules.objects import *
 from internalModules.loadLog import *
 
+#TODO Comment Module
 class module_LogCompare(ModuleFiles):
     def __init__(self, controller):
         super().__init__(__class__,controller)
-        #TODO change
+
         self.name = "Log Compare"
         self.oneDes = "this module compares an uncleaned event log to an processed Event log"
         self.desc = "This Modul can detect issues already cleared up on a secondary log (of the same Process)."
-        #EXAMPLE FOR LISTS
-        self.listGroups = []
-        self.currentGroup = int(0)
+
         ## Settings
         self.settings = {"Check Empty Fields" : 1, "Check Missing Events" : 1, "Check Skipping Events" : 1, "earliest Date": "2000-01-01","latest Date":"2030-01-01"}
         #self.settings["latest Date"]=datetime.datetime.now().strftime("%Y-%m-%d")
@@ -23,9 +22,11 @@ class module_LogCompare(ModuleFiles):
         self.LogNames=getAllLogs()
 
 
-        #TODO IMPLEMENT set Parameter to  start
+
     def clean(self):
         self.baseClean()
+        self.correctedLog=None
+        self.LogNames=None
 
     def createFrames(self):
         #Start Programm
@@ -134,7 +135,7 @@ class module_LogCompare(ModuleFiles):
         loadLogByName(self, logName, None)
         pass
 
-   #TODO IMPLEMENT Create Error Objects
+
     def createErrorList(self, list):
         modErrorList = []
         error_pEmpty=error()
@@ -175,7 +176,7 @@ class module_LogCompare(ModuleFiles):
             val= "---".join(element.getList())
             error_el.set(trace=element.getTrace(),desc=element.getName(),parent= parent, dictVal=val, dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
             modErrorList.append(error_el)
-            #TODO REMOVE
+
         if(modErrorList):self.controller.data.errorRate=2
         return modErrorList
 
