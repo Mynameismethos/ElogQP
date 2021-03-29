@@ -1,3 +1,4 @@
+from fuzzywuzzy import fuzz
 import os
 import pm4py
 import random
@@ -7,12 +8,24 @@ import datetime
 #TODO Comment Module
 class test():
     def __init__(self, *args,):
-        self.log= self.loadLogByName("global Log.xes")
-        self.error_pollutedLabels()
-        self.exportLog("addedErros.xes")
+        self.log= self.loadLogByName("addedErros.xes")
+        self.clear_error_pollutedLabels()
+        self.exportLog("addedErrosnotPolluted.xes")
      
 
-
+    def findDouble(self):
+        event="concept:name"
+        triggerEvent="stopping work"
+        for trace in self.log:
+            triggerd=False
+            for case in reversed(trace):
+                if(triggerEvent in case[event]):
+                    if(triggerd):
+                        trace._list.remove(case)
+                    triggerd=True
+                else:
+                    triggerd=False
+                   
 
 
     def error_pollutedLabels(self):
@@ -24,6 +37,15 @@ class test():
                 if(case[event]==triggerEvent):
                     bla="".join(random.choices(ids))
                     case[event]=case[event]+"-- ID: "+bla
+    
+    def clear_error_pollutedLabels(self):
+        event="concept:name"
+        triggerEvent="stopping work"
+        ids=["Peter", "Gustav", "Susanne", "Frank", "Herbert", "Julia", "Jeff", "Tobias", "Not Jeff", "Manuel"]
+        for trace in self.log:
+            for case in trace:
+                if(triggerEvent in case[event]):
+                   case[event]=triggerEvent
 
 
     def error_collateralEvents(self):

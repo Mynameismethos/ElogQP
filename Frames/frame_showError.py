@@ -70,8 +70,11 @@ class frame_showError(tk.Frame):
         counter = 0
         parentDict = {}
         for x in list:
+            errorMod=x.errorModul.name
+            
+
             val = (counter, x.desc, x.trace,
-                   x.dictVal, x.errorModul, x.autoRepair)
+                   x.dictVal, errorMod, x.autoRepair)
             parent=""
             if(x.parent in parentDict):parent=parentDict[x.parent]
             id=self.errorTree.insert(parent=parent, index="end",

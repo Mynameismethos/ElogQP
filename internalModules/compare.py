@@ -74,8 +74,26 @@ def _tokenRatioTupel(subGroups, lowerBound):
 
 #TODO Comment Function
 def isSimilarResources(dict_one, dict_two):
-    #TODO impl
-    return True
+    dict_one=_normDict(dict_one)
+    dict_two=_normDict(dict_two)
+
+    res_dif=0
+    for key in dict_one:
+        if(key in dict_two):
+            res_dif+=abs(dict_one[key]-dict_two[key])
+        else: res_dif+=dict_one[key]
+    for key in dict_two:
+        if(key not in dict_one):
+            res_dif+=dict_two[key]
+    return res_dif
+
+def _normDict(setDict):
+    totalRes=0
+    for key in setDict:
+        totalRes+=setDict[key]
+    for key in setDict:
+        setDict[key]/=totalRes
+    return setDict
 
 def matchWordnet(eventList):
     """

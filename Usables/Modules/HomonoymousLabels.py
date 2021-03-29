@@ -10,7 +10,7 @@ class module_HomonymousLabels(ModuleFiles):
 
         self.name = "Homonymous Label"
         self.oneDes = "this programm checks for Homonymous Labels"
-        self.desc = ""
+        self.desc = "Homonymous Labels describe a Pattern in which a single event is representing different process steps"
         ## Settings
         self.settings = {"checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
 

@@ -13,7 +13,7 @@ class module_SynonymousLabels(ModuleFiles):
         self.oneDes = "this module checks The Event Names for SynonymousLabels"
         self.desc = "Synonymous Labels describes a pair of Events that describe the same process, though have a different name attribute"
         ## Settings
-        self.settings = {"maxEvents": 50, "eventTyp":"concept:name", "position Delta": 3, "time (min) Delta": 10,"time (sec) Delta": 0}
+        self.settings = {"maxEvents": 50, "eventTyp":"concept:name", "position Delta": 3, "time (min) Delta": 10,"time (sec) Delta": 0, "Ressource Margin": 0.3}
 
 
 
@@ -69,7 +69,7 @@ class module_SynonymousLabels(ModuleFiles):
                     # check if uses similiar resources 
                     used_res_one=getUsedResources(self.log,entry[0])
                     used_res_two=getUsedResources(self.log,entry[1])
-                    if(isSimilarResources(used_res_one,used_res_two)):
+                    if(isSimilarResources(used_res_one,used_res_two)<float(self.settings["Ressource Margin"])):
                         filteredList.append(entry)
 
         return filteredList

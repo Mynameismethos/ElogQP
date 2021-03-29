@@ -17,7 +17,7 @@ class module_LogCompare(ModuleFiles):
 
         ## Settings
         self.settings = {"Check Empty Fields" : 1, "Check Missing Events" : 1, "Check Skipping Events" : 1, "earliest Date": "2000-01-01","latest Date":"2030-01-01"}
-        #self.settings["latest Date"]=datetime.datetime.now().strftime("%Y-%m-%d")
+        self.settings["latest Date"]=datetime.datetime.now().strftime("%Y-%m-%d")
         self.correctedLog =None
         self.LogNames=getAllLogs()
 
