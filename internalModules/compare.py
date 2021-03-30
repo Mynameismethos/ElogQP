@@ -72,8 +72,13 @@ def _tokenRatioTupel(subGroups, lowerBound):
     closeList.sort()
     return closeList
 
-#TODO Comment Function
+
 def isSimilarResources(dict_one, dict_two):
+    """
+    This Function test if two Dictionarys are similiar
+
+    returns the normalized value of equally used Resources
+    """
     dict_one=_normDict(dict_one)
     dict_two=_normDict(dict_two)
 
@@ -88,6 +93,11 @@ def isSimilarResources(dict_one, dict_two):
     return res_dif
 
 def _normDict(setDict):
+    """
+    Normalize the Values in a Dictionary
+
+    returns normalized Dictionary
+    """
     totalRes=0
     for key in setDict:
         totalRes+=setDict[key]
@@ -197,7 +207,6 @@ def all_Subgroups(list, minlength, maxlen=None):
 
 
 def _innerSubGroups(listOfGroup, list):
-    #TODO check this out
     """
     function to extend every object in the listOfGroups with one element not yet included in this object
 

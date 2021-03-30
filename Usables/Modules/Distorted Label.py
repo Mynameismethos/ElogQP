@@ -4,8 +4,11 @@ from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
 
-#TODO Comment Module
+
 class module_distoredLabel(ModuleFiles):
+    """ 
+    Module to find Distorted Label in a set Eventlog
+    """
     def __init__(self, controller):
         super().__init__(__class__,controller)
         self.settings = {"LevLowerEvents": 90,"LevLowerResources": 90,"occurrenceRatio":0.1,"eventResources":"org:resource", "eventTyp":"concept:name","maxEvents": 100,"maxRes":100}
@@ -17,10 +20,17 @@ class module_distoredLabel(ModuleFiles):
         self.listGroups=[]
 
     def clean(self):
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            listGroups
+        """
         self.baseClean()
         self.listGroups=[]
 
     def createFrames(self):
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Distored Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
@@ -33,27 +43,35 @@ class module_distoredLabel(ModuleFiles):
         self.controller.getNextModFrame(__class__).update_Data(modController=self, next=True,previous= False,title=self.getName(), intro=self.getOneDesc(), desc=self.getDesc())
 
     def searchAlg(self):
+        """ 
+        starting point for the main algorithm of the module
+
+
+        """
+        """ get Values that are to be compard """
         eventList=getAllActivityAsDict(self.log)
+        resList=getAllResourcesAsDict(self.log)
+
+        """ creating error codes if two many attributes are present and adjusting dicts """
         if(len(eventList)>int(self.settings["maxEvents"])):
             error_max=error()
             error_max.set(trace="global",desc="More Events than allowed",dictVal=len(eventList),errorModul=self)
             self.controller.addToErrorList([error_max])
             eventList=dict((k, eventList[k]) for k in(list(eventList)[:int(self.settings["maxEvents"])]))
-        
-        resList=getAllResourcesAsDict(self.log)
+
         if(len(resList)>int(self.settings["maxEvents"])):
             error_max=error()
             error_max.set(trace="global",desc="More Ressources than allowed",dictVal=len(resList),errorModul=self)
             self.controller.addToErrorList([error_max])
             resList=dict((k, resList[k]) for k in(list(resList)[:int(self.settings["maxRes"])])) 
-        
+        """ comparing Activitys """        
         tupelListAc=levinRatio(eventList,int(self.settings["LevLowerEvents"]), maxRatio=float(self.settings["occurrenceRatio"]))
         tupleListWN= matchWordnet(eventList)
         for el in tupleListWN:
             if (el not in tupelListAc):
                 tupelListAc.append(el) 
         groupListAc= createGroups(tupelListAc,self.settings["eventTyp"])
-        
+        """ comparing Ressources """        
         tupelListRe=tokenRatio(getAllResourcesAsDict(self.log),int(self.settings["LevLowerResources"]),maxRatio=float(self.settings["occurrenceRatio"]))
         groupListRe= createGroups(tupelListRe,self.settings["eventResources"])
         self.listGroups=groupListAc+groupListRe
@@ -62,6 +80,9 @@ class module_distoredLabel(ModuleFiles):
 
 
     def addToErrorList(self, list):
+        """
+        function to turn a list of found issues into valid error codes
+        """
         modErrorList= []
         for group in list:
             error_el = error()

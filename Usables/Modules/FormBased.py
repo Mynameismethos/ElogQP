@@ -4,8 +4,11 @@ from internalModules.objects import *
 from typing import DefaultDict
 
 
-#TODO Comment Module
+
 class module_FormBased(ModuleFiles):
+    """
+    Module to find Form-based Event Capture in a set Eventlog
+    """
     def __init__(self, controller):
         super().__init__(__class__,controller)
 
@@ -20,9 +23,16 @@ class module_FormBased(ModuleFiles):
 
 
     def clean(self):
-       self.baseClean()
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            None
+        """
+        self.baseClean()
 
     def createFrames(self):
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(
@@ -39,10 +49,15 @@ class module_FormBased(ModuleFiles):
 
    
     def searchAlg(self):
+        """ 
+        starting point for the main algorithm of the module
+        """
         eventTime = self.settings["eventTime"]
         groupList = []
         groupDict = DefaultDict (int)
         eventTyp = self.settings["eventTyp"]
+        
+        """ creating lists of events that are called simultaneously """
         for x in range(len(self.log)):
             blue = self.log[x]
 
@@ -60,11 +75,11 @@ class module_FormBased(ModuleFiles):
                     g.append(traceList[y][eventTyp])
 
 
-        #
+        """ sorting list alphabetically"""
         for x in range(len(groupList)):
             groupList[x] = sorted(groupList[x])
 
-        
+        """ creating all Permutations of the groups and weighing those based on appearance"""
         while(groupList):
             element=groupList[0]
             allper=all_Subgroups(element,2)
@@ -75,27 +90,21 @@ class module_FormBased(ModuleFiles):
             groupList=list(filter((element).__ne__, groupList))
         print("No more elements")
         dictList=[]
+        """ filtering rare groups """
         for key, value in groupDict.items():
-            #FilterRareGroups
             if(value>=int(self.settings["minimum appearances"])):
                 dictList.append([key.split(self.settings["String Seperator"]),value])
-       
-
-
-
-        
-
-        #GroupDict is now a comprehensiv List of simultaneous Events
-        #refill groupList by finding Relevant Forms
+              
         groupList=self.preferences(dictList)
-
-
 
         modErrorList = self.createErrorList(groupList)
         self.controller.addToErrorList(modErrorList)
         self.leaveMod()
 
     def preferences(self,dictList):
+        """
+        function to extract the specific forms
+        """
         groupList = []
         #find larges item and longest
         dictList.sort(key=lambda s : len(s[0]), reverse=True)
@@ -115,6 +124,9 @@ class module_FormBased(ModuleFiles):
         return groupList
 
     def createErrorList(self, dictList):
+        """
+        function create an errorstructur of valid errors for the found issues with multible parent containers
+        """
         modErrorList = []
         eventTyp = self.settings["eventTyp"]
         for element in dictList:
@@ -147,14 +159,5 @@ class module_FormBased(ModuleFiles):
 
         return modErrorList
 
-
-    def addToErrorList(self, list):
-        modErrorList = []
-        for element in list:
-            error = error()
-            error.set(trace=element.getTrace(), event=element.getEvent(), dictVal=element.getValue(
-            ), dictkey=element.getTyp(), classInfo=element.getName(), errorModul=self)
-            modErrorList.append(error)
-        self.controller.addToErrorList(modErrorList)
 
 

@@ -4,8 +4,11 @@ from internalModules.compare import *
 from internalModules.objects import *
 
 
-#TODO Comment Module
+
 class module_SynonymousLabels(ModuleFiles):
+    """
+    Module to find Synonymous Labels in a set Eventlog
+    """
     def __init__(self, controller):
         super().__init__(__class__,controller)
 
@@ -18,10 +21,17 @@ class module_SynonymousLabels(ModuleFiles):
 
 
     def clean(self):
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            None
+        """
         self.baseClean()
 
-        # EXAMPLE
+
     def createFrames(self):
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for SynonymousLabels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
@@ -36,14 +46,20 @@ class module_SynonymousLabels(ModuleFiles):
 
 
     def searchAlg(self):
+        """ 
+        starting point for the main algorithm of the module
+        """
         eventList=getAllActivityAsList(self.log)
+        """ check if two many Activitys are in the List"""
         if(len(eventList)>int(self.settings["maxEvents"])):
             error_max=error()
             error_max.set(trace="global",desc="More Events than allowed",dictVal=len(eventList),errorModul=self)
             self.controller.addToErrorList([error_max])
             eventList=eventList[:int(self.settings["maxEvents"])]
 
+        """ find Not Connected Pairs"""
         notConnectedPairs=self.findPairs(eventList)
+        """ checking context Variables """
         weightedPairs = self.filterWithWeight(notConnectedPairs)
         
 
@@ -54,19 +70,22 @@ class module_SynonymousLabels(ModuleFiles):
 
 
     def filterWithWeight(self, pairList):
+        """ 
+        function to check the context Variables of a pair of Activitys
+        """
         filteredList=[]
         for entry in pairList:
-            # check if at similiar positions
+            """check if at similiar positions"""
             avr_pos_one= getAveragePosition(self.log,entry[0])
             avr_pos_two= getAveragePosition(self.log,entry[1])
-            #compare if within bounds continue
+            """compare if within bounds continue"""
             if(abs(avr_pos_one-avr_pos_two)<float(self.settings["position Delta"])):
-                # check if similiar length
+                """check if similiar length"""
                 avr_time_one= getAvereageLength(self.log,entry[0])
                 avr_time_two= getAvereageLength(self.log,entry[1])
-                #compare if within bounds
+                """compare if within bounds"""
                 if(abs(avr_time_one-avr_time_two)<int(self.settings["time (min) Delta"])*60+int(self.settings["time (sec) Delta"])):    
-                    # check if uses similiar resources 
+                    """check if uses similiar resources""" 
                     used_res_one=getUsedResources(self.log,entry[0])
                     used_res_two=getUsedResources(self.log,entry[1])
                     if(isSimilarResources(used_res_one,used_res_two)<float(self.settings["Ressource Margin"])):
@@ -76,10 +95,15 @@ class module_SynonymousLabels(ModuleFiles):
 
 
     def findPairs(self,eventList):
+        """
+        function to find Pairs of Events that do not appear in the same trace
+        """
+
+        """ create all permutations of the Activitys """
         subT=all_Subgroups(eventList,2,maxlen=2)
         pairList=[]
         eventTyp= self.settings["eventTyp"]
-        
+        """ iterate through the eventlog for every pair and check if a trace exist that contains both Activitys"""
         for t in subT:
             found=False
             for trace in self.log:
@@ -95,6 +119,9 @@ class module_SynonymousLabels(ModuleFiles):
         
 
     def createErrorList(self, liste):
+        """
+        function to turn a list of found issues into valid error codes
+        """
         modErrorList = []
         for element in liste:
             error_el = error()

@@ -2,9 +2,16 @@ import tkinter as tk
 from tkinter import Button, Entry, Frame, Label, Listbox
 from tkinter.constants import BOTTOM, INSERT, X
 
-#TODO Comment Module
+
 class frame_start(tk.Frame):
+    """
+    This Frame is the begining of ElogQP.
+    It enables the User to select an Eventlog and load the given Modules
+    """
     def __init__(self, parent, controller):
+        """
+        Initializing the layout of the Frame
+        """
         super().__init__(parent)
         self.controller = controller
         Label(self, text="Discovering error patterns in eventlogs",
@@ -38,15 +45,18 @@ class frame_start(tk.Frame):
         next_button.pack(side="right", fill="both")
 
     def showMe(self):
+        """ function to be called right after frame is shown"""
         self.controller.get_xes_file_list()
 
     def button_feedback(Frame, button, successfull):
+        """ function to receive feedback and change a button color on the frame"""
         if successfull:
             button.configure(bg="green")
         else:
             button.configure(bg="red")
 
     def updateData(self, list=[], highlight=None):
+        """ function to update the Data shown on the Frame """
         if list:
             self.listbox.delete(0, "end")
             for x in list:
@@ -54,11 +64,13 @@ class frame_start(tk.Frame):
             self.listbox.select_set(0)
 
     def goToNext(self, controller):
+        """ function to show the next Framework Frame"""
         if(len(controller.getModules()) > 0 and not (not controller.getLog())):
             controller.showFrame("frame_modules")
         #else set Buttoncolor to red
 
     def set_Prev_Frame(self):
+        """ function to show the previous Framework Frame"""
         if self.controller.hasPrevFrame():
             prev_button = Button(
                 self.box_nav, text="Previous Page", command=lambda: [self.controller.showPrevFrame(), prev_button.destroy()])

@@ -3,8 +3,11 @@ from internalModules.logwork import *
 from internalModules.compare import *
 from internalModules.objects import *
 
-#TODO Comment Module
+
 class module_HomonymousLabels(ModuleFiles):
+    """
+    Module to find Homonymous Labels in a set Eventlog
+    """
     def __init__(self, controller):
         super().__init__(__class__,controller)
 
@@ -15,9 +18,16 @@ class module_HomonymousLabels(ModuleFiles):
         self.settings = {"checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
 
     def clean(self):
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            None
+        """
         self.baseClean()
 
     def createFrames(self):
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Distored Labels", button1_command =99, button2_text="Go To Next Module", button2_command =90)
@@ -32,16 +42,22 @@ class module_HomonymousLabels(ModuleFiles):
 
 
     def searchAlg(self):
-        repeatedEvents = self.getMultiShowEvents()
+        """ 
+        starting point for the main algorithm of the module
+        """
         orderOfEvents={}
         modErrorList=[]
         eventTyp=self.settings["eventTyp"]
         error_pa=error()
         error_pa.set(trace="global",desc="Parent for Homonymous Labels", dictkey=eventTyp, classInfo="", errorModul=self)
         modErrorList.append(error_pa)
+
+        """ creating the Ordering of Events of repeated Events """
+        repeatedEvents = self.getMultiShowEvents()
         for event in repeatedEvents:
             orderOfEvents[event]=self.getOrderOfEvent(event)
 
+        """ check the ordering of the Events for rare occurrences"""
         for eventName in orderOfEvents:
             currentDict=orderOfEvents[eventName]
             for key in currentDict[0]:
@@ -63,15 +79,19 @@ class module_HomonymousLabels(ModuleFiles):
         self.leaveMod()
 
     def getOrderOfEvent(self, eventName):
+        """ 
+        Creating the order of a given Event (eventName) 
+        by counting the instances of events appearing bevor and after the event
+        """
         eventTime=self.settings["eventTime"]
         eventTyp=self.settings["eventTyp"]
-
+        """ creating dicts """
         globalOrderBefore=getAllActivityAsDict(self.log)
         globalOrderAfter=getAllActivityAsDict(self.log)
         for key in globalOrderBefore:
             globalOrderBefore[key]=0
             globalOrderAfter[key]=0
-
+        """  counting Events """
         for x in range(len(self.log)):
             trace = sorted(self.log[x]._list, key=lambda b: b[eventTime])
             timesOfEvent=[]
@@ -90,6 +110,7 @@ class module_HomonymousLabels(ModuleFiles):
 
    
     def getMultiShowEvents(self):
+        """ function to find Activitys that occure more then once in a trace"""
         multiOccurrenceOfEvent=[]
         eventTyp=self.settings["eventTyp"]
         for globalEvent in getAllActivityAsList(self.log):
@@ -105,6 +126,9 @@ class module_HomonymousLabels(ModuleFiles):
         return multiOccurrenceOfEvent
 
     def createErrorList(self, list):
+        """
+        function to turn a list of found issues into valid error codes
+        """
         modErrorList = []
         for element in list:
             error_el = error()

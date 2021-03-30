@@ -3,8 +3,11 @@ from internalModules.objects import *
 
 from typing import DefaultDict
 
-#TODO Comment Module
+
 class module_timeTravel(ModuleFiles):
+    """
+    Module to find Inadvertent Time Travel in a set Eventlog
+    """
     def __init__(self, controller):
         super().__init__(__class__,controller)
         self.settings = {"String Seperator": "//://", "checkRatio": 0.05,"eventTyp":"concept:name", "eventTime" :"time:timestamp"}
@@ -19,10 +22,17 @@ class module_timeTravel(ModuleFiles):
 
 
     def clean(self):
-       self.baseClean()
-       self.listGroups = []
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            listGroups
+        """
+        self.baseClean()
+        self.listGroups = []
 
     def createFrames(self):
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(
@@ -38,9 +48,13 @@ class module_timeTravel(ModuleFiles):
 
 
     def searchAlg(self):
+        """ 
+        starting point for the main algorithm of the module
+        """
         eventTyp = self.settings["eventTyp"]
         eventTime = self.settings["eventTime"]
         self.occurence = DefaultDict(int)
+        """ create Ordering of Events"""
         for x in range(len(self.log)):
             trace = sorted(self.log[x]._list, key=lambda b: b[eventTime])
             for y in range(0, len(trace)-1):
@@ -48,36 +62,42 @@ class module_timeTravel(ModuleFiles):
                 elTwo = trace[y+1][eventTyp]
                 self.occurence[elOne+self.getSettings()
                                ["String Seperator"]+elTwo] += 1
-        #Tupellist with pair with very rare Ordering
+        """find orderings that appear rarely """
         tupellist = self.findRare()
         
         for t in tupellist:
-            #find Occurence of this Tupel
+            """find Occurence of this Tupel"""
             self.listGroups.extend(self.findTraceOfTupel(t))
-        #Create ErrorGroups 
+        """Create ErrorGroups""" 
         self.createErrorList(self.listGroups)
         self.leaveMod()
 
     def findRare(self):
-
+        """ function to find rare Orderings"""
         tupellist = []
         ratio= float(self.settings["checkRatio"])
         while self.occurence :
+            """ 
+            1) get an ordering of Activitys
+            2) get the oppsosite order of Activitys
+            """
             key=list(self.occurence)[0]
             elOne,elTwo=key.split(self.settings["String Seperator"])
             key_opposite=elTwo+self.settings["String Seperator"]+elOne
             if key_opposite in self.occurence:
+                """ mark as possible error if both orderings exist but one is very rare"""
                 if(self.occurence[key]/ self.occurence[key_opposite] < ratio):
                     tupellist.append(tupel(elOne, elTwo, self.occurence[key]/ self.occurence[key_opposite]))
                 elif(self.occurence[key_opposite]/ self.occurence[key] < ratio):
                     tupellist.append(tupel(elTwo, elOne, self.occurence[key_opposite]/ self.occurence[key]))
-            
+            """ remove both elements from list""" 
             self.occurence.pop(key,None)
             self.occurence.pop(key_opposite,None)
 
         return tupellist
 
     def findTraceOfTupel(self, tupel):
+        """ function to find all traces in which a specific ordering of Events exist"""
         eventTyp = self.settings["eventTyp"]
         eventTime = self.settings["eventTime"]
         list = []
@@ -95,6 +115,9 @@ class module_timeTravel(ModuleFiles):
         return list
 
     def createErrorList(self, list):
+        """
+        function to turn a list of found issues into valid error codes
+        """
         modErrorList = []
         for element in list:
             c_error = error()

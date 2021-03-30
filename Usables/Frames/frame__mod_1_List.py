@@ -2,13 +2,13 @@ from Usables.Frames.ModFrame import ModFrame
 import tkinter as tk
 from tkinter import Button, IntVar, Label, StringVar
 
-#TODO Comment Module
 class frame_mod_List(ModFrame):
+    """
+    modular Frame that has a large ListBox used let the user chooce elements
+    """ 
     def __init__(self, parent, controller):
+        """ create a large Listbox and two buttons to control it """
         super().__init__(parent,controller)
-
-        #### Add The Layout of the Frame here ###############
-
         Label(self, textvariable=self.title_text).pack(fill="x", side="top")
         self.listBox = tk.Listbox(self)
         self.listBox.pack(fill="both", expand="yes")
@@ -27,8 +27,9 @@ class frame_mod_List(ModFrame):
         self.button1.grid(row=0, column=0, sticky="nsew")
         self.button2.grid(row=0, column=1, sticky="nsew")
 
-    #TODO Comment Function
+    
     def showMe(self):
+        """ function that is called right after it is being shown """
         pass
 
 
@@ -68,18 +69,28 @@ class frame_mod_List(ModFrame):
         if selected:
             self.listBox.selection_set(selected)
 
-    #TODO Comment Function
+    
     def setMultiselect(self, multiselect):
-        #TODO comment
+        """ function to switch the Listbox between multiselect and single select"""
         if multiselect:
             self.listBox["selectmode"] = "extended"
         else:
             self.listBox["selectmode"] = "single"
 
-        # No Need to Change
+        
 
     def set_Widgets_Visible(self, button1=None, button2=None, buttonNext=None, buttonPrev=None):
-        #TODO comment
+        """
+        function to hide or show widgets
+
+        Keyword arguments:
+
+        button1     -- set button1    to visible if "yes" and invisble if "no" (default: None)
+        button2     -- set button2    to visible if "yes" and invisble if "no" (default: None)
+        buttonNext  -- set buttonNext to visible if "yes" and invisble if "no" (default: None)
+        buttonPrev  -- set buttonPrev to visible if "yes" and invisble if "no" (default: None)
+        
+        """
         if(button1 == "yes"):
             self.button1.grid()
         elif(button1 == "no"):
@@ -100,8 +111,11 @@ class frame_mod_List(ModFrame):
         elif(buttonNext == "no"):
             self.next_Button.pack_forget()
 
+############# Getter + Setter Functions ###############################
+
     def getSelected(self):
         return self.listBox.curselection()
 
     def setSelected(self, list):
-        pass
+        self.listBox.select_set(list)
+        

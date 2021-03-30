@@ -3,9 +3,17 @@ from tkinter import Button, Label, StringVar
 import internalModules.objects as objects
 from tkinter import ttk
 
-#TODO Comment Module
+
 class frame_showError(tk.Frame):
+    """ 
+    Frame to show the error codes
+    """
     def __init__(self, parent, controller):
+        """
+        Initializing the layout of the Eventlog
+
+        in this function Coloumns can be created, edited and removed 
+        """
         super().__init__(parent)
         Label(self, text="Discovering error patterns in eventlogs",
               bg="light blue").pack(fill="x")
@@ -58,13 +66,19 @@ class frame_showError(tk.Frame):
 
         leave.grid(row=0, column=0, columnspan=2, sticky="nsew")
         buttonClearList.grid(row=0, column=4, sticky="nsew")
+
+        """ 
+        These elements lie dorment until some Autosolving functions are implemented
+        """
         #buttonEdit.grid(row=0, column=5, sticky="nsew")
         #buttonAutoSolve.grid(row=0, column=6, sticky="nsew")
 
     def showMe(self):
+        """ function to be called right after Frame is shown """
         self.updateList()
 
     def updateTable(self, list):
+        """ this functions updates the tabe visualizing the Error Codes"""
         self.cleanTree()
         self.eRate.set("Log Quality: "+str(self.controller.data.errorRate))
         counter = 0
@@ -83,20 +97,35 @@ class frame_showError(tk.Frame):
             counter += 1
 
     def filterList(self, list):
+        """ function to possibly filter the Errorcodes"""
         self.updateTable(list)
 
     def updateList(self):
+        """ remote function to update the Table"""
         self.filterList(self.controller.getErrorList())
 
     def editSelected(self):
+        """ 
+        This function lies dorment until some Autosolving functions are implemented
+        """
         pass
 
     def clearErrorList(self):
+        """ 
+        this function calles the controller clean the errorlists
+        and updates the table accordingly
+        """
         self.controller.clearErrorList()
         self.updateList()
 
     def autoSolve(self):
+        """ 
+        This function lies dorment until some Autosolving functions are implemented
+        """
         pass
 
     def cleanTree(self):
+        """ 
+        This functions removes all elements from the table
+        """
         self.errorTree.delete(*self.errorTree.get_children())

@@ -6,8 +6,10 @@ from internalModules.compare import *
 from internalModules.objects import *
 from internalModules.loadLog import *
 
-#TODO Comment Module
 class module_LogCompare(ModuleFiles):
+    """
+    Module to Compare an Eventlog to a set Eventlog
+    """
     def __init__(self, controller):
         super().__init__(__class__,controller)
 
@@ -24,11 +26,19 @@ class module_LogCompare(ModuleFiles):
 
 
     def clean(self):
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            corredLog
+            LogNames
+        """
         self.baseClean()
         self.correctedLog=None
         self.LogNames=None
 
     def createFrames(self):
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Compare Logs", button1_command =99, button2_text="Go To Next Module", button2_command =90)
@@ -46,11 +56,14 @@ class module_LogCompare(ModuleFiles):
 
 
     def searchAlg(self):
+        """ 
+        starting point for the main algorithm of the module
+        """
         modErrorList=[]
         time="time:timestamp"
         name="concept:name"
 
-          # check Empty fields 
+        """ check Empty fields """
         if(int(self.settings["Check Empty Fields"])==1):
             self.setTime()
             for counter in range(len(self.log)):
@@ -75,7 +88,7 @@ class module_LogCompare(ModuleFiles):
 
 
         if(self.correctedLog):
-            # find EventNames
+            """check if both logs contain the same activitys """
             if(int(self.settings["Check Missing Events"])==1):
                 Events_BL=getAllActivityAsList(self.log)
                 Events_GL=getAllActivityAsList(self.correctedLog)
@@ -92,7 +105,7 @@ class module_LogCompare(ModuleFiles):
                         modErrorList.append(g)
 
         
-            #check if skipping EVents
+            """check if connections exist that should """
             if(int(self.settings["Check Skipping Events"])==1):
                 ordering=self.getEventOrdering()
                 for index in range(len(self.log)):
@@ -122,6 +135,7 @@ class module_LogCompare(ModuleFiles):
 
 
     def callBack(self, actionNumber):
+        """ extention of the callBack function from the super class  """
         super().callBack(actionNumber)
         if(actionNumber != 80,90,99):
             switcher={
@@ -130,13 +144,79 @@ class module_LogCompare(ModuleFiles):
             switcher.get(int(actionNumber.get()), lambda: print("Wrong Action"))()
 
     def importLog(self):
+        """ function to import a secondary event log"""
         pos=self.controller.getActiveModFrame(__class__).getSelected()
         logName= self.LogNames[pos[0]] #get name from Screen
         loadLogByName(self, logName, None)
         pass
 
 
+
+
+    #@Override
+    def setLog(self,log, button=None, name=None):
+        """ overides the superclass method to set a secondary event log"""
+        self.correctedLog =log
+
+    def setTime(self):
+        """  set the bounds to check of allowed Dates """
+        self.startTime=datetime.datetime.strptime(self.settings["earliest Date"],"%Y-%m-%d")
+        self.latestTime=datetime.datetime.strptime(self.settings["latest Date"],"%Y-%m-%d")
+
+    def validateDate(self, date):
+        """ function to check if a date is valid """
+        if(not date): return False
+        date=date.replace(tzinfo=None)
+        if(self.startTime>date): return False
+        if(self.latestTime<date): return False
+
+        return True
+
+    def getEventOrdering(self):
+        """ creating ordering of events by creating a dict that collects events as source and target"""
+        orderdDict=defaultdict (set)
+        time="time:timestamp"
+        name="concept:name"
+        
+        for trace in self.correctedLog:
+            prevTime=None
+            count=0
+            target=[]
+            source=[]
+            for count in range(len(trace)):
+                if(source):
+                    if(prevTime != trace[count][time]):
+                        if(target):
+                            for so in source:
+                                for ta in target:
+                                    orderdDict[so[name]].add(ta[name])
+                            if(len(target)>1):
+                                for ta in target:
+                                    for ta_in in target:
+                                        orderdDict[ta[name]].add(ta_in[name])
+                            source=target
+                            target=[]
+                    target.append(trace[count])
+
+                else:
+                    source=[trace[count]]
+                prevTime=trace[count][time]
+            for so in source:
+                for ta in target:
+                    orderdDict[so[name]].add(ta[name])
+            if(len(target)>1):
+                for ta in target:
+                    for ta_in in target:
+                        orderdDict[ta[name]].add(ta_in[name])
+                
+        return orderdDict
+
+            
+
     def createErrorList(self, list):
+        """
+        function create an errorstructur of valid errors for the found issues with multible parent containers
+        """
         modErrorList = []
         error_pEmpty=error()
         error_pEmptyEvents=error()
@@ -179,63 +259,6 @@ class module_LogCompare(ModuleFiles):
 
         if(modErrorList):self.controller.data.errorRate=2
         return modErrorList
-
-    #@Override
-    def setLog(self,log, button=None, name=None):
-        self.correctedLog =log
-
-    def setTime(self):
-        self.startTime=datetime.datetime.strptime(self.settings["earliest Date"],"%Y-%m-%d")
-        self.latestTime=datetime.datetime.strptime(self.settings["latest Date"],"%Y-%m-%d")
-
-    def validateDate(self, date):
-        if(not date): return False
-        date=date.replace(tzinfo=None)
-        if(self.startTime>date): return False
-        if(self.latestTime<date): return False
-
-        return True
-
-    def getEventOrdering(self):
-        orderdDict=defaultdict (set)
-        time="time:timestamp"
-        name="concept:name"
-        
-        for trace in self.correctedLog:
-            prevTime=None
-            count=0
-            target=[]
-            source=[]
-            for count in range(len(trace)):
-                if(source):
-                    if(prevTime != trace[count][time]):
-                        if(target):
-                            for so in source:
-                                for ta in target:
-                                    orderdDict[so[name]].add(ta[name])
-                            if(len(target)>1):
-                                for ta in target:
-                                    for ta_in in target:
-                                        orderdDict[ta[name]].add(ta_in[name])
-                            source=target
-                            target=[]
-                    target.append(trace[count])
-
-                else:
-                    source=[trace[count]]
-                prevTime=trace[count][time]
-            for so in source:
-                for ta in target:
-                    orderdDict[so[name]].add(ta[name])
-            if(len(target)>1):
-                for ta in target:
-                    for ta_in in target:
-                        orderdDict[ta[name]].add(ta_in[name])
-                
-        return orderdDict
-
-            
-
 
 
     

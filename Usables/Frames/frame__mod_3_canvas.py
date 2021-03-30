@@ -4,9 +4,10 @@ from tkinter import Button, Entry, Label, StringVar, IntVar
 from tkinter.constants import ANCHOR, INSERT, NO, NONE
 
 
-#TODO Comment Module
+"""A Frame containing a large blank Canvas """
 class frame_mod_canvas(ModFrame):
     def __init__(self, parent, controller):
+        """ creating the large canvas and a row of buttons to control the use of it"""
         super().__init__(parent,controller)
     
         self.settingsCanvas = tk.Frame(self)
@@ -34,6 +35,7 @@ class frame_mod_canvas(ModFrame):
         self.set_Widgets_Visible(button1="no", button2="no", button3="no")
 
     def showMe(self):
+        """ function that is called right after it is being shown """
         pass
 
 
@@ -113,7 +115,18 @@ class frame_mod_canvas(ModFrame):
                 e.grid(row=0, column=1, sticky="nsew")
 
     def set_Widgets_Visible(self, button1=None, button2=None, button3=None, buttonNext=None, buttonPrev=None):
+        """
+        function to hide or show widgets
 
+        Keyword arguments:
+
+        button1     -- set button1    to visible if "yes" and invisble if "no" (default: None)
+        button2     -- set button2    to visible if "yes" and invisble if "no" (default: None)
+        button3     -- set button3    to visible if "yes" and invisble if "no" (default: None)
+        buttonNext  -- set buttonNext to visible if "yes" and invisble if "no" (default: None)
+        buttonPrev  -- set buttonPrev to visible if "yes" and invisble if "no" (default: None)
+        
+        """
         if(button1 == "yes"):
             self.button1.grid()
         elif(button1 == "no"):
@@ -140,6 +153,11 @@ class frame_mod_canvas(ModFrame):
             self.next_Button.pack_forget()
 
     def getCanvasAsDict(self):
+        """ 
+        function to return the info displayed on the Canvas as a Dictonary
+        
+        return : A Dictonary containing the Elements displayed on the Canvas
+        """
         returndict = {}
         for frame in self.settingsCanvas.winfo_children():
             key = NONE
@@ -153,6 +171,11 @@ class frame_mod_canvas(ModFrame):
         return returndict
 
     def getCanvasAsList(self):
+        """ 
+        function to return the info displayed on the Canvas as a List
+        
+        return : A List containing the Elements displayed on the Canvas
+        """
         returnList = []
         for frame in self.settingsCanvas.winfo_children():
 

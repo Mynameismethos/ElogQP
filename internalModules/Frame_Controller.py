@@ -1,4 +1,3 @@
-
 from internalModules.objects import *
 import tkinter as tk
 import Frames.frame_start

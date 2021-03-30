@@ -1,5 +1,10 @@
-#TODO Comment Module
+""" 
+This is a collection of Data Objects used in ElogQP
+"""
 class Group():
+    """
+    large Object that holds relevant data of an Event 
+    """
     def __init__(self, list):
         self.listNames = list
         self.name = None
@@ -66,6 +71,7 @@ class Group():
 
 
 class tupel():
+    """ tuple like structure with an extra element"""
     def __init__(self, elOne, elTwo, elRatio):
         self.value = elRatio
         self.one = elOne
@@ -76,6 +82,7 @@ class tupel():
 
 
 class error():
+    """ object for the Error Codes"""
     def __init__(self):
         self.trace = None
         self.event = None
@@ -143,12 +150,12 @@ class error():
         self.parent,
         self.dictkey,
         dictVal,
-        #self.errorModul,
         self.classInfo,
         self.autoRepair,
         self.fixedVal))
         
 class module():
+    """Object to store the Frame Stacks of individual Modules"""
     def __init__(self):
         self.modFramesNext =[]
         self.modFramesPrev =[]

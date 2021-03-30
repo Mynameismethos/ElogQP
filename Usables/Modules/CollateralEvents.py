@@ -7,7 +7,7 @@ from typing import DefaultDict
 
 class module_CollateralEvents(ModuleFiles):
     """
-    Module to find collateral Events
+    Module to find collateral Events in a set Eventlog
     """
     def __init__(self, controller):
         """ init global variables"""
@@ -25,10 +25,16 @@ class module_CollateralEvents(ModuleFiles):
 
 
     def clean(self):
+        """ 
+        Function to reset the Variables changed during the runtime
+        
+        Specific Variables in this Module:
+            None
+        """
         self.baseClean()
 
     def createFrames(self):
-        """ create frames in reversed order"""
+        """ konfiguring the frames in reversed order"""
         #Start Programm
         self.controller.createModFrame(2,__class__)
         self.controller.getNextModFrame(__class__).update_Data(modController=self,next=False, previous= True,title=self.getName(), button1_text="Search for Collateral Events", button1_command =99, button2_text="Go To Next Module", button2_command =90)
@@ -43,7 +49,7 @@ class module_CollateralEvents(ModuleFiles):
 
     def searchAlg(self):
         """ 
-        main algorithm of the module
+        starting point for the main algorithm of the module
 
         """
         eventTime = self.settings["eventTime"]
@@ -121,7 +127,7 @@ class module_CollateralEvents(ModuleFiles):
 
     def createErrorList(self, groupList):
         """
-        function to turn a list of found issues into presentable error codes
+        function to turn a list of found issues into valid error codes
         """
         modErrorList = []
         errorDict={}

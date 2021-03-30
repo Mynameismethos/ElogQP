@@ -1,4 +1,0 @@
-pip install pm4py
-pip install black
-change "python formatting provider" to black
-"format on save"

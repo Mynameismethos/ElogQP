@@ -1,7 +1,13 @@
 import tkinter as tk
 from tkinter import Button, StringVar
-#TODO Comment Module
+
+
 class ModFrame(tk.Frame):
+    """
+    Super class of the Module Frames
+
+    functions and obejects that are a must in these frames are implemented here
+    """
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.controller = controller
@@ -36,15 +42,18 @@ class ModFrame(tk.Frame):
 
 
     def set_Prev_Frame(self):
+        """ function to check if a previous Frame exists and adjust the button accordingly """
         if self.controller.hasPrevFrame():
             prev_button = Button(
                 self.box_nav, text="Previous Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,prev=True)])
             prev_button.pack(side="left", fill="both")
 
     def set_Next_Frame(self):
+        """ function to check if a following Frame exists and adjust the button accordingly """
         next_Button = Button(
             self.box_nav, text="Next Page", command=lambda: [self.controller.showModFrame(self.modController.__class__,next=True)])
         next_Button.pack(side="right", fill="both")
 
     def leaveModule(self):
+        """ function to exit out of the Module """
         self.modController.leaveMod()

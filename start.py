@@ -4,8 +4,10 @@ from internalModules.loadLog import *
 import internalModules.Data as dataBase
 
 
-#TODO Comment Module
 class Controll(Frame_Controller):
+    """
+    The Class is the starting Point for ElogQP and the main controlling point
+    """
     def __init__(self, *args, **kwargs):
         self.data=dataBase
         self.data.modFrames = loadFrames()
@@ -14,6 +16,11 @@ class Controll(Frame_Controller):
         
 
     def addToErrorList(self, modErrorList):
+        """
+        Function to control which Erros get added to the Persistenz
+
+        The function hashes each Error code, and checks if the Error already exists in the database
+        """
 
         if(self.data.errorRate>3):self.data.errorRate=3
         #Check if Entrys already Exist
@@ -25,14 +32,26 @@ class Controll(Frame_Controller):
 
 
     def get_xes_file_list(self):
+        """
+        Function to list all XES Files in the directory
+        """
         list = getAllLogs()
         self.getFrameByName("frame_start").updateData(list)
 
     def import_xes_Log(self, button, name):
+        """
+        Function to start import of XES by a given name
+        
+        a button can be provided to get feedback about the import
+
+        """
         self.data.log = loadLogByName(self,name,button)
 
 
     def importModule(self, button):
+        """
+        function to import all Errormodules in the set directory
+        """
         self.data.module_List = loadmodules(self)
         for module in self.data.module_List:
             print(
@@ -48,21 +67,26 @@ class Controll(Frame_Controller):
         else:
             self.data.frames[moduleName].button_feedback(button, False)
 
+        
+    def clearErrorList(self):
+        """
+        Function to reset the error List and all corresponding values
+        """
+        self.data.errorRate=4
+        self.data.error_List=[]
+        self.data.error_Hash_Dict={}
+
+    #############  Getter + Setter Functions ##############
+
+    def getLog(self):
+        return self.data.log
+
     def getModules(self):
         return self.data.module_List
 
     def getErrorList(self):
         return self.data.error_List
-        
-    def clearErrorList(self):
-
-        self.data.errorRate=4
-        self.data.error_List=[]
-        self.data.error_Hash_Dict={}
-
-    def getLog(self):
-        return self.data.log
-
+    
     def setLog(self, log, button=None,name=None):
         if(button):
             self.data.frames["frame_start"].button_feedback(button, True)

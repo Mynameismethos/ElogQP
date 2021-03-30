@@ -58,6 +58,20 @@ class ModuleFiles():
 
 
     
+    def leaveMod(self):
+        """ function to leave Module and remove Module Data from Persistenz """
+        print(self.classTyp.__name__+": Module finished")
+        self.controller.deleteModFrame(self.classTyp)
+        if(self.visible):
+                self.controller.getFrameByName("frame_modules").showNextMod()
+        self.clean()
+
+    def goToNext(self):
+        """ function to call for the next Frame on the stack to be show"""
+        self.controller.getFrameByName("frame_modules").showNextMod()
+        self.visible=False
+
+    ########## Getter + Setter Functions #############
     def getSettings(self):
         return self.settings
 
@@ -66,18 +80,6 @@ class ModuleFiles():
 
     def getSettingsFromFrame(self):
         self.settings=self.controller.getActiveModFrame(self.classTyp).getCanvasAsDict()
-
-    def leaveMod(self):
-       print(self.classTyp.__name__+": Module finished")
-       self.controller.deleteModFrame(self.classTyp)
-       if(self.visible):
-            self.controller.getFrameByName("frame_modules").showNextMod()
-       self.clean()
-
-    def goToNext(self):
-        self.controller.getFrameByName("frame_modules").showNextMod()
-        self.visible=False
-    
 
     def getName(self):
         return self.name
